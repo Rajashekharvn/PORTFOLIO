@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
+import { Container, Row, Col, Button, Alert } from "react-bootstrap";
 import Particle from "../Particle";
 import { AiOutlineMail } from "react-icons/ai";
 import { FaPhoneAlt } from "react-icons/fa";
@@ -8,20 +8,22 @@ import { EMAIL, PHONE, LOCATION, FORMSPREE_ENDPOINT } from "../../config/contact
 import "./Contact.css";
 
 function Contact() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: ""
-  });
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
   const [status, setStatus] = useState({ type: "", message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handleMessageChange = (e) => {
+    setMessage(e.target.value);
   };
 
   const handleSubmit = async (e) => {
@@ -30,7 +32,7 @@ function Contact() {
     setStatus({ type: "", message: "" });
 
     // Basic validation
-    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+    if (!name.trim() || !email.trim() || !message.trim()) {
       setStatus({ type: "danger", message: "Please fill in all fields." });
       setIsSubmitting(false);
       return;
@@ -38,7 +40,7 @@ function Contact() {
 
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
+    if (!emailRegex.test(email)) {
       setStatus({ type: "danger", message: "Please enter a valid email address." });
       setIsSubmitting(false);
       return;
@@ -53,23 +55,25 @@ function Contact() {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            name: formData.name,
-            email: formData.email,
-            message: formData.message
+            name: name,
+            email: email,
+            message: message
           })
         });
 
         if (response.ok) {
           setStatus({ type: "success", message: "Thank you! Your message has been sent successfully." });
-          setFormData({ name: "", email: "", message: "" });
+          setName("");
+          setEmail("");
+          setMessage("");
         } else {
           const data = await response.json().catch(() => ({}));
           setStatus({ type: "danger", message: data?.errors?.[0]?.message || "Failed to send message. Please try again." });
         }
       } else {
         // Fallback to mailto
-        const subject = encodeURIComponent(`Portfolio Contact: ${formData.name}`);
-        const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`);
+        const subject = encodeURIComponent(`Portfolio Contact: ${name}`);
+        const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
         window.open(`mailto:${EMAIL}?subject=${subject}&body=${body}`, '_blank');
         setStatus({ type: "success", message: "Your email client should open with the message ready to send." });
       }
@@ -124,61 +128,62 @@ function Contact() {
                 {status.message}
               </Alert>
             )}
-            <Form onSubmit={handleSubmit} className="contact-form">
-              <Form.Group controlId="contactName" className="mb-3">
-                <Form.Label>Name *</Form.Label>
-                <Form.Control
+            <form onSubmit={handleSubmit} className="contact-form">
+              <div className="form-group mb-3">
+                <label htmlFor="name" className="form-label">Name *</label>
+                <input
+                  id="name"
                   name="name"
                   type="text"
+                  className="form-control contact-input"
                   placeholder="Enter your name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  autoComplete="name"
+                  value={name}
+                  onChange={handleNameChange}
                   disabled={isSubmitting}
                   required
                 />
-              </Form.Group>
+              </div>
 
-              <Form.Group controlId="contactEmail" className="mb-3">
-                <Form.Label>Email *</Form.Label>
-                <Form.Control
+              <div className="form-group mb-3">
+                <label htmlFor="email" className="form-label">Email *</label>
+                <input
+                  id="email"
                   name="email"
                   type="email"
+                  className="form-control contact-input"
                   placeholder="Enter your email address"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  autoComplete="email"
-                  inputMode="email"
+                  value={email}
+                  onChange={handleEmailChange}
                   disabled={isSubmitting}
                   required
                 />
-              </Form.Group>
+              </div>
 
-              <Form.Group controlId="contactMessage" className="mb-4">
-                <Form.Label>Message *</Form.Label>
-                <Form.Control
+              <div className="form-group mb-4">
+                <label htmlFor="message" className="form-label">Message *</label>
+                <textarea
+                  id="message"
                   name="message"
-                  as="textarea"
+                  className="form-control contact-input contact-textarea"
                   rows={5}
                   placeholder="Write your message here..."
-                  value={formData.message}
-                  onChange={handleInputChange}
+                  value={message}
+                  onChange={handleMessageChange}
                   disabled={isSubmitting}
                   required
-                />
-              </Form.Group>
+                ></textarea>
+              </div>
 
               <div className="d-grid">
-                <Button 
-                  variant="primary" 
-                  type="submit" 
-                  className="contact-submit-btn"
+                <button
+                  type="submit"
+                  className="btn btn-primary contact-submit-btn"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? "Sending..." : (FORMSPREE_ENDPOINT ? "Send Message" : "Send Email")}
-                </Button>
+                </button>
               </div>
-            </Form>
+            </form>
           </Col>
         </Row>
       </Container>
