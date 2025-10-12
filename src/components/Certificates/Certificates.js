@@ -1,49 +1,56 @@
 import React from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import Particle from "../Particle"; // Importing background particles
+import certificate1 from "../../Assets/Certificate-1.pdf";
+import certificate2 from "../../Assets/Certificate-2.pdf";
+import certificate3 from "../../Assets/Certificate-3.pdf";
+import certificate4 from "../../Assets/Certificate-4.pdf";
 
 const Certificates = () => {
 	const certificates = [
 		{
-			name: "React Course",
-			url: "#", // Replace with actual certificate URL or PDF
-			issuer: "Frontend Academy",
+			name: "Professional Certificate",
+			url: certificate1,
+			issuer: "Certification Authority",
 			year: "2024",
 		},
 		{
-			name: "JavaScript Mastery",
-			url: "#", // Replace with actual certificate URL or PDF
-			issuer: "JS Institute",
+			name: "Technical Certification",
+			url: certificate2,
+			issuer: "Tech Institute",
+			year: "2024",
+		},
+		{
+			name: "Advanced Certification",
+			url: certificate3,
+			issuer: "Advanced Academy",
 			year: "2023",
 		},
 		{
-			name: "Python Certification",
-			url: "#", // Replace with actual certificate URL or PDF
-			issuer: "Py School",
-			year: "2022",
+			name: "Specialized Training",
+			url: certificate4,
+			issuer: "Training Institute",
+			year: "2023",
 		},
 	];
 
 	const handleView = (cert) => {
-		if (cert.url && cert.url !== "#") {
+		if (cert.url) {
 			window.open(cert.url, '_blank', 'noopener,noreferrer');
 		} else {
-			// Show alert or message that certificate is not available
 			alert(`${cert.name} certificate is not available at the moment.`);
 		}
 	};
 
 	const handleDownload = (cert) => {
-		if (cert.url && cert.url !== "#") {
+		if (cert.url) {
 			const link = document.createElement('a');
 			link.href = cert.url;
 			link.download = `${cert.name.replace(/\s+/g, '_')}_Certificate.pdf`;
-			link.target = '_blank';
 			document.body.appendChild(link);
 			link.click();
 			document.body.removeChild(link);
 		} else {
-			// Show alert or message that certificate is not available for download
 			alert(`${cert.name} certificate download is not available at the moment.`);
 		}
 	};
