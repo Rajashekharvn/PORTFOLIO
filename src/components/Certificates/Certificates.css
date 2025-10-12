@@ -1,0 +1,37 @@
+.certificates-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensures full page height */
+}
+
+.certificates-section {
+    flex: 1; /* Pushes the footer to the bottom */
+    position: relative;
+    background-color: #1a1a2e;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.certificates-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.white-text {
+    color: white;
+}
+
+.violet-text {
+    color: violet;
+}
+
+.footer {
+    background-color: #222;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    width: 100%;
+    margin-top: auto; /* Pushes it to the bottom */
+}
