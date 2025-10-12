@@ -43,6 +43,10 @@
   text-decoration: underline;
 }
 
+.contact-text {
+  color: #fff;
+}
+
 .contact-form-wrapper {
   background: rgba(255, 255, 255, 0.06);
   border-radius: 12px;
@@ -50,12 +54,77 @@
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
+/* Form styling fixes */
+.contact-form .form-label {
+  color: #fff;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.contact-form .form-control {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 6px !important;
+  color: #fff !important;
+  padding: 12px 15px !important;
+  font-size: 14px !important;
+  transition: all 0.3s ease !important;
+  pointer-events: auto !important;
+  user-select: text !important;
+}
+
+.contact-form .form-control:focus {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  border-color: var(--imp-text-color) !important;
+  box-shadow: 0 0 0 0.2rem rgba(201, 91, 245, 0.25) !important;
+  color: #fff !important;
+  outline: none !important;
+}
+
+.contact-form .form-control::placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+  opacity: 1 !important;
+}
+
+.contact-form .form-control:disabled,
+.contact-form .form-control[readonly] {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  opacity: 0.6;
+}
+
+.contact-form textarea.form-control {
+  resize: vertical !important;
+  min-height: 120px !important;
+}
+
 .contact-submit-btn {
   background: #c95bf5;
   border-color: #c95bf5;
+  font-weight: 500;
+  padding: 12px 30px;
+  font-size: 16px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
 }
 
 .contact-submit-btn:hover {
   background: #a43cd4;
   border-color: #a43cd4;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(201, 91, 245, 0.3);
+}
+
+.contact-submit-btn:focus {
+  box-shadow: 0 0 0 0.2rem rgba(201, 91, 245, 0.25);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .contact-info {
+    margin-bottom: 30px;
+  }
+  
+  .contact-form-wrapper {
+    padding: 15px;
+  }
 }
