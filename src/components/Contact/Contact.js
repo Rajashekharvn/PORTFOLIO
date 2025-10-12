@@ -129,27 +129,6 @@ function Contact() {
               </Alert>
             )}
             <form onSubmit={handleSubmit} className="contact-form">
-              
-              {/* Test input - simple as possible */}
-              <div style={{marginBottom: '20px'}}>
-                <label style={{color: 'white', display: 'block', marginBottom: '5px'}}>Test Input:</label>
-                <input 
-                  type="text" 
-                  style={{
-                    width: '100%',
-                    padding: '10px',
-                    fontSize: '16px',
-                    border: '2px solid #fff',
-                    backgroundColor: 'rgba(255,255,255,0.1)',
-                    color: '#fff',
-                    borderRadius: '4px',
-                    zIndex: 10000,
-                    position: 'relative'
-                  }}
-                  placeholder="Type here to test..."
-                />
-              </div>
-
               <div className="form-group mb-3">
                 <label htmlFor="name" className="form-label">Name *</label>
                 <input

@@ -120,14 +120,6 @@
   pointer-events: auto !important;
 }
 
-/* Debug styling - remove after testing */
-.contact-form .contact-input:hover {
-  border: 2px solid red !important;
-}
-
-.contact-form .contact-input:focus {
-  border: 2px solid green !important;
-}
 
 .contact-form .contact-input:disabled {
   background-color: rgba(255, 255, 255, 0.05) !important;
