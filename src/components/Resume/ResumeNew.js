@@ -52,14 +52,7 @@ function ResumeNew() {
         </Row>
 
         <Row style={{ justifyContent: "center", position: "relative" }}>
-          <Button
-            variant="primary"
-            onClick={() => window.open(pdf, '_blank')}
-            style={{ maxWidth: "250px" }}
-          >
-            <AiOutlineDownload />
-            &nbsp;View CV
-          </Button>
+          
           <Button
             variant="outline-primary"
             onClick={() => {
