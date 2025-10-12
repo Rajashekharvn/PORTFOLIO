@@ -35,23 +35,36 @@ const Certificates = () => {
 	];
 
 	const handleView = (cert) => {
-		if (cert.url) {
-			window.open(cert.url, '_blank', 'noopener,noreferrer');
-		} else {
-			alert(`${cert.name} certificate is not available at the moment.`);
+		console.log('View button clicked', cert.name, cert.url);
+		try {
+			if (cert.url) {
+				window.open(cert.url, '_blank', 'noopener,noreferrer');
+			} else {
+				alert(`${cert.name} certificate is not available at the moment.`);
+			}
+		} catch (error) {
+			console.error('Error opening certificate:', error);
+			alert('Error opening certificate. Please try again.');
 		}
 	};
 
 	const handleDownload = (cert) => {
-		if (cert.url) {
-			const link = document.createElement('a');
-			link.href = cert.url;
-			link.download = `${cert.name.replace(/\s+/g, '_')}_Certificate.pdf`;
-			document.body.appendChild(link);
-			link.click();
-			document.body.removeChild(link);
-		} else {
-			alert(`${cert.name} certificate download is not available at the moment.`);
+		console.log('Download button clicked', cert.name, cert.url);
+		try {
+			if (cert.url) {
+				const link = document.createElement('a');
+				link.href = cert.url;
+				link.download = `${cert.name.replace(/\s+/g, '_')}_Certificate.pdf`;
+				link.style.display = 'none';
+				document.body.appendChild(link);
+				link.click();
+				document.body.removeChild(link);
+			} else {
+				alert(`${cert.name} certificate download is not available at the moment.`);
+			}
+		} catch (error) {
+			console.error('Error downloading certificate:', error);
+			alert('Error downloading certificate. Please try again.');
 		}
 	};
 
@@ -67,6 +80,7 @@ const Certificates = () => {
 					position: relative;
 					color: #fff;
 					overflow: hidden;
+					z-index: 10;
 				}
 				.certificates-inner {
 					max-width: 1100px;
@@ -110,7 +124,26 @@ const Certificates = () => {
 					box-shadow: inset 0 -6px 12px rgba(0,0,0,0.25);
 				}
 				.cert-meta { color: #d6cfe6; font-size: 0.875rem; margin-bottom: 0.6rem; text-align:center; }
-				.cert-actions { display:flex; justify-content:center; gap:0.6rem; margin-top: 0.6rem; }
+				.cert-actions { 
+					display:flex; 
+					justify-content:center; 
+					gap:0.6rem; 
+					margin-top: 0.6rem;
+					z-index: 999;
+					position: relative;
+					pointer-events: auto;
+				}
+				.cert-actions button {
+					pointer-events: auto !important;
+					z-index: 1000 !important;
+					position: relative !important;
+					cursor: pointer !important;
+				}
+				/* Override particles interference */
+				.certificates-section #tsparticles {
+					pointer-events: none !important;
+					z-index: -1 !important;
+				}
 				.footer {
 					position: relative;
 					bottom: 0;
@@ -150,18 +183,36 @@ const Certificates = () => {
 								<div className="cert-actions">
 									<Button
 										variant="outline-light"
-										onClick={() => handleView(cert)}
+										onClick={(e) => {
+											e.preventDefault();
+											e.stopPropagation();
+											handleView(cert);
+										}}
 										aria-label={`View ${cert.name} certificate`}
-										style={{ fontSize: '0.875rem', padding: '0.375rem 0.75rem' }}
+										style={{ 
+											fontSize: '0.875rem', 
+											padding: '0.375rem 0.75rem',
+											zIndex: 1001,
+											position: 'relative'
+										}}
 									>
 										View
 									</Button>
 
 									<Button
 										variant="light"
-										onClick={() => handleDownload(cert)}
+										onClick={(e) => {
+											e.preventDefault();
+											e.stopPropagation();
+											handleDownload(cert);
+										}}
 										aria-label={`Download ${cert.name} certificate`}
-										style={{ fontSize: '0.875rem', padding: '0.375rem 0.75rem' }}
+										style={{ 
+											fontSize: '0.875rem', 
+											padding: '0.375rem 0.75rem',
+											zIndex: 1001,
+											position: 'relative'
+										}}
 									>
 										Download
 									</Button>
