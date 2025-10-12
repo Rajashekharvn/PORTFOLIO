@@ -8,40 +8,77 @@ import { EMAIL, PHONE, LOCATION, FORMSPREE_ENDPOINT } from "../../config/contact
 import "./Contact.css";
 
 function Contact() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: ""
+  });
   const [status, setStatus] = useState({ type: "", message: "" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setStatus({ type: "", message: "" });
 
-    if (FORMSPREE_ENDPOINT) {
-      try {
-        const res = await fetch(FORMSPREE_ENDPOINT, {
-          method: "POST",
-          headers: { "Accept": "application/json" },
-          body: new FormData(e.target),
-        });
-        const data = await res.json().catch(() => ({}));
-        if (res.ok) {
-          setStatus({ type: "success", message: "Thanks! Your message has been sent." });
-          setName("");
-          setEmail("");
-          setMessage("");
-        } else {
-          setStatus({ type: "danger", message: data?.errors?.[0]?.message || "Something went wrong. Please try again." });
-        }
-      } catch (err) {
-        setStatus({ type: "danger", message: "Network error. Please try again later." });
-      }
+    // Basic validation
+    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+      setStatus({ type: "danger", message: "Please fill in all fields." });
+      setIsSubmitting(false);
       return;
     }
 
-    // Fallback to mailto if no Formspree endpoint configured
-    const subject = encodeURIComponent(`Portfolio Contact: ${name || "(No name)"}`);
-    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
-    window.location.href = `mailto:${EMAIL}?subject=${subject}&body=${body}`;
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setStatus({ type: "danger", message: "Please enter a valid email address." });
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      if (FORMSPREE_ENDPOINT) {
+        const response = await fetch(FORMSPREE_ENDPOINT, {
+          method: "POST",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            message: formData.message
+          })
+        });
+
+        if (response.ok) {
+          setStatus({ type: "success", message: "Thank you! Your message has been sent successfully." });
+          setFormData({ name: "", email: "", message: "" });
+        } else {
+          const data = await response.json().catch(() => ({}));
+          setStatus({ type: "danger", message: data?.errors?.[0]?.message || "Failed to send message. Please try again." });
+        }
+      } else {
+        // Fallback to mailto
+        const subject = encodeURIComponent(`Portfolio Contact: ${formData.name}`);
+        const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`);
+        window.open(`mailto:${EMAIL}?subject=${subject}&body=${body}`, '_blank');
+        setStatus({ type: "success", message: "Your email client should open with the message ready to send." });
+      }
+    } catch (error) {
+      console.error('Form submission error:', error);
+      setStatus({ type: "danger", message: "Network error. Please check your connection and try again." });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -89,57 +126,56 @@ function Contact() {
             )}
             <Form onSubmit={handleSubmit} className="contact-form">
               <Form.Group controlId="contactName" className="mb-3">
-                <Form.Label>Name</Form.Label>
+                <Form.Label>Name *</Form.Label>
                 <Form.Control
                   name="name"
                   type="text"
                   placeholder="Enter your name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  onFocus={(e) => e.target.focus()}
-                  onClick={(e) => e.target.focus()}
-                  onTouchStart={(e) => e.target.focus()}
+                  value={formData.name}
+                  onChange={handleInputChange}
                   autoComplete="name"
+                  disabled={isSubmitting}
                   required
                 />
               </Form.Group>
 
               <Form.Group controlId="contactEmail" className="mb-3">
-                <Form.Label>Email</Form.Label>
+                <Form.Label>Email *</Form.Label>
                 <Form.Control
                   name="email"
                   type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  onFocus={(e) => e.target.focus()}
-                  onClick={(e) => e.target.focus()}
-                  onTouchStart={(e) => e.target.focus()}
+                  placeholder="Enter your email address"
+                  value={formData.email}
+                  onChange={handleInputChange}
                   autoComplete="email"
                   inputMode="email"
+                  disabled={isSubmitting}
                   required
                 />
               </Form.Group>
 
               <Form.Group controlId="contactMessage" className="mb-4">
-                <Form.Label>Message</Form.Label>
+                <Form.Label>Message *</Form.Label>
                 <Form.Control
                   name="message"
                   as="textarea"
                   rows={5}
-                  placeholder="Write your message"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  onFocus={(e) => e.target.focus()}
-                  onClick={(e) => e.target.focus()}
-                  onTouchStart={(e) => e.target.focus()}
+                  placeholder="Write your message here..."
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  disabled={isSubmitting}
                   required
                 />
               </Form.Group>
 
               <div className="d-grid">
-                <Button variant="primary" type="submit" className="contact-submit-btn">
-                  {FORMSPREE_ENDPOINT ? "Send Message" : "Send Email"}
+                <Button 
+                  variant="primary" 
+                  type="submit" 
+                  className="contact-submit-btn"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Sending..." : (FORMSPREE_ENDPOINT ? "Send Message" : "Send Email")}
                 </Button>
               </div>
             </Form>

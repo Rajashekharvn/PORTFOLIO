@@ -98,6 +98,16 @@
 .contact-form .form-control[readonly] {
   background-color: rgba(255, 255, 255, 0.05) !important;
   opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.contact-submit-btn:disabled {
+  background: #6c757d !important;
+  border-color: #6c757d !important;
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
 }
 
 .contact-form textarea.form-control {
