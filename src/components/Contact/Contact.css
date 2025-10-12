@@ -4,6 +4,7 @@
   padding-bottom: 40px;
   background-image: var(--section-background-color);
   min-height: 100vh;
+  z-index: 10 !important;
 }
 
 .contact-header .project-heading {
@@ -52,6 +53,9 @@
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  z-index: 999 !important;
+  position: relative !important;
+  pointer-events: auto !important;
 }
 
 /* Form styling fixes */
@@ -71,6 +75,18 @@
   transition: all 0.3s ease !important;
   width: 100% !important;
   box-sizing: border-box !important;
+  pointer-events: auto !important;
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+  cursor: text !important;
+  z-index: 9999 !important;
+  position: relative !important;
+  display: block !important;
+  -webkit-appearance: textfield !important;
+  -moz-appearance: textfield !important;
+  appearance: textfield !important;
 }
 
 .contact-form .contact-input:focus {
@@ -90,6 +106,27 @@
   resize: vertical !important;
   min-height: 120px !important;
   font-family: inherit !important;
+}
+
+/* Override particles interference */
+.contact-section #tsparticles {
+  pointer-events: none !important;
+  z-index: -1 !important;
+}
+
+.contact-form {
+  z-index: 1000 !important;
+  position: relative !important;
+  pointer-events: auto !important;
+}
+
+/* Debug styling - remove after testing */
+.contact-form .contact-input:hover {
+  border: 2px solid red !important;
+}
+
+.contact-form .contact-input:focus {
+  border: 2px solid green !important;
 }
 
 .contact-form .contact-input:disabled {
