@@ -67,10 +67,18 @@
   border-radius: 6px !important;
   color: #fff !important;
   padding: 12px 15px !important;
-  font-size: 14px !important;
+  font-size: 16px !important;
   transition: all 0.3s ease !important;
   pointer-events: auto !important;
   user-select: text !important;
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+  touch-action: manipulation !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  cursor: text !important;
 }
 
 .contact-form .form-control:focus {
@@ -126,5 +134,23 @@
   
   .contact-form-wrapper {
     padding: 15px;
+  }
+  
+  .contact-form .form-control {
+    font-size: 16px !important;
+    min-height: 44px !important;
+    -webkit-appearance: none !important;
+    -webkit-border-radius: 6px !important;
+    border-radius: 6px !important;
+    -webkit-touch-callout: text !important;
+    -webkit-user-select: text !important;
+    -khtml-user-select: text !important;
+    -moz-user-select: text !important;
+    -ms-user-select: text !important;
+    user-select: text !important;
+  }
+  
+  .contact-form textarea.form-control {
+    min-height: 100px !important;
   }
 }

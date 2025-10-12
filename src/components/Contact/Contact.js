@@ -96,6 +96,10 @@ function Contact() {
                   placeholder="Enter your name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  onFocus={(e) => e.target.focus()}
+                  onClick={(e) => e.target.focus()}
+                  onTouchStart={(e) => e.target.focus()}
+                  autoComplete="name"
                   required
                 />
               </Form.Group>
@@ -108,6 +112,11 @@ function Contact() {
                   placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  onFocus={(e) => e.target.focus()}
+                  onClick={(e) => e.target.focus()}
+                  onTouchStart={(e) => e.target.focus()}
+                  autoComplete="email"
+                  inputMode="email"
                   required
                 />
               </Form.Group>
@@ -121,6 +130,9 @@ function Contact() {
                   placeholder="Write your message"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
+                  onFocus={(e) => e.target.focus()}
+                  onClick={(e) => e.target.focus()}
+                  onTouchStart={(e) => e.target.focus()}
                   required
                 />
               </Form.Group>
