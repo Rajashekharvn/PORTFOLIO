@@ -6,23 +6,47 @@ const Certificates = () => {
 	const certificates = [
 		{
 			name: "React Course",
-			url: "/certificates/react-cert.pdf",
+			url: "#", // Replace with actual certificate URL or PDF
 			issuer: "Frontend Academy",
 			year: "2024",
 		},
 		{
 			name: "JavaScript Mastery",
-			url: "/certificates/js-cert.pdf",
+			url: "#", // Replace with actual certificate URL or PDF
 			issuer: "JS Institute",
 			year: "2023",
 		},
 		{
 			name: "Python Certification",
-			url: "/certificates/python-cert.pdf",
+			url: "#", // Replace with actual certificate URL or PDF
 			issuer: "Py School",
 			year: "2022",
 		},
 	];
+
+	const handleView = (cert) => {
+		if (cert.url && cert.url !== "#") {
+			window.open(cert.url, '_blank', 'noopener,noreferrer');
+		} else {
+			// Show alert or message that certificate is not available
+			alert(`${cert.name} certificate is not available at the moment.`);
+		}
+	};
+
+	const handleDownload = (cert) => {
+		if (cert.url && cert.url !== "#") {
+			const link = document.createElement('a');
+			link.href = cert.url;
+			link.download = `${cert.name.replace(/\s+/g, '_')}_Certificate.pdf`;
+			link.target = '_blank';
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+		} else {
+			// Show alert or message that certificate is not available for download
+			alert(`${cert.name} certificate download is not available at the moment.`);
+		}
+	};
 
 	return (
 		<Container fluid className="certificates-section" id="certificates" aria-label="Certificates section">
@@ -119,19 +143,18 @@ const Certificates = () => {
 								<div className="cert-actions">
 									<Button
 										variant="outline-light"
-										href={cert.url}
-										target="_blank"
-										rel="noopener noreferrer"
+										onClick={() => handleView(cert)}
 										aria-label={`View ${cert.name} certificate`}
+										style={{ fontSize: '0.875rem', padding: '0.375rem 0.75rem' }}
 									>
 										View
 									</Button>
 
 									<Button
 										variant="light"
-										href={cert.url}
-										download
+										onClick={() => handleDownload(cert)}
 										aria-label={`Download ${cert.name} certificate`}
+										style={{ fontSize: '0.875rem', padding: '0.375rem 0.75rem' }}
 									>
 										Download
 									</Button>

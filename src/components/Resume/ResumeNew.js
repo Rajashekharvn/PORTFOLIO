@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Particle from "../Particle";
-import pdf from "../../Assets/../Assets/RajashekharResume.pdf";
+import pdf from "../../Assets/RajashekharResume.pdf";
 import { AiOutlineDownload } from "react-icons/ai";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
@@ -22,9 +22,23 @@ function ResumeNew() {
         <Row style={{ justifyContent: "center", position: "relative" }}>
           <Button
             variant="primary"
-            href={pdf}
-            target="_blank"
+            onClick={() => window.open(pdf, '_blank')}
             style={{ maxWidth: "250px" }}
+          >
+            <AiOutlineDownload />
+            &nbsp;View CV
+          </Button>
+          <Button
+            variant="outline-primary"
+            onClick={() => {
+              const link = document.createElement('a');
+              link.href = pdf;
+              link.download = 'Rajashekhar_Resume.pdf';
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+            }}
+            style={{ maxWidth: "250px", marginLeft: "10px" }}
           >
             <AiOutlineDownload />
             &nbsp;Download CV
@@ -47,9 +61,23 @@ function ResumeNew() {
         <Row style={{ justifyContent: "center", position: "relative" }}>
           <Button
             variant="primary"
-            href={pdf}
-            target="_blank"
+            onClick={() => window.open(pdf, '_blank')}
             style={{ maxWidth: "250px" }}
+          >
+            <AiOutlineDownload />
+            &nbsp;View CV
+          </Button>
+          <Button
+            variant="outline-primary"
+            onClick={() => {
+              const link = document.createElement('a');
+              link.href = pdf;
+              link.download = 'Rajashekhar_Resume.pdf';
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+            }}
+            style={{ maxWidth: "250px", marginLeft: "10px" }}
           >
             <AiOutlineDownload />
             &nbsp;Download CV
