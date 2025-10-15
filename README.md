@@ -12,7 +12,7 @@
 [![forthebadge](https://forthebadge.com/images/badges/made-with-javascript.svg)](https://forthebadge.com) &nbsp;
 [![forthebadge](https://forthebadge.com/images/badges/open-source.svg)](https://forthebadge.com) &nbsp;
 ![GitHub Repo stars](https://img.shields.io/github/stars/Rajashekharvn/raj-portfolio?color=red&logo=github&style=for-the-badge) &nbsp;
-![GitHub forks](https://img.shields.io/github/forks/Rajashekhar vn/raj-portfolio?color=red&logo=github&style=for-the-badge)
+![GitHub forks](https://img.shields.io/github/forks/Rajashekharvn/raj-portfolio?color=red&logo=github&style=for-the-badge)
 
 </center>
 
