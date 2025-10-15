@@ -1,8 +1,8 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
-import { FaAngular, FaAws, FaDocker, FaCode } from "react-icons/fa"; // Added FaCode for Data Structures
-import { DiJavascript1, DiReact, DiPython, DiGit } from "react-icons/di";
-import { SiKubernetes, SiPostgresql, SiTypescript, SiHtml5, SiCss3 } from "react-icons/si"; // Added SiHtml5 and SiCss3
+import { FaAws, FaCode } from "react-icons/fa"; // Using AWS and a generic code icon
+import { DiJavascript1, DiPython, DiGit } from "react-icons/di";
+import { SiHtml5, SiCss3 } from "react-icons/si";
 
 
 function Techstack() {

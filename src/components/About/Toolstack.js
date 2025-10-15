@@ -2,11 +2,9 @@ import React from "react";
 import { Col, Row } from "react-bootstrap";
 import {
   SiVisualstudiocode,
-  SiPostman,
-  SiSlack,
   SiVercel,
   SiWindows,
-} from "react-icons/si"; // Import SiWindows icon
+} from "react-icons/si"; // Selected tools
 
 function Toolstack() {
   return (
