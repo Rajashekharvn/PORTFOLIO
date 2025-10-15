@@ -1,6 +1,6 @@
 <h2 align="center">
   Portfolio Website - v2.0<br/>
-  <a href="https://rajashekharvn-portfolio.vercel.app/" target="_blank">Raju.tech</a>
+  <a href="https://rajashekharvn.netlify.app/" target="_blank">Raju.tech</a>
 </h2>
 
 
@@ -12,7 +12,7 @@
 [![forthebadge](https://forthebadge.com/images/badges/made-with-javascript.svg)](https://forthebadge.com) &nbsp;
 [![forthebadge](https://forthebadge.com/images/badges/open-source.svg)](https://forthebadge.com) &nbsp;
 ![GitHub Repo stars](https://img.shields.io/github/stars/Rajashekharvn/raj-portfolio?color=red&logo=github&style=for-the-badge) &nbsp;
-![GitHub forks](https://img.shields.io/github/forks/Rajashekharvn/raj-portfolio?color=red&logo=github&style=for-the-badge)
+![GitHub forks](https://img.shields.io/github/forks/Rajashekhar vn/raj-portfolio?color=red&logo=github&style=for-the-badge)
 
 </center>
 
@@ -39,6 +39,7 @@ This project was built using these technologies.
 - CSS3
 - VsCode
 - Vercel
+- Netlify
 
 ## Features
 
@@ -69,7 +70,7 @@ You will find all the components used and you can edit your information accordin
 
 ### Show your support
 
-<b>Give a ⭐ if you like this website!</b>
+<center><b>Give a ⭐ if you like this website!</b></center>
 
 
 # portfolio-raj
