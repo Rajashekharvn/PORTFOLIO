@@ -17,7 +17,6 @@ function Contact() {
 
   // Refs for accessibility focus management
   const nameRef = useRef(null);
-  const firstInvalidRef = useRef(null);
   const alertRef = useRef(null);
   const honeypotRef = useRef(null);
   const statusTimerRef = useRef(null);
