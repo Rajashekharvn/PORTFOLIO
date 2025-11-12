@@ -1,15 +1,16 @@
-/* Final defensive Contact.css — forces side-by-side at >=700px */
+/* Final defensive Contact.css — forces side-by-side at >=700px
+   (updated visuals for a polished, professional layout) */
 
 /* base page wrapper */
 .about-section.contact-section {
-  background: linear-gradient(to bottom, rgba(10,3,22,0.95), rgba(20,7,35,0.95));
-  background-size: cover;
-  background-position: center;
+  background: linear-gradient(180deg, rgba(8,4,18,0.95), rgba(12,6,28,0.95));
   min-height: 100vh;
-  padding: 28px 0;    /* kept small to remove big gap */
+  padding: 36px 0;
   color: #fff;
   position: relative;
   z-index: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* particle layer behind content */
@@ -23,122 +24,180 @@
   max-width: 1160px;
   margin: 0 auto;
   padding: 0 18px;
-  box-sizing: border-box;
   position: relative;
   z-index: 2;
 }
 
-/* header */
-.project-heading { text-align:center; font-size:2.5rem; margin-bottom:6px; text-shadow:0 0 10px rgba(192,132,245,0.5); }
-.contact-subtitle { text-align:center; color:rgba(255,255,255,0.82); margin-bottom:20px; }
-
-/* layout container — using plain flex instead of bootstrap row to avoid negative margins */
-.contact-content {
-  display:flex;
-  gap:24px;
-  width:100%;
-  box-sizing:border-box;
-  justify-content:center;
-  align-items:stretch;  /* allow equal height */
-  margin-top:8px;
-  flex-wrap:wrap;       /* allow wrapping on narrow screens */
+/* heading */
+.project-heading {
+  text-align:center;
+  font-size:2.6rem;
+  margin-bottom:6px;
+  color: #fff;
+  text-shadow: 0 6px 28px rgba(120,70,200,0.12);
+}
+.contact-subtitle {
+  text-align:center;
+  color:rgba(255,255,255,0.85);
+  margin-bottom:22px;
 }
 
-/* ensure cards count padding in width */
+/* layout container */
+.contact-content {
+  display:flex;
+  gap:28px;
+  width:100%;
+  justify-content:center;
+  align-items:stretch;
+  margin-top:8px;
+  flex-wrap:wrap;
+}
+
+/* card base: glassmorphism style */
 .contact-card {
   box-sizing: border-box;
-  background: rgba(255,255,255,0.06);
-  border-radius:12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+  border-radius:14px;
   padding:22px;
   width:100%;
-  backdrop-filter: blur(6px);
-  box-shadow: 0 10px 30px rgba(137,88,207,0.06);
+  backdrop-filter: blur(6px) saturate(120%);
+  border: 1px solid rgba(255,255,255,0.03);
+  box-shadow: 0 12px 40px rgba(20,8,40,0.35);
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+
+/* lift effect on hover for desktop */
+.contact-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 50px rgba(20,8,40,0.45);
 }
 
 /* column wrappers */
-.contact-info-col, .contact-form-col {
+.contact-info-col,
+.contact-form-col {
   display:flex;
-  align-items:stretch;  /* important: let cards fill height for equal height */
+  align-items:stretch;
   justify-content:center;
   box-sizing:border-box;
-  min-width: 0; /* defensive against overflow */
+  min-width: 0;
 }
 
-/* INFO CARD - safety caps */
+/* INFO CARD - safety caps & visual */
 .contact-info-card {
   width:100%;
   max-width:420px;
   padding:20px;
+  display:flex;
+  align-items:flex-start;
+  justify-content:flex-start;
+  gap:12px;
 }
 
-/* FORM CARD - safety caps */
+/* icon + text list */
+.contact-info-list { list-style:none; padding:0; margin:0; width:100%; }
+.contact-info-list li {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:14px;
+  color:#fff;
+}
+.contact-icon {
+  font-size:20px;
+  color:#b27cff;
+  min-width:28px;
+}
+.contact-link { color:#fff; text-decoration:none; font-weight:500; }
+.contact-text { color:#e6def6; }
+
+/* FORM CARD - structure */
 .contact-form-wrapper {
   width:100%;
   max-width:760px;
   padding:20px;
 }
 
-/* input styles */
-.contact-form .form-label { color:#fff; display:block; margin-bottom:6px; }
-.form-label { color:#fff; display:block; margin-bottom:6px; } /* ensure labels visible */
+/* form controls */
+.form-label { color:#eae6f6; display:block; margin-bottom:8px; font-weight:600; font-size:0.95rem; }
 .contact-input {
   width:100%;
   padding:12px 14px;
-  border-radius:8px;
-  background: rgba(255,255,255,0.02);
-  border:1px solid rgba(255,255,255,0.06);
+  border-radius:10px;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.04);
   color:#fff;
   box-sizing:border-box;
+  transition: box-shadow 160ms ease, border-color 160ms ease;
+  font-size: 0.95rem;
 }
-.contact-input:focus { outline:none; border-color:rgba(192,132,245,1); box-shadow:0 0 8px rgba(192,132,245,0.12); }
-.contact-textarea { min-height:140px; resize:vertical; }
+.contact-input::placeholder { color: rgba(255,255,255,0.55); }
+.contact-input:focus {
+  outline:none;
+  border-color: rgba(182,109,237,0.95);
+  box-shadow: 0 6px 22px rgba(167,76,214,0.10);
+}
+
+/* textarea sizing */
+.contact-textarea { min-height:160px; resize:vertical; }
 
 /* button */
-.btn-purple { background:linear-gradient(90deg,#c95bf5,#a43cd4); color:#fff; border:none; padding:10px 14px; border-radius:8px; }
+.btn-purple {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  background: linear-gradient(90deg,#bf59f4,#8f3ed6);
+  color:#fff;
+  border:none;
+  padding:12px 16px;
+  border-radius:10px;
+  font-weight:600;
+  font-size:1rem;
+  cursor:pointer;
+  width:100%;
+  transition: transform 140ms ease, box-shadow 140ms ease, opacity 140ms ease;
+}
+.btn-purple:disabled,
+.btn-purple[aria-disabled="true"] { opacity:0.7; cursor:not-allowed; }
+.btn-purple:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(139,46,201,0.16); }
 
-/* small screen (phones): stack vertically */
+/* alert styling */
+.contact-alert {
+  color: #fff;
+  background-color: rgba(80,30,130,0.16);
+  border: 1px solid rgba(120,70,200,0.16);
+  margin-bottom: 14px;
+}
+
+/* responsive: phones stack vertically */
 @media (max-width: 699px) {
   .contact-content { flex-direction:column; align-items:stretch; gap:18px; }
   .contact-info-col, .contact-form-col { flex-basis: 100% !important; max-width:100% !important; padding: 0; }
-  .contact-card { padding:16px; }
+  .contact-card { padding:16px; border-radius:12px; }
+  .contact-textarea { min-height:120px; }
+  .project-heading { font-size: 1.9rem; }
 }
 
-/* desktop/tablet: force side-by-side at >=700px
-   left gets ~40% and right ~56% leaving gap (~4%) to avoid wrapping */
+/* desktop/tablet: side-by-side at >=700px */
 @media (min-width:700px) {
   .contact-content { flex-wrap:nowrap; }
-  .contact-info-col {
-    flex: 0 0 40%;
-    max-width: 40%;
-    padding-right: 8px;
-    align-items: flex-start;
-  }
-  .contact-form-col {
-    flex: 0 0 56%;
-    max-width: 56%;
-    padding-left: 8px;
-    align-items: flex-start;
-  }
-
-  /* ensure card internal padding does not push it over column */
+  .contact-info-col { flex: 0 0 40%; max-width: 40%; padding-right: 8px; align-items: flex-start; }
+  .contact-form-col { flex: 0 0 56%; max-width: 56%; padding-left: 8px; align-items: flex-start; }
   .contact-info-card, .contact-form-wrapper { padding:18px; }
 }
 
-/* defensive override: if bootstrap col classes are forcing 100% width,
-   this will beat them because these selectors are more specific */
-.contact-info-col, .contact-form-col { min-width: 0; }
-
-/* optional: equal height tweak for modern browsers */
-.contact-content > .contact-info-col > .contact-card,
-.contact-content > .contact-form-col > .contact-card {
-  height: auto; /* let flex stretch */
+/* minor utility */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
 }
 
-/* small visual helpers */
-.contact-info-list { list-style:none; padding:0; margin:0; }
-.contact-info-list li { display:flex; align-items:center; gap:12px; margin-bottom:14px; color:#fff; }
-.contact-icon { font-size:20px; color:#c084f5; }
-.contact-link { color:#fff; text-decoration:none; }
-
-/* small tweak: alerts should be readable on dark background */
-.contact-alert { color: #fff; background-color: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.06); }
+/* ensure particle canvas doesn't block input interactions */
+#tsparticles, canvas, .tsparticles-canvas-el { pointer-events: none !important; }
