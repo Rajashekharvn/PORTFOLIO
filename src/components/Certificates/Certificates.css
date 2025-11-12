@@ -172,3 +172,41 @@
     width: 90%;
   }
 }
+
+/* -------------------------------
+   Hover reveal helpers (for JS-free fallback)
+-------------------------------- */
+/* Compact card when JS/CSS hasn't revealed it yet — show initials centered */
+.hover-reveal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  min-height: 110px;
+  overflow: hidden;
+}
+
+/* small-thumb is already defined above; target the initials inside */
+.small-thumb .initials {
+  font-size: 1.05rem;
+  letter-spacing: 1px;
+}
+
+/* info area hidden by default — revealed on :hover / focus */
+.hover-reveal .card-info {
+  opacity: 0;
+  max-height: 0;
+  transform: translateY(-6px);
+  transition: opacity 220ms ease, max-height 220ms ease, transform 220ms ease;
+  overflow: hidden;
+  text-align: center;
+}
+
+/* reveal on hover / keyboard focus */
+.hover-reveal:hover .card-info,
+.hover-reveal:focus-within .card-info {
+  opacity: 1;
+  max-height: 200px;
+  transform: translateY(0);
+}
