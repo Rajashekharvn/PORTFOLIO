@@ -21,8 +21,12 @@ const certificatesData = [
 ];
 
 export default function Certificates() {
-  const [openTabs, setOpenTabs] = useState([]);
-  const [activeTab, setActiveTab] = useState(null);
+  // Open the first certificate by default
+  const defaultTabId = "cert-0";
+  const defaultOpenTabs = [{ id: defaultTabId, cert: certificatesData[0] }];
+
+  const [openTabs, setOpenTabs] = useState(() => defaultOpenTabs);
+  const [activeTab, setActiveTab] = useState(() => defaultTabId);
   const [pageCounts, setPageCounts] = useState({});
   const [loadedPages, setLoadedPages] = useState({});
   const [renderError, setRenderError] = useState({});
@@ -129,10 +133,12 @@ export default function Certificates() {
             <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
               {certificatesData.map((cert, index) => {
                 const initials = cert.name.split(" ").slice(0, 2).map((w) => w[0]).join("");
+                const tabId = `cert-${index}`;
+                const isActive = activeTab === tabId;
                 return (
                   <div
                     key={index}
-                    className="cert-card clickable-card hover-reveal"
+                    className={`cert-card clickable-card hover-reveal ${isActive ? "active" : ""}`}
                     role="button"
                     tabIndex={0}
                     onClick={() => openCertificate(cert, index)}
