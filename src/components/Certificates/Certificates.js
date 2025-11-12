@@ -141,11 +141,21 @@ export default function Certificates() {
                     aria-label={`Open ${cert.name}`}
                   >
                     <div className="thumb small-thumb" aria-hidden>
+                      {/* initials (visible by default) */}
                       <span className="initials">{initials}</span>
+
+                      {/* content that will slide in to replace initials on hover/focus */}
+                      <div className="thumb-content" aria-hidden>
+                        <div className="thumb-name" title={cert.name}>{cert.name}</div>
+                        <div className="thumb-meta">{cert.issuer} • {cert.year}</div>
+                      </div>
                     </div>
-                    <div className="card-info">
-                      <h6 className="mb-1 text-center" style={{ fontSize: "0.95rem" }}>{cert.name}</h6>
-                      <p className="cert-meta text-center" style={{ fontSize: "0.85rem" }}>{cert.issuer} • {cert.year}</p>
+
+                    {/* keep semantic info for screen readers but visually hidden
+                        (we'll not show the info below on hover since it's shown in .thumb) */}
+                    <div className="sr-only card-info">
+                      <h6>{cert.name}</h6>
+                      <p>{cert.issuer} • {cert.year}</p>
                     </div>
                   </div>
                 );
@@ -274,26 +284,67 @@ export default function Certificates() {
           background: linear-gradient(135deg, #7e22ce, #c084f5);
           display:flex; align-items:center; justify-content:center;
           color:#fff; font-weight:700; font-size:1rem; margin-bottom:0.7rem;
+          position: relative;
+          overflow: hidden;
         }
 
         .tab-bar::-webkit-scrollbar { height: 6px; }
         .tab-bar::-webkit-scrollbar-thumb { background: rgba(192,132,245,0.25); border-radius: 4px; }
 
-        /* Hover-reveal adjustments for inline usage fallback */
-        .hover-reveal .card-info {
+        /* Hover-reveal animations within the purple thumb */
+        .small-thumb .initials {
+          display: inline-block;
+          transition: transform 260ms cubic-bezier(.2,.9,.2,1), opacity 260ms cubic-bezier(.2,.9,.2,1);
+          will-change: transform, opacity;
+          font-size: 1.05rem;
+          letter-spacing: 1px;
+        }
+        .small-thumb .thumb-content {
+          position: absolute;
+          left: 10px;
+          right: 10px;
+          top: 50%;
+          transform: translateY(8px);
           opacity: 0;
-          max-height: 0;
-          transition: opacity 220ms ease, max-height 220ms ease;
-          overflow: hidden;
+          text-align: center;
+          transition: transform 260ms cubic-bezier(.2,.9,.2,1), opacity 260ms cubic-bezier(.2,.9,.2,1);
+          color: #ffffff;
+          pointer-events: none;
         }
-        .hover-reveal:hover,
-        .hover-reveal:focus-within {
-          transform: translateY(-4px);
+        .small-thumb .thumb-name {
+          font-size: 0.95rem;
+          font-weight: 700;
+          line-height: 1.1;
         }
-        .hover-reveal:hover .card-info,
-        .hover-reveal:focus-within .card-info {
+        .small-thumb .thumb-meta {
+          font-size: 0.78rem;
+          color: rgba(255,255,255,0.85);
+          margin-top: 4px;
+        }
+
+        /* on hover or keyboard focus, swap initials -> description in the purple area */
+        .hover-reveal:hover .small-thumb .initials,
+        .hover-reveal:focus-within .small-thumb .initials {
+          opacity: 0;
+          transform: translateY(-6px);
+        }
+        .hover-reveal:hover .small-thumb .thumb-content,
+        .hover-reveal:focus-within .small-thumb .thumb-content {
           opacity: 1;
-          max-height: 200px;
+          transform: translateY(-50%);
+        }
+
+        /* visually hide the below-card info (we show info in the thumb on hover) */
+        .sr-only.card-info {
+          position: absolute !important;
+          width: 1px !important;
+          height: 1px !important;
+          padding: 0 !important;
+          margin: -1px !important;
+          overflow: hidden !important;
+          clip: rect(0, 0, 0, 0) !important;
+          white-space: nowrap !important;
+          border: 0 !important;
         }
       `}</style>
     </Container>
