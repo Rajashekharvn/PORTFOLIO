@@ -136,62 +136,66 @@ canvas,
   font-size: 0.95rem;
 }
 
-/* ✨ Sleek glass-style inputs */
+/* ✨ Unified text field styling with #2E1948 background */
 .contact-input {
   width: 100%;
   padding: 12px 14px;
   border-radius: 10px;
-  background: linear-gradient(145deg, rgba(30, 12, 60, 0.6), rgba(50, 20, 90, 0.4));
+  background-color: #2E1948;  /* your chosen purple tone */
   border: 1px solid rgba(192, 132, 245, 0.3);
-  color: #fff;
+  color: #ffffff;
   font-size: 0.95rem;
   box-sizing: border-box;
-  backdrop-filter: blur(8px) saturate(120%);
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(6px);
   transition: all 0.3s ease-in-out;
 }
 
+/* Bright white placeholders */
 .contact-input::placeholder,
 .contact-textarea::placeholder {
-  color: #ffffff; /* soft light violet */
+  color: #ffffff;
+  opacity: 0.9;
   font-size: 0.95rem;
   letter-spacing: 0.4px;
   font-weight: 400;
-  opacity: 1; /* ensure visibility on Safari */
 }
 
 /* Hover effect */
 .contact-input:hover {
-  background: linear-gradient(145deg, rgba(45, 20, 80, 0.7), rgba(70, 30, 110, 0.5));
-  border-color: rgba(192, 132, 245, 0.45);
-  box-shadow: inset 0 0 10px rgba(192, 132, 245, 0.25);
+  border-color: rgba(192, 132, 245, 0.6);
+  box-shadow: 0 0 8px rgba(192, 132, 245, 0.2);
 }
 
-/* Focused input */
+/* Focused input glow */
 .contact-input:focus {
   outline: none;
-  background: linear-gradient(145deg, rgba(90, 40, 150, 0.75), rgba(50, 20, 90, 0.55));
   border-color: rgba(192, 132, 245, 0.9);
-  box-shadow: 0 0 16px rgba(192, 132, 245, 0.4), inset 0 0 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 16px rgba(192, 132, 245, 0.35);
 }
 
 /* Textarea consistency */
 .contact-textarea {
   min-height: 160px;
   resize: vertical;
-  background: linear-gradient(145deg, rgba(30, 12, 60, 0.6), rgba(50, 20, 90, 0.4));
+  background-color: #2E1948; /* same consistent color */
   border: 1px solid rgba(192, 132, 245, 0.3);
   color: #ffffff;
   border-radius: 10px;
   padding: 12px 14px;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.25);
   transition: all 0.3s ease-in-out;
 }
-.contact-textarea:focus {
-  background: linear-gradient(145deg, rgba(90, 40, 150, 0.75), rgba(50, 20, 90, 0.55));
-  border-color: rgba(192, 132, 245, 0.9);
-  box-shadow: 0 0 16px rgba(192, 132, 245, 0.4), inset 0 0 8px rgba(0, 0, 0, 0.3);
+
+.contact-textarea:hover {
+  border-color: rgba(192, 132, 245, 0.6);
+  box-shadow: 0 0 8px rgba(192, 132, 245, 0.2);
 }
+
+.contact-textarea:focus {
+  outline: none;
+  border-color: rgba(192, 132, 245, 0.9);
+  box-shadow: 0 0 16px rgba(192, 132, 245, 0.35);
+}
+
 
 /* Button */
 .btn-purple {
