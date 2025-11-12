@@ -1,5 +1,5 @@
 // src/components/Certificates/Certificates.jsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import Particle from "../Particle";
 import { Document, Page, pdfjs } from "react-pdf";
@@ -37,8 +37,7 @@ export default function Certificates() {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  const openCertificate = (cert, index) => {
-    console.log("openCertificate clicked:", cert.name, index);
+  const openCertificate = useCallback((cert, index) => {
     const tabId = `cert-${index}`;
     setRenderError((prev) => ({ ...prev, [tabId]: false }));
     setOpenTabs((prev) => {
@@ -53,12 +52,14 @@ export default function Certificates() {
 
     // keep preview visible
     setTimeout(() => {
-      const preview = document.querySelector(".vscode-like-window");
-      if (preview) preview.scrollIntoView({ behavior: "smooth", block: "center" });
+      if (typeof document !== "undefined") {
+        const preview = document.querySelector(".vscode-like-window");
+        if (preview) preview.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
     }, 80);
-  };
+  }, []);
 
-  const closeTab = (tabId, e) => {
+  const closeTab = useCallback((tabId, e) => {
     if (e && e.stopPropagation) e.stopPropagation();
     setOpenTabs((prev) => {
       const idx = prev.findIndex((t) => t.id === tabId);
@@ -80,24 +81,30 @@ export default function Certificates() {
 
       return newTabs;
     });
-  };
+  }, []);
 
-  const handleDownload = (cert) => {
+  const handleDownload = useCallback((cert) => {
     const toDownload = cert || openTabs.find((t) => t.id === activeTab)?.cert;
     if (!toDownload || !toDownload.url) {
       alert("Certificate not available.");
       return;
     }
+    if (typeof document === "undefined") return;
     const a = document.createElement("a");
     a.href = toDownload.url;
     a.download = `${toDownload.name.replace(/\s+/g, "_")}_Certificate.pdf`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-  };
+  }, [activeTab, openTabs]);
 
   const onDocumentLoadSuccess = (tabId) => (doc) => {
-    setPageCounts((prev) => ({ ...prev, [tabId]: doc.numPages }));
+    try {
+      setPageCounts((prev) => ({ ...prev, [tabId]: doc.numPages }));
+    } catch (err) {
+      console.error("Error reading document pages", err);
+      setPageCounts((prev) => ({ ...prev, [tabId]: 1 }));
+    }
   };
 
   const onDocumentLoadError = (tabId) => (err) => {
@@ -111,8 +118,8 @@ export default function Certificates() {
   };
 
   const activeCert = openTabs.find((t) => t.id === activeTab)?.cert || null;
-  const viewerWidth = Math.min(850, Math.round(width * 0.85));
-  const viewerHeight = 550;
+  const viewerWidth = Math.min(1000, Math.round(width * 0.65));
+  const viewerHeight = 600;
 
   return (
     <Container fluid className="about-section certificates-container" id="certificates">
@@ -124,33 +131,37 @@ export default function Certificates() {
         </h1>
 
         <Row style={{ justifyContent: "center", padding: "10px" }}>
-          {/* Left column: smaller, clickable cards */}
-          <Col xs={12} lg={3} className="mb-4">
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.9rem" }}>
-              {certificatesData.map((cert, index) => (
-                <div
-                  key={index}
-                  className="cert-card clickable-card"
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => openCertificate(cert, index)}
-                  onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") openCertificate(cert, index); }}
-                  style={{ cursor: "pointer", width: "100%" }}
-                >
-                  <div className="thumb small-thumb" aria-hidden>
-                    {cert.name.split(" ").slice(0, 2).map((w) => w[0]).join("")}
+          {/* Left column: clickable cards (sticky) */}
+          <Col xs={12} lg={4} className="mb-4">
+            <div className="cert-column" style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+              {certificatesData.map((cert, index) => {
+                const tabId = `cert-${index}`;
+                return (
+                  <div
+                    key={tabId}
+                    className="cert-card clickable-card"
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => openCertificate(cert, index)}
+                    onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") openCertificate(cert, index); }}
+                    style={{ cursor: "pointer", width: "100%" }}
+                    aria-label={`Open ${cert.name}`}
+                  >
+                    <div className="thumb" aria-hidden>
+                      {cert.name.split(" ").slice(0, 2).map((w) => w[0]).join("")}
+                    </div>
+                    <div>
+                      <h6 className="mb-1 text-center" style={{ fontSize: "0.95rem" }}>{cert.name}</h6>
+                      <p className="cert-meta text-center" style={{ fontSize: "0.85rem" }}>{cert.issuer} • {cert.year}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h6 className="mb-1 text-center" style={{ fontSize: "0.95rem" }}>{cert.name}</h6>
-                    <p className="cert-meta text-center" style={{ fontSize: "0.85rem" }}>{cert.issuer} • {cert.year}</p>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </Col>
 
           {/* Right column: large viewer */}
-          <Col xs={12} lg={9} className="mb-4">
+          <Col xs={12} lg={8} className="mb-4">
             <div className="vscode-like-window" style={{ borderRadius: 12, overflow: "hidden", minHeight: 460 }}>
               {/* Tab bar */}
               <div className="tab-bar" style={{ display: "flex", gap: 8, padding: 8, background: "rgba(255,255,255,0.02)", borderBottom: "1px solid rgba(255,255,255,0.04)", overflowX: "auto" }}>
@@ -160,6 +171,8 @@ export default function Certificates() {
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
                     className={`tab ${activeTab === tab.id ? "active" : ""}`}
+                    role="tab"
+                    aria-selected={activeTab === tab.id}
                     style={{
                       padding: "8px 14px",
                       borderRadius: 8,
@@ -171,7 +184,7 @@ export default function Certificates() {
                       minWidth: 160,
                     }}
                   >
-                    <div style={{ flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontSize: "0.95rem" }}>
+                    <div style={{ flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontSize: "0.95rem" }} title={tab.cert.name}>
                       {tab.cert.name}
                     </div>
                     <button
@@ -224,7 +237,10 @@ export default function Certificates() {
                       )}
 
                       {renderError[activeTab] && (
-                        <iframe src={activeCert.url} title={activeCert.name} style={{ width: viewerWidth, height: viewerHeight, borderRadius: 12, border: "1px solid rgba(255,255,255,0.04)" }} />
+                        <div style={{ width: viewerWidth }}>
+                          <iframe src={activeCert.url} title={activeCert.name} style={{ width: "100%", height: viewerHeight, borderRadius: 12, border: "1px solid rgba(255,255,255,0.04)" }} />
+                          <div style={{ marginTop: 8, color: "#bda9e6", fontSize: 13 }}>Displayed via browser fallback. Use the Download button to get the PDF.</div>
+                        </div>
                       )}
                     </div>
                   </div>
@@ -252,24 +268,8 @@ export default function Certificates() {
           pointer-events: auto;
         }
 
-        /* small card styling */
-        .cert-card {
-          padding: 1rem;
-          background: rgba(255,255,255,0.03);
-          border: 1px solid rgba(192,132,245,0.12);
-          border-radius: 10px;
-          text-align: center;
-          transition: all 0.3s ease;
-        }
-        .cert-card:hover { transform: translateY(-2px); }
-
-        .small-thumb {
-          height: 80px;
-          width: 100%;
-          border-radius: 8px;
-          background: linear-gradient(135deg, #7e22ce, #c084f5);
-          display:flex; align-items:center; justify-content:center;
-          color:#fff; font-weight:700; font-size:1rem; margin-bottom:0.7rem;
+        .thumb {
+          height: 120px;
         }
 
         .tab-bar::-webkit-scrollbar { height: 6px; }
