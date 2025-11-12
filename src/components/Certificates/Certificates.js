@@ -124,28 +124,32 @@ export default function Certificates() {
         </h1>
 
         <Row style={{ justifyContent: "center", padding: "10px" }}>
-          {/* Left column: smaller, clickable cards */}
+          {/* Left column: smaller, clickable cards (initials reveal on hover) */}
           <Col xs={12} lg={3} className="mb-4">
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.9rem" }}>
-              {certificatesData.map((cert, index) => (
-                <div
-                  key={index}
-                  className="cert-card clickable-card"
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => openCertificate(cert, index)}
-                  onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") openCertificate(cert, index); }}
-                  style={{ cursor: "pointer", width: "100%" }}
-                >
-                  <div className="thumb small-thumb" aria-hidden>
-                    {cert.name.split(" ").slice(0, 2).map((w) => w[0]).join("")}
+            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+              {certificatesData.map((cert, index) => {
+                const initials = cert.name.split(" ").slice(0, 2).map((w) => w[0]).join("");
+                return (
+                  <div
+                    key={index}
+                    className="cert-card clickable-card hover-reveal"
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => openCertificate(cert, index)}
+                    onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") openCertificate(cert, index); }}
+                    style={{ cursor: "pointer", width: "100%" }}
+                    aria-label={`Open ${cert.name}`}
+                  >
+                    <div className="thumb small-thumb" aria-hidden>
+                      <span className="initials">{initials}</span>
+                    </div>
+                    <div className="card-info">
+                      <h6 className="mb-1 text-center" style={{ fontSize: "0.95rem" }}>{cert.name}</h6>
+                      <p className="cert-meta text-center" style={{ fontSize: "0.85rem" }}>{cert.issuer} • {cert.year}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h6 className="mb-1 text-center" style={{ fontSize: "0.95rem" }}>{cert.name}</h6>
-                    <p className="cert-meta text-center" style={{ fontSize: "0.85rem" }}>{cert.issuer} • {cert.year}</p>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </Col>
 
@@ -242,14 +246,17 @@ export default function Certificates() {
 
       {/* Important CSS overrides to ensure clicks reach cards */}
       <style>{`
+        /* MAKE SURE particle canvas doesn't intercept clicks */
         #tsparticles, canvas, .tsparticles-canvas-el {
           pointer-events: none !important;
         }
 
+        /* Ensure cert cards accept pointer events */
         .cert-card, .clickable-card {
           pointer-events: auto;
         }
 
+        /* small card styling */
         .cert-card {
           padding: 1rem;
           background: rgba(255,255,255,0.03);
@@ -271,6 +278,23 @@ export default function Certificates() {
 
         .tab-bar::-webkit-scrollbar { height: 6px; }
         .tab-bar::-webkit-scrollbar-thumb { background: rgba(192,132,245,0.25); border-radius: 4px; }
+
+        /* Hover-reveal adjustments for inline usage fallback */
+        .hover-reveal .card-info {
+          opacity: 0;
+          max-height: 0;
+          transition: opacity 220ms ease, max-height 220ms ease;
+          overflow: hidden;
+        }
+        .hover-reveal:hover,
+        .hover-reveal:focus-within {
+          transform: translateY(-4px);
+        }
+        .hover-reveal:hover .card-info,
+        .hover-reveal:focus-within .card-info {
+          opacity: 1;
+          max-height: 200px;
+        }
       `}</style>
     </Container>
   );
