@@ -9,17 +9,6 @@
   color: #fff;
   overflow-x: hidden;
 }
-/* make the certificates column sticky so it's always visible */
-.cert-column {
-  position: sticky;
-  top: 140px; /* adjust as needed depending on navbar height */
-  align-self: flex-start;
-}
-
-/* slightly smaller thumb to fit column nicely */
-.cert-card .thumb {
-  height: 110px;
-}
 
 /* -------------------------------
    Certificates Section
@@ -61,6 +50,7 @@
   letter-spacing: 1px;
   margin-bottom: 40px;
   text-shadow: 0 0 12px rgba(192, 132, 245, 0.7);
+  text-align: center;
 }
 
 .white-text {
@@ -72,7 +62,134 @@
 }
 
 /* -------------------------------
-   Certificate Cards
+   Overall layout tweaks
+-------------------------------- */
+/* Viewer container style */
+.vscode-like-window {
+  background: rgba(255,255,255,0.01);
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.02);
+  overflow: hidden;
+  padding: 0;
+}
+
+/* Tab bar tweaks */
+.tab-bar {
+  background: rgba(255,255,255,0.02);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  padding: 8px;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  align-items: center;
+}
+.tab-bar::-webkit-scrollbar { height: 6px; }
+.tab-bar::-webkit-scrollbar-thumb { background: rgba(192,132,245,0.25); border-radius: 4px; }
+.tab {
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 160px;
+  transition: background 0.18s ease;
+}
+.tab.active { background: rgba(192,132,245,0.12); color: #fff; }
+
+/* -------------------------------
+   Left column - sticky list
+-------------------------------- */
+/* container for the left list (sticky) */
+.cert-column {
+  position: sticky;
+  top: 130px; /* adjust to match navbar height if needed */
+  align-self: flex-start;
+  max-height: calc(100vh - 160px);
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+/* compact horizontal certificate card */
+.cert-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(192,132,245,0.06);
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+  will-change: transform, opacity;
+  text-decoration: none;
+  outline: none;
+}
+
+/* small thumbnail for left list */
+.cert-card .small-thumb,
+.thumb {
+  width: 72px;
+  height: 72px;
+  min-width: 72px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #6b21a8, #9333ea);
+  display:flex; align-items:center; justify-content:center;
+  color:#f8e9ff; font-weight:700; font-size:1rem;
+  box-shadow: inset 0 -6px 12px rgba(0,0,0,0.25);
+}
+
+/* fallback larger thumb (viewer list) */
+.thumb {
+  height: 140px;
+  width: 100%;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #6b21a8, #9333ea);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #f8e9ff;
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: inset 0 -6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* info column */
+.cert-card .cert-info { text-align: left; }
+.cert-card .cert-name {
+  font-size: 0.95rem;
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cert-card .cert-meta {
+  font-size: 0.82rem;
+  color: #bba7e9;
+}
+
+/* hover/focus */
+.cert-card:hover,
+.cert-card:focus {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(128, 76, 196, 0.18);
+  background: rgba(192,132,245,0.03);
+}
+
+/* active selected card */
+.cert-card.active {
+  background: linear-gradient(90deg, rgba(192,132,245,0.08), rgba(147,51,234,0.02));
+  border: 1px solid rgba(192,132,245,0.22);
+  transform: translateY(-6px);
+  box-shadow: 0 8px 30px rgba(128, 76, 196, 0.25);
+}
+
+/* -------------------------------
+   Certificate Cards (legacy grid items)
 -------------------------------- */
 .cert-row {
   display: flex;
@@ -81,8 +198,8 @@
   gap: 1.5rem;
 }
 
-/* Each card starts invisible */
-.cert-card {
+/* Each card starts invisible (kept for reveal animations) */
+.cert-card.grid-style {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(192, 132, 245, 0.2);
   border-radius: 16px;
@@ -96,37 +213,15 @@
 }
 
 /* Fade-up effect when card is visible */
-.cert-card.show {
+.cert-card.grid-style.show {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Hover glow */
-.cert-card:hover {
+/* Hover glow for grid cards */
+.cert-card.grid-style:hover {
   transform: translateY(-8px);
   box-shadow: 0 0 25px rgba(192, 132, 245, 0.4);
-}
-
-/* Thumbnail */
-.thumb {
-  height: 140px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #6b21a8, #9333ea);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #f8e9ff;
-  font-weight: 700;
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-  box-shadow: inset 0 -6px 12px rgba(0, 0, 0, 0.3);
-}
-
-/* Info text */
-.cert-meta {
-  color: #bba7e9;
-  font-size: 0.9rem;
-  margin-bottom: 0.6rem;
 }
 
 /* -------------------------------
@@ -138,7 +233,8 @@
   gap: 0.8rem;
 }
 
-.cert-actions button {
+.cert-actions button,
+.vscode-like-window .btn {
   border-radius: 8px;
   border: 1px solid rgba(192, 132, 245, 0.4);
   color: #c084f5;
@@ -148,10 +244,35 @@
   padding: 0.4rem 0.8rem;
 }
 
-.cert-actions button:hover {
+.cert-actions button:hover,
+.vscode-like-window .btn:hover {
   background-color: #c084f5;
   color: #fff;
   box-shadow: 0 0 12px rgba(192, 132, 245, 0.6);
+}
+
+/* -------------------------------
+   Viewer area tweaks
+-------------------------------- */
+.vscode-like-window .viewer-placeholder {
+  border-radius: 12px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.03) 0%, rgba(192,132,245,0.06) 50%, rgba(255,255,255,0.03) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255,255,255,0.04);
+}
+
+/* Ensure embedded iframe also follows viewer radius */
+.vscode-like-window iframe {
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.04);
+  background: #0b0711;
+}
+
+/* small top spacing for viewer inner content */
+.vscode-like-window .viewer-inner {
+  padding: 16px;
 }
 
 /* -------------------------------
@@ -169,17 +290,82 @@
 }
 
 /* -------------------------------
+   Scrollbars
+-------------------------------- */
+.cert-column::-webkit-scrollbar { width: 8px; }
+.cert-column::-webkit-scrollbar-thumb { background: rgba(192,132,245,0.12); border-radius: 8px; }
+
+/* -------------------------------
+   Accessibility / focus states
+-------------------------------- */
+.cert-card:focus-visible {
+  box-shadow: 0 0 0 3px rgba(192,132,245,0.12);
+  outline: none;
+}
+
+/* -------------------------------
    Responsive
 -------------------------------- */
+@media (max-width: 992px) {
+  .cert-column {
+    position: relative;
+    top: 0;
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
+    margin-bottom: 1rem;
+  }
+
+  .cert-card {
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .cert-card .small-thumb,
+  .cert-card .thumb {
+    width: 64px;
+    height: 64px;
+    min-width: 64px;
+    font-size: 0.95rem;
+  }
+
+  .certificates-title { font-size: 1.9rem; }
+  .vscode-like-window { min-height: 360px; }
+}
+
 @media (max-width: 576px) {
   .certificates-title {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
   }
   .thumb {
     height: 110px;
     font-size: 1rem;
   }
-  .cert-card {
+  .cert-card.grid-style {
     width: 90%;
   }
+  .cert-column { padding-right: 0; }
+}
+
+/* -------------------------------
+   Optional utilities (kept small)
+-------------------------------- */
+/* keep animations smooth */
+.cert-card, .cert-card.grid-style { backface-visibility: hidden; transform-style: preserve-3d; }
+
+/* small helper for centered message */
+.certificate-explorer-placeholder {
+  text-align: center;
+  color: #bda9e6;
+  padding-top: 40px;
+}
+
+/* ensure particle canvas doesn't intercept clicks (if you use tsparticles) */
+#tsparticles, canvas, .tsparticles-canvas-el {
+  pointer-events: none !important;
+}
+
+/* Ensure cert cards accept pointer events */
+.cert-card, .clickable-card {
+  pointer-events: auto;
 }
