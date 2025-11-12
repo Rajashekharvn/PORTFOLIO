@@ -29,7 +29,6 @@ export default function Certificates() {
   const [width, setWidth] = useState(typeof window !== "undefined" ? window.innerWidth : 1200);
 
   useEffect(() => {
-    // ensure worker is set (helps with HMR too)
     pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
     const onResize = () => setWidth(window.innerWidth);
@@ -37,6 +36,7 @@ export default function Certificates() {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
+  // open and focus cert
   const openCertificate = useCallback((cert, index) => {
     const tabId = `cert-${index}`;
     setRenderError((prev) => ({ ...prev, [tabId]: false }));
@@ -50,7 +50,6 @@ export default function Certificates() {
       return prev;
     });
 
-    // keep preview visible
     setTimeout(() => {
       if (typeof document !== "undefined") {
         const preview = document.querySelector(".vscode-like-window");
@@ -66,7 +65,6 @@ export default function Certificates() {
       if (idx === -1) return prev;
       const newTabs = prev.filter((t) => t.id !== tabId);
 
-      // compute new active
       setActiveTab((cur) => {
         if (cur !== tabId) return cur;
         if (newTabs.length === 0) return null;
@@ -74,7 +72,6 @@ export default function Certificates() {
         return newTabs[newIndex].id;
       });
 
-      // cleanup states
       setLoadedPages((lp) => { const c = { ...lp }; delete c[tabId]; return c; });
       setPageCounts((pc) => { const c = { ...pc }; delete c[tabId]; return c; });
       setRenderError((re) => { const c = { ...re }; delete c[tabId]; return c; });
@@ -101,8 +98,7 @@ export default function Certificates() {
   const onDocumentLoadSuccess = (tabId) => (doc) => {
     try {
       setPageCounts((prev) => ({ ...prev, [tabId]: doc.numPages }));
-    } catch (err) {
-      console.error("Error reading document pages", err);
+    } catch {
       setPageCounts((prev) => ({ ...prev, [tabId]: 1 }));
     }
   };
@@ -131,28 +127,31 @@ export default function Certificates() {
         </h1>
 
         <Row style={{ justifyContent: "center", padding: "10px" }}>
-          {/* Left column: clickable cards (sticky) */}
-          <Col xs={12} lg={4} className="mb-4">
-            <div className="cert-column" style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+          {/* Left column: compact list (sticky & scrollable) */}
+          <Col xs={12} lg={3} className="mb-4">
+            <div className="cert-column" role="list" aria-label="Certificates list">
               {certificatesData.map((cert, index) => {
                 const tabId = `cert-${index}`;
+                const isActive = activeTab === tabId;
                 return (
                   <div
                     key={tabId}
-                    className="cert-card clickable-card"
-                    role="button"
+                    role="listitem"
+                    className={`cert-card clickable-card ${isActive ? "active" : ""}`}
                     tabIndex={0}
                     onClick={() => openCertificate(cert, index)}
                     onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") openCertificate(cert, index); }}
-                    style={{ cursor: "pointer", width: "100%" }}
-                    aria-label={`Open ${cert.name}`}
+                    aria-current={isActive ? "true" : "false"}
+                    aria-label={`Open certificate: ${cert.name}`}
                   >
-                    <div className="thumb" aria-hidden>
+                    <div className="thumb small-thumb" aria-hidden>
+                      {/* initials fallback */}
                       {cert.name.split(" ").slice(0, 2).map((w) => w[0]).join("")}
                     </div>
-                    <div>
-                      <h6 className="mb-1 text-center" style={{ fontSize: "0.95rem" }}>{cert.name}</h6>
-                      <p className="cert-meta text-center" style={{ fontSize: "0.85rem" }}>{cert.issuer} • {cert.year}</p>
+
+                    <div className="cert-info">
+                      <div className="cert-name" title={cert.name}>{cert.name}</div>
+                      <div className="cert-meta">{cert.issuer} • {cert.year}</div>
                     </div>
                   </div>
                 );
@@ -160,8 +159,8 @@ export default function Certificates() {
             </div>
           </Col>
 
-          {/* Right column: large viewer */}
-          <Col xs={12} lg={8} className="mb-4">
+          {/* Right column: viewer */}
+          <Col xs={12} lg={9} className="mb-4">
             <div className="vscode-like-window" style={{ borderRadius: 12, overflow: "hidden", minHeight: 460 }}>
               {/* Tab bar */}
               <div className="tab-bar" style={{ display: "flex", gap: 8, padding: 8, background: "rgba(255,255,255,0.02)", borderBottom: "1px solid rgba(255,255,255,0.04)", overflowX: "auto" }}>
@@ -256,21 +255,10 @@ export default function Certificates() {
         </Row>
       </Container>
 
-      {/* Important CSS overrides to ensure clicks reach cards */}
       <style>{`
-        /* MAKE SURE particle canvas doesn't intercept clicks */
-        #tsparticles, canvas, .tsparticles-canvas-el {
-          pointer-events: none !important;
-        }
-
-        /* Ensure cert cards accept pointer events */
-        .cert-card, .clickable-card {
-          pointer-events: auto;
-        }
-
-        .thumb {
-          height: 120px;
-        }
+        /* prevent particle canvas intercepting clicks */
+        #tsparticles, canvas, .tsparticles-canvas-el { pointer-events: none !important; }
+        .cert-card, .clickable-card { pointer-events: auto; outline: none; }
 
         .tab-bar::-webkit-scrollbar { height: 6px; }
         .tab-bar::-webkit-scrollbar-thumb { background: rgba(192,132,245,0.25); border-radius: 4px; }
