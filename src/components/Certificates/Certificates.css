@@ -9,6 +9,17 @@
   color: #fff;
   overflow-x: hidden;
 }
+/* make the certificates column sticky so it's always visible */
+.cert-column {
+  position: sticky;
+  top: 140px; /* adjust as needed depending on navbar height */
+  align-self: flex-start;
+}
+
+/* slightly smaller thumb to fit column nicely */
+.cert-card .thumb {
+  height: 110px;
+}
 
 /* -------------------------------
    Certificates Section
