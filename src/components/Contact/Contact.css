@@ -1,5 +1,4 @@
-/* Final defensive Contact.css — forces side-by-side at >=700px
-   (updated visuals for a polished, professional layout) */
+/* Final defensive Contact.css — enhanced modern input styling */
 
 /* base page wrapper */
 .about-section.contact-section {
@@ -66,7 +65,6 @@
   transition: transform 220ms ease, box-shadow 220ms ease;
 }
 
-/* lift effect on hover for desktop */
 .contact-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 18px 50px rgba(20,8,40,0.45);
@@ -82,18 +80,12 @@
   min-width: 0;
 }
 
-/* INFO CARD - safety caps & visual */
+/* INFO CARD */
 .contact-info-card {
   width:100%;
   max-width:420px;
   padding:20px;
-  display:flex;
-  align-items:flex-start;
-  justify-content:flex-start;
-  gap:12px;
 }
-
-/* icon + text list */
 .contact-info-list { list-style:none; padding:0; margin:0; width:100%; }
 .contact-info-list li {
   display:flex;
@@ -110,7 +102,7 @@
 .contact-link { color:#fff; text-decoration:none; font-weight:500; }
 .contact-text { color:#e6def6; }
 
-/* FORM CARD - structure */
+/* FORM CARD */
 .contact-form-wrapper {
   width:100%;
   max-width:760px;
@@ -118,27 +110,50 @@
 }
 
 /* form controls */
-.form-label { color:#eae6f6; display:block; margin-bottom:8px; font-weight:600; font-size:0.95rem; }
+.form-label {
+  color:#eae6f6;
+  display:block;
+  margin-bottom:8px;
+  font-weight:600;
+  font-size:0.95rem;
+}
+
+/* 🌈 Modernized input design */
 .contact-input {
   width:100%;
   padding:12px 14px;
   border-radius:10px;
-  background: rgba(0,0,0,0.35);
-  border: 1px solid rgba(255,255,255,0.04);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(192,132,245,0.25);
   color:#fff;
   box-sizing:border-box;
-  transition: box-shadow 160ms ease, border-color 160ms ease;
   font-size: 0.95rem;
-}
-.contact-input::placeholder { color: rgba(255,255,255,0.55); }
-.contact-input:focus {
-  outline:none;
-  border-color: rgba(182,109,237,0.95);
-  box-shadow: 0 6px 22px rgba(167,76,214,0.10);
+  backdrop-filter: blur(6px);
+  transition: all 0.3s ease;
+  box-shadow: inset 0 0 8px rgba(0,0,0,0.25);
 }
 
-/* textarea sizing */
-.contact-textarea { min-height:160px; resize:vertical; }
+.contact-input::placeholder {
+  color: rgba(255,255,255,0.55);
+  transition: color 0.3s ease;
+}
+
+.contact-input:hover {
+  border-color: rgba(192,132,245,0.45);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.contact-input:focus {
+  outline: none;
+  background: rgba(192,132,245,0.12);
+  border-color: rgba(192,132,245,0.8);
+  box-shadow: 0 0 12px rgba(192,132,245,0.4), inset 0 0 8px rgba(0,0,0,0.25);
+}
+
+.contact-textarea {
+  min-height:160px;
+  resize:vertical;
+}
 
 /* button */
 .btn-purple {
@@ -158,8 +173,14 @@
   transition: transform 140ms ease, box-shadow 140ms ease, opacity 140ms ease;
 }
 .btn-purple:disabled,
-.btn-purple[aria-disabled="true"] { opacity:0.7; cursor:not-allowed; }
-.btn-purple:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(139,46,201,0.16); }
+.btn-purple[aria-disabled="true"] {
+  opacity:0.7;
+  cursor:not-allowed;
+}
+.btn-purple:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(139,46,201,0.16);
+}
 
 /* alert styling */
 .contact-alert {
@@ -169,7 +190,7 @@
   margin-bottom: 14px;
 }
 
-/* responsive: phones stack vertically */
+/* responsive */
 @media (max-width: 699px) {
   .contact-content { flex-direction:column; align-items:stretch; gap:18px; }
   .contact-info-col, .contact-form-col { flex-basis: 100% !important; max-width:100% !important; padding: 0; }
@@ -178,25 +199,11 @@
   .project-heading { font-size: 1.9rem; }
 }
 
-/* desktop/tablet: side-by-side at >=700px */
 @media (min-width:700px) {
   .contact-content { flex-wrap:nowrap; }
   .contact-info-col { flex: 0 0 40%; max-width: 40%; padding-right: 8px; align-items: flex-start; }
   .contact-form-col { flex: 0 0 56%; max-width: 56%; padding-left: 8px; align-items: flex-start; }
   .contact-info-card, .contact-form-wrapper { padding:18px; }
-}
-
-/* minor utility */
-.sr-only {
-  position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  padding: 0 !important;
-  margin: -1px !important;
-  overflow: hidden !important;
-  clip: rect(0, 0, 0, 0) !important;
-  white-space: nowrap !important;
-  border: 0 !important;
 }
 
 /* ensure particle canvas doesn't block input interactions */
