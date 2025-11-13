@@ -1,7 +1,7 @@
 /* ============================================================
    ABOUT SECTION — FULL MODERN GLASSY DESIGN + SCROLL ANIMATION
    (patched: z-index + visibility fixes)
-   ============================================================ */
+   =========================================================== */
 
 /* Ensure about content sits above particles and other background layers */
 .about-section {
