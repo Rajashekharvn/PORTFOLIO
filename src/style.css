@@ -440,17 +440,19 @@ button:focus {
 .blockquote-footer {
   color: #a588c0 !important;
 }
-/* ------------------------------  
-   Projects — enhanced  
+/* ------------------------------
+   Projects — glassy accent (replace whole Projects block)
    ------------------------------ */
 .project-section {
   position: relative !important;
   padding: 6rem 0 3rem 0 !important;
   background-image: var(--section-background-color) !important;
-  --card-bg: rgba(24, 6, 38, 0.6);
-  --card-border: rgba(192, 132, 245, 0.16);
+  --glass-accent: rgba(255, 162, 255, 0.66);
+  --glass-accent-soft: rgba(255, 162, 255, 0.12);
+  --card-border: rgba(255, 162, 255, 0.22);
 }
 
+/* Heading */
 .project-heading {
   color: var(--project-heading-color, #fff) !important;
   font-size: clamp(1.6rem, 2.4vw, 2.6rem) !important;
@@ -459,10 +461,9 @@ button:focus {
   text-align: center;
   margin-bottom: 0.5rem !important;
 }
-
 .project-subtext {
   text-align: center;
-  color: rgba(255,255,255,0.85);
+  color: rgba(255,255,255,0.9);
   max-width: 860px;
   margin: 0.4rem auto 2rem auto;
   font-size: 0.98rem;
@@ -472,47 +473,74 @@ button:focus {
 .project-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.5rem;
+  gap: 1.6rem;
   align-items: stretch;
   padding: 0 1rem;
 }
+.project-card { display:flex; height:100% !important; align-items:stretch; }
 
-.project-card {
-  height: 100% !important;
-  display: flex;
-  align-items: stretch;
-}
-
-/* Card styling */
+/* Card — glassy accent background, remove white */
 .project-card-view {
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  border: 1px solid var(--card-border) !important;
-  color: white !important;
-  border-radius: 14px !important;
-  overflow: hidden !important;
-  transition: transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease !important;
+  position: relative;
   display: flex !important;
   flex-direction: column !important;
   height: 100% !important;
   min-height: 360px;
-  backdrop-filter: blur(6px);
+  border-radius: 14px !important;
+
+  /* main glass background */
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.03),
+    rgba(255,255,255,0.01)
+  ) !important;
+
+  /* soft colored rim + inner glass tint */
+  box-shadow: 0 8px 30px rgba(15, 5, 30, 0.55), inset 0 1px 0 rgba(255,255,255,0.02);
+  border: 1px solid var(--card-border) !important;
+  overflow: hidden !important;
+  backdrop-filter: blur(8px) saturate(1.05);
+  -webkit-backdrop-filter: blur(8px) saturate(1.05);
+  transition: transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease !important;
 }
 
-/* Card image fix */
+/* colored gradient overlay (subtle glass tint) */
+.project-card-view::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, var(--glass-accent) 0%, rgba(255,162,255,0.18) 40%, transparent 70%);
+  opacity: 0.12; /* keep subtle — tweak up to 0.22 if desired */
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  border-radius: 14px;
+  transition: opacity 240ms ease;
+  z-index: 0;
+}
+
+.project-card-view:hover::after {
+  opacity: 0.18;
+}
+
+/* Image — remove white padding and let it sit flush */
 .project-card-view img,
 .project-card-view .card-img-top {
+  display: block;
   width: 100%;
   height: 180px;
   object-fit: cover;
-  display: block;
   padding: 0 !important;
   margin: 0;
   border-top-left-radius: 14px !important;
   border-top-right-radius: 14px !important;
+  background: transparent;
+  z-index: 1;
 }
 
-/* Card content */
+/* Card body sits above the overlay */
 .project-card-view .card-body {
+  position: relative;
+  z-index: 2;
   padding: 1.1rem 1.1rem 1.2rem 1.1rem !important;
   display: flex;
   flex-direction: column;
@@ -521,19 +549,21 @@ button:focus {
   background: transparent !important;
 }
 
+/* Titles and text — high contrast */
 .project-card-view .card-title {
-  color: #171421 !important;
+  color: #ffffff !important;
   font-weight: 700;
   font-size: 1.05rem;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.35);
 }
-
 .project-card-view .card-text {
-  color: rgba(255, 162, 255, 0.66) !important;
+  color: rgba(255,255,255,0.94) !important;
   line-height: 1.45;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  opacity: 1 !important;
 }
 
-/* Footer area */
+/* Footer area: badges + buttons */
 .project-card-footer {
   display: flex;
   justify-content: space-between;
@@ -541,56 +571,53 @@ button:focus {
   gap: 0.6rem;
   padding: 0.85rem 1rem 1rem 1rem;
   background: transparent !important;
+  z-index: 2;
 }
 
-/* Tech badges */
-.project-badges {
-  display: flex;
-  gap: 0.4rem;
-  flex-wrap: wrap;
-}
-
+/* Tech badges — tinted to match glass accent */
+.project-badges { display:flex; gap:0.45rem; flex-wrap:wrap; z-index:2; }
 .badge-tech {
-  background: rgba(192,132,245,0.12) !important;
-  color: #ffffff !important;
+  background: rgba(255, 162, 255, 0.12) !important;
+  color: #fff !important;
   padding: 0.25rem 0.5rem;
   border-radius: 999px;
-  font-size: 0.75rem;
-  border: 1px solid rgba(192,132,245,0.18) !important;
+  font-size: 0.78rem;
+  border: 1px solid rgba(255,162,255,0.18) !important;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.18) inset;
 }
 
-/* Buttons */
+/* Buttons — glassy tinted */
 .project-card-view .btn {
   border-radius: 8px !important;
-  border: 1px solid rgba(192,132,245,0.28) !important;
-  background: rgba(192,132,245,0.06) !important;
-  color: #f3eaff !important;
+  border: 1px solid rgba(255,162,255,0.22) !important;
+  background: rgba(255,162,255,0.06) !important;
+  color: #fff !important;
   padding: 0.42rem 0.85rem !important;
   font-size: 0.92rem !important;
+  z-index: 2;
 }
-
 .project-card-view .btn:hover {
-  background: rgba(192,132,245,0.18) !important;
+  background: rgba(255,162,255,0.14) !important;
+  transform: translateY(-3px);
   color: #fff !important;
-  transform: translateY(-2px);
 }
 
-/* Hover effects */
+/* Hover lift + stronger glow */
 .project-card-view:hover {
-  transform: translateY(-8px) scale(1.01) !important;
-  box-shadow: 0 18px 40px rgba(80, 32, 120, 0.28) !important;
-  border-color: rgba(192,132,245,0.36) !important;
+  transform: translateY(-10px) scale(1.01) !important;
+  box-shadow: 0 26px 60px rgba(120, 45, 140, 0.32), 0 4px 16px rgba(0,0,0,0.35);
+  border-color: rgba(255,162,255,0.4) !important;
 }
 
-/* Animation */
-.project-card-view { 
-  opacity: 0; 
-  transform: translateY(20px); 
-}
-.project-card-view.show { 
-  opacity: 1; 
-  transform: translateY(0); 
-  transition: all 540ms cubic-bezier(.22,.9,.26,1); 
+/* Entry animation */
+.project-card-view { opacity: 0; transform: translateY(20px); }
+.project-card-view.show { opacity: 1; transform: translateY(0); transition: all 540ms cubic-bezier(.22,.9,.26,1); }
+
+/* Fallbacks & overrides: prevent Bootstrap/card from forcing white */
+.card, .card-body {
+  background: transparent !important;
+  box-shadow: none !important;
+  color: inherit !important;
 }
 
 /* Mobile adjustments */
@@ -602,6 +629,7 @@ button:focus {
     align-items: stretch;
   }
 }
+
 
 
 /* --------- */
