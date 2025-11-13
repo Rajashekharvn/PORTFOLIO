@@ -688,14 +688,17 @@ button:focus {
   color: white !important;
 }
 
-/* ------------------------------------------------------------
-   TECH + TOOL ICONS (BASE STYLING)
-   ------------------------------------------------------------ */
+/* ============================================================
+   TECH + TOOL ICONS — ICON UP + NAME REVEAL EFFECT
+   ============================================================ */
 
 .tech-icons {
-  position: relative !important; /* required for tooltip */
+  position: relative !important;
   cursor: pointer !important;
-  display: inline-block !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 
   font-size: 4.5em !important;
   margin: 15px !important;
@@ -703,79 +706,88 @@ button:focus {
 
   opacity: 0.93 !important;
   border: 1.7px solid rgba(200, 137, 230, 0.637) !important;
-  border-radius: 5px !important;
+  border-radius: 8px !important;
   text-align: center !important;
-  vertical-align: middle !important;
 
   box-shadow: 4px 5px 4px 3px rgba(89, 4, 168, 0.137) !important;
-  transition: all 0.4s ease !important;
+  transition: all 0.35s ease !important;
 
-  /* IMPORTANT: allow tooltip to show */
   overflow: visible !important;
   z-index: 5 !important;
 }
 
+/* Hover border + lift */
 .tech-icons:hover {
-  transform: scale(1.05) !important;
-  border: 2.2px solid rgba(197, 115, 230, 0.883) !important;
+  transform: translateY(-6px) !important;
+  border: 2px solid rgba(200, 137, 230, 0.9) !important;
 }
 
-/* keep spacing aligned */
-.tech-icon-images {
-  padding: 20px !important;
-  line-height: 1.6 !important;
+/* Actual icon element */
+.tech-icons svg {
+  transition: transform 0.35s ease, opacity 0.35s ease !important;
 }
 
-/* ------------------------------------------------------------
-   HOVER TOOLTIP (WORKING VERSION)
-   ------------------------------------------------------------ */
+/* ICON moves up & fades on hover */
+.tech-icons:hover svg {
+  transform: translateY(-20px) scale(0.88);
+  opacity: 0;
+}
+
+/* ============================================================
+   LABEL (data-name) — Slides Up to Replace Icon
+   ============================================================ */
 
 .tech-icons::after {
   content: attr(data-name);
   position: absolute;
-  bottom: -44px;  /* tooltip below icon */
+  bottom: 14px; /* where icon usually sits */
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateY(20px);
+
+  font-size: 0.82rem;
+  color: #fff;
+  white-space: nowrap;
+  letter-spacing: 0.4px;
 
   background: rgba(40, 20, 70, 0.85);
-  backdrop-filter: blur(8px) saturate(140%);
-  -webkit-backdrop-filter: blur(8px);
-
   padding: 6px 12px;
-  border-radius: 8px;
-
-  color: #ffffff;
-  font-size: 0.82rem;
-  letter-spacing: 0.35px;
-  white-space: nowrap;
+  border-radius: 6px;
 
   border: 1px solid rgba(200, 140, 255, 0.35);
-  box-shadow: 0 8px 24px rgba(120, 60, 160, 0.16);
+  box-shadow: 0 4px 14px rgba(120, 60, 160, 0.25);
 
   opacity: 0;
   pointer-events: none;
-  z-index: 9999 !important;
+  z-index: 9999;
 
-  transition: opacity 220ms ease, transform 220ms ease;
+  transition: all 0.35s ease;
 }
 
+/* Name slides UP into icon spot */
 .tech-icons:hover::after {
   opacity: 1;
-  transform: translateX(-50%) translateY(-6px);
+  transform: translateX(-50%) translateY(-4px);
 }
 
-/* Responsive tooltip size */
+/* Mobile tooltip spacing */
 @media (max-width: 520px) {
   .tech-icons::after {
-    bottom: -52px;
+    bottom: 10px;
     font-size: 0.75rem;
     padding: 5px 10px;
   }
 }
 
-/* ------------------------------------------------------------
+/* Reduce icon margin on mobile */
+@media (max-width: 767px) {
+  .tech-icons {
+    margin: 10px !important;
+  }
+}
+
+/* ============================================================
    ABOUT CARD
-   ------------------------------------------------------------ */
+   ============================================================ */
 
 .quote-card-view {
   border: none !important;
@@ -789,11 +801,13 @@ button:focus {
   padding-left: 1px !important;
 }
 
+/* About image spacing on small screens */
 @media (max-width: 767px) {
   .about-img {
     padding-top: 0 !important;
   }
 }
+
 
 
 /* --------- */
