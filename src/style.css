@@ -440,8 +440,8 @@ button:focus {
 .blockquote-footer {
   color: #a588c0 !important;
 }
-/* ------------------------------
-   Projects — enhanced
+/* ------------------------------  
+   Projects — enhanced  
    ------------------------------ */
 .project-section {
   position: relative !important;
@@ -468,7 +468,7 @@ button:focus {
   font-size: 0.98rem;
 }
 
-/* Grid — responsive and centered */
+/* Grid layout */
 .project-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -477,13 +477,13 @@ button:focus {
   padding: 0 1rem;
 }
 
-/* Card wrapper (keeps consistent height) */
 .project-card {
   height: 100% !important;
   display: flex;
   align-items: stretch;
 }
 
+/* Card styling */
 .project-card-view {
   background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
   border: 1px solid var(--card-border) !important;
@@ -498,19 +498,27 @@ button:focus {
   backdrop-filter: blur(6px);
 }
 
+/* Card image fix */
+.project-card-view img,
 .project-card-view .card-img-top {
   width: 100%;
-  height: 160px;
+  height: 180px;
   object-fit: cover;
-  opacity: 0.95 !important;
+  display: block;
+  padding: 0 !important;
+  margin: 0;
+  border-top-left-radius: 14px !important;
+  border-top-right-radius: 14px !important;
 }
 
+/* Card content */
 .project-card-view .card-body {
   padding: 1.1rem 1.1rem 1.2rem 1.1rem !important;
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
   flex: 1 1 auto;
+  background: transparent !important;
 }
 
 .project-card-view .card-title {
@@ -520,22 +528,22 @@ button:focus {
 }
 
 .project-card-view .card-text {
-  color: rgba(212,198,239,0.9);
-  font-size: 0.9rem;
+  color: rgba(255,255,255,0.92) !important;
   line-height: 1.45;
-  flex: 1 1 auto;
+  font-size: 0.9rem;
 }
 
-/* Footer area for tags + buttons */
+/* Footer area */
 .project-card-footer {
   display: flex;
-  gap: 0.6rem;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
+  gap: 0.6rem;
   padding: 0.85rem 1rem 1rem 1rem;
-  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+  background: transparent !important;
 }
 
+/* Tech badges */
 .project-badges {
   display: flex;
   gap: 0.4rem;
@@ -543,27 +551,22 @@ button:focus {
 }
 
 .badge-tech {
-  background: rgba(192,132,245,0.09);
-  color: #d9c7f8;
+  background: rgba(192,132,245,0.12) !important;
+  color: #ffffff !important;
   padding: 0.25rem 0.5rem;
   border-radius: 999px;
   font-size: 0.75rem;
-  border: 1px solid rgba(192,132,245,0.16);
+  border: 1px solid rgba(192,132,245,0.18) !important;
 }
 
-/* Buttons — subtle, consistent */
+/* Buttons */
 .project-card-view .btn {
   border-radius: 8px !important;
   border: 1px solid rgba(192,132,245,0.28) !important;
-  background: transparent !important;
-  color: #d9c7f8 !important;
+  background: rgba(192,132,245,0.06) !important;
+  color: #f3eaff !important;
   padding: 0.42rem 0.85rem !important;
   font-size: 0.92rem !important;
-}
-
-.project-card-view .btn:focus {
-  outline: none !important;
-  box-shadow: 0 0 0 3px rgba(192,132,245,0.08) !important;
 }
 
 .project-card-view .btn:hover {
@@ -572,25 +575,34 @@ button:focus {
   transform: translateY(-2px);
 }
 
-/* hover lift */
+/* Hover effects */
 .project-card-view:hover {
   transform: translateY(-8px) scale(1.01) !important;
   box-shadow: 0 18px 40px rgba(80, 32, 120, 0.28) !important;
   border-color: rgba(192,132,245,0.36) !important;
 }
 
-/* fade-up animation */
-.project-card-view { opacity: 0; transform: translateY(20px); }
-.project-card-view.show { opacity: 1; transform: translateY(0); transition: all 540ms cubic-bezier(.22,.9,.26,1); }
-
-/* small utilities */
-.center-xs { text-align: center; }
-.mb-1 { margin-bottom: 0.6rem !important; }
-
-@media (max-width: 520px) {
-  .project-card-view .card-img-top { height: 140px; }
-  .project-card-footer { flex-direction: column; gap: 0.5rem; align-items: stretch; }
+/* Animation */
+.project-card-view { 
+  opacity: 0; 
+  transform: translateY(20px); 
 }
+.project-card-view.show { 
+  opacity: 1; 
+  transform: translateY(0); 
+  transition: all 540ms cubic-bezier(.22,.9,.26,1); 
+}
+
+/* Mobile adjustments */
+@media (max-width: 520px) {
+  .project-card-view img { height: 140px; }
+  .project-card-footer {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: stretch;
+  }
+}
+
 
 /* --------- */
 /* About */
