@@ -1,14 +1,23 @@
 /* ============================================================
    ABOUT SECTION — FULL MODERN GLASSY DESIGN + SCROLL ANIMATION
+   (patched: z-index + visibility fixes)
    ============================================================ */
 
+/* Ensure about content sits above particles and other background layers */
 .about-section {
   position: relative;
+  z-index: 2; /* IMPORTANT: keep above #tsparticles */
   padding-top: 150px;
   padding-bottom: 30px;
   background-image: var(--section-background-color);
   color: white;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* If the page has tsparticles, keep it behind About content */
+#tsparticles {
+  z-index: 0 !important;
 }
 
 /* ============================================================
@@ -23,14 +32,14 @@
   will-change: opacity, transform;
 }
 
-/* LEFT SLIDE */
+/* LEFT SLIDE (start) */
 .reveal-left {
-  transform: translateX(-28px);
+  transform: translateX(-28px) translateY(18px);
 }
 
-/* RIGHT SLIDE */
+/* RIGHT SLIDE (start) */
 .reveal-right {
-  transform: translateX(28px);
+  transform: translateX(28px) translateY(18px);
 }
 
 /* WHEN VISIBLE */
@@ -173,6 +182,7 @@
   border: 1px solid rgba(200, 140, 255, 0.25);
   backdrop-filter: blur(8px);
   box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  z-index: 4; /* ensure the card is above particles */
 }
 
 .about-activity {
@@ -180,8 +190,27 @@
   padding-left: 2px;
 }
 
+/* make sure images and cards are visible */
+.about-img img,
+.quote-card-view,
+.tech-icons,
+.project-heading {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Small screens */
 @media (max-width: 767px) {
   .about-img {
     padding-top: 0;
   }
 }
+
+/* -------------------------------
+   Temporary debug helper
+   (If anything remains invisible, uncomment to visualize boxes)
+   ------------------------------- */
+/*
+.reveal { outline: 1px dashed rgba(255,255,255,0.06); }
+.quote-card-view { outline: 1px dashed rgba(255,0,0,0.06); }
+*/
