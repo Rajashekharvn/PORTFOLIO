@@ -1,0 +1,187 @@
+/* ============================================================
+   ABOUT SECTION — FULL MODERN GLASSY DESIGN + SCROLL ANIMATION
+   ============================================================ */
+
+.about-section {
+  position: relative;
+  padding-top: 150px;
+  padding-bottom: 30px;
+  background-image: var(--section-background-color);
+  color: white;
+  overflow-x: hidden;
+}
+
+/* ============================================================
+   MIXED REVEAL ANIMATION SYSTEM
+   ============================================================ */
+
+/* BASE STATE — hidden */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 600ms ease, transform 600ms ease;
+  will-change: opacity, transform;
+}
+
+/* LEFT SLIDE */
+.reveal-left {
+  transform: translateX(-28px);
+}
+
+/* RIGHT SLIDE */
+.reveal-right {
+  transform: translateX(28px);
+}
+
+/* WHEN VISIBLE */
+.reveal.is-visible,
+.reveal-left.is-visible,
+.reveal-right.is-visible {
+  opacity: 1;
+  transform: translateX(0) translateY(0);
+}
+
+/* ============================================================
+   STAGGERED CHILD ANIMATION (icons, lists)
+   ============================================================ */
+
+.stagger > * {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 500ms ease, transform 500ms ease;
+  will-change: opacity, transform;
+}
+
+.stagger > *.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Single element child */
+.reveal-child {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 550ms ease, transform 550ms ease;
+}
+
+.reveal-child.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal-child,
+  .stagger > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ============================================================
+   TECH & TOOL ICONS — ICON UP + NAME REVEAL EFFECT
+   ============================================================ */
+
+.tech-icons {
+  position: relative;
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 4.5em;
+  margin: 15px;
+  padding: 10px;
+
+  opacity: 0.93;
+  border-radius: 8px;
+  border: 1.7px solid rgba(200, 137, 230, 0.637);
+
+  box-shadow: 4px 5px 4px 3px rgba(89, 4, 168, 0.137);
+  transition: all 0.35s ease;
+
+  overflow: visible;
+  z-index: 3;
+}
+
+/* Hover Lift */
+.tech-icons:hover {
+  transform: translateY(-6px);
+  border: 2px solid rgba(200, 137, 230, 0.9);
+}
+
+/* Icon animation */
+.tech-icons svg {
+  transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+.tech-icons:hover svg {
+  transform: translateY(-22px) scale(0.88);
+  opacity: 0;
+}
+
+/* Name reveal (replaces icon) */
+.tech-icons::after {
+  content: attr(data-name);
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+
+  font-size: 0.82rem;
+  color: #fff;
+  white-space: nowrap;
+  letter-spacing: 0.4px;
+
+  background: rgba(40, 20, 70, 0.85);
+  padding: 6px 12px;
+  border-radius: 6px;
+
+  border: 1px solid rgba(200, 140, 255, 0.35);
+  box-shadow: 0 4px 14px rgba(120, 60, 160, 0.25);
+
+  opacity: 0;
+  pointer-events: none;
+
+  transition: all 0.35s ease;
+  z-index: 9999;
+}
+
+.tech-icons:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-4px);
+}
+
+/* Mobile spacing */
+@media (max-width: 767px) {
+  .tech-icons {
+    margin: 10px;
+  }
+}
+
+/* ============================================================
+   ABOUT CARD + IMAGE
+   ============================================================ */
+
+.quote-card-view {
+  background: rgba(255,255,255,0.03);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid rgba(200, 140, 255, 0.25);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
+
+.about-activity {
+  list-style: none;
+  padding-left: 2px;
+}
+
+@media (max-width: 767px) {
+  .about-img {
+    padding-top: 0;
+  }
+}
