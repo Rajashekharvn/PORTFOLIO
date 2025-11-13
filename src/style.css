@@ -528,7 +528,7 @@ button:focus {
 }
 
 .project-card-view .card-text {
-  color: rgba(255,255,255,0.92) !important;
+  color: rgba(255, 162, 255, 0.66) !important;
   line-height: 1.45;
   font-size: 0.9rem;
 }
