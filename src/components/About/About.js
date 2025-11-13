@@ -34,6 +34,7 @@ function About() {
       <Particle />
 
       <Container>
+  {/*new*/}
         {/* Heading */}
         <Row style={{ justifyContent: "center", padding: "10px" }}>
           <Col md={7} className="reveal-left">
