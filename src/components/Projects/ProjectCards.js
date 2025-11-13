@@ -8,36 +8,29 @@ function ProjectCards({ imgPath, title, description, ghLink, demoLink, isBlog, t
   return (
     <Card className="project-card-view" role="article" aria-label={title}>
       <Card.Img variant="top" src={imgPath} alt={`${title} screenshot`} />
+
       <Card.Body>
-        <div>
-          <Card.Title className="mb-1">{title}</Card.Title>
-          <Card.Text style={{ textAlign: "justify" }}>{description}</Card.Text>
+        <Card.Title className="mb-1 text-center">{title}</Card.Title>
+        <Card.Text style={{ textAlign: "center" }}>{description}</Card.Text>
+
+        {/* Tech stacks centered */}
+        <div className="project-badges">
+          {tags.map((t, i) => (
+            <span key={i} className="badge-tech">{t}</span>
+          ))}
         </div>
 
-        <div className="project-card-footer">
-          <div className="project-badges">
-            {tags.slice(0,4).map((t, i) => (
-              <span key={i} className="badge-tech">{t}</span>
-            ))}
-          </div>
+        {/* Buttons – hidden until card hover */}
+        <div className="project-buttons">
+          <Button href={ghLink} target="_blank" rel="noopener noreferrer">
+            <BsGithub /> GitHub
+          </Button>
 
-          <div>
-            <Button href={ghLink} target="_blank" rel="noopener noreferrer" className="btn">
-              <BsGithub />&nbsp;{isBlog ? "Blog" : "GitHub"}
+          {!isBlog && demoLink && (
+            <Button href={demoLink} target="_blank" rel="noopener noreferrer">
+              <CgWebsite /> Demo
             </Button>
-
-            {!isBlog && demoLink && (
-              <Button
-                href={demoLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn"
-                style={{ marginLeft: "8px" }}
-              >
-                <CgWebsite />&nbsp;Demo
-              </Button>
-            )}
-          </div>
+          )}
         </div>
       </Card.Body>
     </Card>
