@@ -443,6 +443,10 @@ button:focus {
 /* ------------------------------
    Projects — glassy accent (replace whole Projects block)
    ------------------------------ */
+/* ------------------------------
+   Projects — glassy accent (full, final)
+   Replace the entire Projects block with this
+   ------------------------------ */
 .project-section {
   position: relative !important;
   padding: 6rem 0 3rem 0 !important;
@@ -575,7 +579,14 @@ button:focus {
 }
 
 /* Tech badges — tinted to match glass accent */
-.project-badges { display:flex; gap:0.45rem; flex-wrap:wrap; z-index:2; }
+.project-badges {
+  display:flex;
+  gap:0.45rem;
+  flex-wrap:wrap;
+  z-index:2;
+  justify-content: center; /* ensure centered by default */
+  margin-top: 0.5rem;
+}
 .badge-tech {
   background: rgba(255, 162, 255, 0.12) !important;
   color: #fff !important;
@@ -586,23 +597,52 @@ button:focus {
   box-shadow: 0 1px 0 rgba(0,0,0,0.18) inset;
 }
 
-/* Buttons — glassy tinted */
-.project-card-view .btn {
-  border-radius: 8px !important;
-  border: 1px solid rgba(255,162,255,0.22) !important;
-  background: rgba(255,162,255,0.06) !important;
-  color: #fff !important;
-  padding: 0.42rem 0.85rem !important;
-  font-size: 0.92rem !important;
+/* -----------------------
+   Buttons: centered, side-by-side, show on hover
+   ----------------------- */
+
+/* Buttons container — hidden until hover */
+.project-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 1rem;
+
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.35s ease;
   z-index: 2;
 }
-.project-card-view .btn:hover {
-  background: rgba(255,162,255,0.14) !important;
-  transform: translateY(-3px);
-  color: #fff !important;
+
+/* Reveal buttons when card hovered */
+.project-card-view:hover .project-buttons {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-/* Hover lift + stronger glow */
+/* Buttons UI */
+.project-buttons button,
+.project-buttons .btn {
+  background: rgba(255,162,255,0.2) !important;
+  border: 1px solid rgba(255,162,255,0.3) !important;
+  color: white !important;
+  padding: 0.45rem 1rem !important;
+  border-radius: 8px !important;
+  transition: 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Stronger hover for buttons */
+.project-buttons button:hover,
+.project-buttons .btn:hover {
+  background: rgba(255,162,255,0.35) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255,162,255,0.12);
+}
+
+/* Hover lift + stronger glow for card */
 .project-card-view:hover {
   transform: translateY(-10px) scale(1.01) !important;
   box-shadow: 0 26px 60px rgba(120, 45, 140, 0.32), 0 4px 16px rgba(0,0,0,0.35);
@@ -628,7 +668,14 @@ button:focus {
     gap: 0.5rem;
     align-items: stretch;
   }
+
+  /* keep buttons stacked nicely on small screens */
+  .project-buttons {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
 }
+
 
 
 
