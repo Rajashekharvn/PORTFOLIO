@@ -1,6 +1,5 @@
 /* =========================================================
-   Contact Page — Refined Glassmorphism UI
-   Replaces existing Contact.css for a sleeker contact card
+   Contact Page — Refined Glassmorphism UI (Updated Input Colors)
    ========================================================= */
 
 /* Page wrapper */
@@ -73,7 +72,7 @@ canvas,
   overflow: hidden;
 }
 
-/* Slight floating animation to add life */
+/* Glow animation */
 .contact-card::before {
   content: "";
   position: absolute;
@@ -102,7 +101,7 @@ canvas,
   min-width: 0;
 }
 
-/* Info card (left) */
+/* Info card */
 .contact-info-card {
   width: 100%;
   max-width: 420px;
@@ -114,7 +113,6 @@ canvas,
   box-shadow: 0 6px 20px rgba(8,4,18,0.45);
 }
 
-/* Info list styling */
 .contact-info-list {
   list-style: none;
   padding: 0;
@@ -133,20 +131,21 @@ canvas,
   font-size: 20px;
   color: rgba(255,162,255,0.95);
   min-width: 32px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
 }
 .contact-link {
   color: #fff;
   text-decoration: none;
   font-weight: 600;
 }
+.contact-link:hover {
+  text-decoration: underline;
+  color: rgba(255, 190, 255, 0.98);
+}
 .contact-text {
   color: rgba(230, 222, 246, 0.95);
 }
 
-/* Form card (right) */
+/* Form card */
 .contact-form-wrapper {
   width: 100%;
   max-width: 760px;
@@ -167,49 +166,55 @@ canvas,
   font-size: 0.95rem;
 }
 
-/* Inputs (unified look) */
+/* ---------------------------------------------
+   UPDATED INPUT DESIGN (No White Background)
+   --------------------------------------------- */
 .contact-input,
 .contact-textarea {
   width: 100%;
   padding: 12px 14px;
   border-radius: 10px;
-  background-color: rgba(46,25,72,0.9); /* deep purple pane */
-  border: 1px solid rgba(192, 132, 245, 0.16);
-  color: #fff;
+
+  /* 🟣 Deep glassy background */
+  background: rgba(30, 15, 55, 0.75);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+
+  border: 1px solid rgba(180, 120, 255, 0.25);
+  color: #f4eaff;
   font-size: 0.96rem;
-  box-sizing: border-box;
-  backdrop-filter: blur(6px);
-  transition: all 0.22s ease-in-out;
+
   box-shadow: 0 6px 18px rgba(12,6,28,0.45) inset;
+  transition: all 0.25s ease;
 }
 
-/* Placeholder color */
+/* Placeholder */
 .contact-input::placeholder,
 .contact-textarea::placeholder {
-  color: rgba(255,255,255,0.72);
-  opacity: 1;
-  font-size: 0.95rem;
+  color: rgba(255,255,255,0.75);
+  letter-spacing: 0.4px;
 }
 
-/* Hover and focus */
+/* Hover */
 .contact-input:hover,
 .contact-textarea:hover {
-  border-color: rgba(192,132,245,0.32);
-  box-shadow: 0 10px 24px rgba(120,60,160,0.06) inset;
+  border-color: rgba(200,150,255,0.45);
+  box-shadow: 0 0 12px rgba(180,120,255,0.18);
 }
+
+/* Focus */
 .contact-input:focus,
 .contact-textarea:focus {
   outline: none;
-  border-color: rgba(192,132,245,0.9);
-  box-shadow: 0 6px 28px rgba(129,72,180,0.18);
+  background: rgba(40,20,80,0.75);
+  border-color: rgba(210,160,255,0.85);
+  box-shadow: 0 0 18px rgba(180,120,255,0.35);
   transform: translateY(-2px);
 }
 
-/* Textarea */
 .contact-textarea {
   min-height: 160px;
   resize: vertical;
-  padding-top: 14px;
 }
 
 /* Submit button */
@@ -231,11 +236,6 @@ canvas,
   transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
   box-shadow: 0 12px 30px rgba(143,62,214,0.12);
 }
-.contact-submit-btn:disabled,
-.contact-submit-btn[aria-disabled="true"] {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
 .contact-submit-btn:hover:not(:disabled) {
   transform: translateY(-3px);
   box-shadow: 0 20px 50px rgba(143,62,214,0.18);
@@ -252,18 +252,12 @@ canvas,
   font-weight: 600;
 }
 
-/* Make the form labels float a little on smaller viewports */
+/* Mobile layout */
 @media (max-width: 699px) {
   .contact-content {
     flex-direction: column;
     align-items: stretch;
     gap: 18px;
-  }
-  .contact-info-col,
-  .contact-form-col {
-    flex-basis: 100% !important;
-    max-width: 100% !important;
-    padding: 0;
   }
   .contact-card {
     padding: 18px;
@@ -271,9 +265,6 @@ canvas,
   }
   .contact-textarea {
     min-height: 120px;
-  }
-  .project-heading {
-    font-size: 1.9rem;
   }
 }
 
@@ -292,16 +283,5 @@ canvas,
     flex: 0 0 60%;
     max-width: 60%;
     padding-left: 12px;
-    align-items: flex-start;
   }
-  .contact-info-card,
-  .contact-form-wrapper {
-    padding: 22px;
-  }
-}
-
-/* small UI niceties */
-.contact-link:hover {
-  text-decoration: underline;
-  color: rgba(255, 190, 255, 0.98);
 }
