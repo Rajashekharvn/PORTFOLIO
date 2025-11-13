@@ -8,27 +8,34 @@ import { SiHtml5, SiCss3 } from "react-icons/si";
 function Techstack() {
   return (
     <Row style={{ justifyContent: "center", paddingBottom: "50px" }}>
-      <Col xs={4} md={2} className="tech-icons">
-        <DiJavascript1 /> {/* JavaScript */}
-      </Col>
-      <Col xs={4} md={2} className="tech-icons">
-        <SiHtml5 /> {/* HTML */}
-      </Col>
-      <Col xs={4} md={2} className="tech-icons">
-        <SiCss3 /> {/* CSS */}
-      </Col>
-      <Col xs={4} md={2} className="tech-icons">
-        <DiPython /> {/* Python */}
-      </Col>
-      <Col xs={4} md={2} className="tech-icons">
-        <FaCode /> {/* Data Structures */}
-      </Col>
-      <Col xs={4} md={2} className="tech-icons">
-        <DiGit /> {/* Git */}
-      </Col>
-      <Col xs={4} md={2} className="tech-icons">
-        <FaAws /> {/* AWS */}
-      </Col>
+      <Col xs={4} md={2} className="tech-icons" data-name="JavaScript">
+  <DiJavascript1 />
+</Col>
+
+<Col xs={4} md={2} className="tech-icons" data-name="HTML">
+  <SiHtml5 />
+</Col>
+
+<Col xs={4} md={2} className="tech-icons" data-name="CSS">
+  <SiCss3 />
+</Col>
+
+<Col xs={4} md={2} className="tech-icons" data-name="Python">
+  <DiPython />
+</Col>
+
+<Col xs={4} md={2} className="tech-icons" data-name="Data Structures">
+  <FaCode />
+</Col>
+
+<Col xs={4} md={2} className="tech-icons" data-name="Git">
+  <DiGit />
+</Col>
+
+<Col xs={4} md={2} className="tech-icons" data-name="AWS">
+  <FaAws />
+</Col>
+
     </Row>
   );
 }
