@@ -441,54 +441,61 @@ button:focus {
   color: #a588c0 !important;
 }
 
-
 /* ============================================================
-   ABOUT SECTION — FINAL UPGRADED VERSION
+   ABOUT SECTION — FINAL (REVISED, CLIPPING FIX)
    ============================================================ */
 
 .about-section {
   position: relative !important;
   padding-top: 150px !important;
-  padding-bottom: 30px !important;
+  padding-bottom: 80px !important; /* increased to ensure space below the About block */
   background-image: var(--section-background-color) !important;
   color: white !important;
 }
 
 /* ===============================
-   FIX: SPACING BELOW ABOUT SECTION
+   SPACING: keep Skillset below About
    =============================== */
 
 .about-top-row {
   align-items: center;
-  margin-bottom: 56px;  /* pushes Skillset heading down */
+  margin-bottom: 40px;     /* moderate spacing so Skillset sits below the About block */
   gap: 2rem;
 }
 
-/* Improve heading spacing */
+/* Ensure the project heading sits lower on larger screens */
 .about-section .project-heading {
-  margin-top: 72px;     /* ensures distance from image block */
+  margin-top: 48px;        /* safe distance from the About content */
   margin-bottom: 18px;
 }
 
-/* Prevent large image from squeezing following content */
-.about-img .img-fluid {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  max-height: 480px;
-  object-fit: contain;
+/* Image: allow it to scale naturally (no clipping) */
+.about-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;       /* allow small floats/animations to be visible */
 }
 
-/* Large tablets */
+.about-img .img-fluid {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 520px;        /* optional: caps width on very large screens */
+  object-fit: contain;
+  /* remove any max-height to avoid clipping */
+}
+
+/* Large tablets / small desktops */
 @media (max-width: 1199px) {
   .about-top-row {
-    margin-bottom: 48px;
+    margin-bottom: 36px;
   }
   .about-section .project-heading {
-    margin-top: 56px;
+    margin-top: 40px;
   }
   .about-img .img-fluid {
-    max-height: 380px;
+    max-width: 460px;
   }
 }
 
@@ -497,13 +504,14 @@ button:focus {
   .about-top-row {
     margin-bottom: 28px;
     gap: 1rem;
+    align-items: flex-start; /* let text flow above image on very small widths */
   }
   .about-section .project-heading {
     margin-top: 28px;
     font-size: 1.6rem;
   }
   .about-img .img-fluid {
-    max-height: 260px;
+    max-width: 320px;
   }
 }
 
@@ -536,9 +544,11 @@ button:focus {
 }
 
 /* Hover border + lift */
-.tech-icons:hover {
+.tech-icons:hover,
+.tech-icons:focus {
   transform: translateY(-6px) !important;
   border: 2px solid rgba(200, 137, 230, 0.9) !important;
+  outline: none;
 }
 
 /* Actual icon element */
@@ -547,7 +557,8 @@ button:focus {
 }
 
 /* ICON moves up & fades on hover */
-.tech-icons:hover svg {
+.tech-icons:hover svg,
+.tech-icons:focus svg {
   transform: translateY(-20px) scale(0.88);
   opacity: 0;
 }
@@ -583,7 +594,8 @@ button:focus {
 }
 
 /* Name slides UP into icon spot */
-.tech-icons:hover::after {
+.tech-icons:hover::after,
+.tech-icons:focus::after {
   opacity: 1;
   transform: translateX(-50%) translateY(-4px);
 }
