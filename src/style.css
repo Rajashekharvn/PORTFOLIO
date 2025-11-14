@@ -441,11 +441,10 @@ button:focus {
 .blockquote-footer {
   color: #a588c0 !important;
 }
-/* ============================================================
-   PROJECT CARD STYLES — Transparent card + glowing outline
-   ============================================================ */
+/* ---------------------------
+   Projects: card + pill + actions
+   --------------------------- */
 
-/* Grid wrapper (if using .projects-grid from Projects.jsx) */
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -455,7 +454,6 @@ button:focus {
   margin-bottom: 3.5rem;
 }
 
-/* Responsive grid */
 @media (max-width: 1100px) {
   .projects-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
 }
@@ -463,25 +461,35 @@ button:focus {
   .projects-grid { grid-template-columns: 1fr; gap: 1rem; }
 }
 
-/* Base card (applies to either .project-card or legacy .project-card-view) */
+/* Card outer */
 .project-card,
 .project-card-view {
-  background: transparent !important;    /* fully transparent */
+  background: transparent !important;
   border: none !important;
-  padding: 1.05rem 1.25rem !important;
-  min-height: 320px;                     /* compact, consistent height */
+  padding: 0 !important;
   border-radius: 12px;
   position: relative;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  align-items: stretch;
   overflow: visible;
-  transition: transform 0.32s ease, box-shadow 0.32s ease;
 }
 
-/* Decorative outer outline (glow) using pseudo-element */
-.project-card::after,
-.project-card-view::after {
+/* Inner bootstrap card */
+.transparent-card {
+  background: transparent !important;
+  border: none !important;
+  width: 100%;
+  min-height: 360px;               /* consistent card height */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+  padding: 1rem;
+  z-index: 1;
+}
+
+/* outline / glow via pseudo-element */
+.transparent-card::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -489,70 +497,85 @@ button:focus {
   pointer-events: none;
   z-index: 0;
   background: transparent;
-  box-shadow: 0 0 0 1px rgba(255,255,255,0.02) inset; /* faint inner border */
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.02) inset;
   transition: box-shadow 0.32s ease, transform 0.32s ease;
 }
 
-/* Hover/focus glow & lift */
-.project-card:hover,
-.project-card:focus-within,
-.project-card-view:hover,
-.project-card-view:focus-within {
+/* Hover/focus glow + lift */
+.project-card:hover .transparent-card,
+.project-card:focus-within .transparent-card,
+.project-card-view:hover .transparent-card,
+.project-card-view:focus-within .transparent-card {
   transform: translateY(-6px);
 }
-.project-card:hover::after,
-.project-card:focus-within::after,
-.project-card-view:hover::after,
-.project-card-view:focus-within::after {
+
+.project-card:hover .transparent-card::after,
+.project-card:focus-within .transparent-card::after,
+.project-card-view:hover .transparent-card::after,
+.project-card-view:focus-within .transparent-card::after {
   box-shadow:
     0 0 0 1px rgba(200,140,255,0.14) inset,
     0 8px 34px rgba(120,60,160,0.14),
     0 0 40px rgba(160,80,240,0.12);
 }
 
-/* Card content sits above pseudo-outline */
-.project-card .card-body,
-.project-card-view .card-body {
+/* Ensure card content sits above the outline */
+.card-body {
   position: relative;
   z-index: 2;
-  color: rgba(255,255,255,0.95);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
 }
 
-/* Thumbnail image: smaller, centered and rounded */
-.project-thumb,
-.project-card .project-thumb,
-.project-card-view .project-thumb {
+/* Thumbnail */
+.thumb-wrap {
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 8px;
+  z-index: 2;
+}
+
+.project-thumb {
+  width: 100%;
+  max-width: 640px;
   height: 140px;
   object-fit: cover;
   border-radius: 8px;
   display: block;
-  margin-bottom: 12px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(15,9,30,0.03));
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45) inset;
 }
 
-/* Title, description */
+/* Title + description */
 .project-title {
   font-size: 1.06rem;
   font-weight: 600;
-  margin: 0 0 8px 0;
+  margin: 6px 0 0;
   color: #fff;
+  text-align: center;
 }
 
 .project-desc {
   font-size: 0.95rem;
   line-height: 1.45;
-  color: rgba(255,255,255,0.78);
-  margin: 0 0 12px 0;
-  min-height: 54px; /* keep descriptions consistent height */
+  color: rgba(255,255,255,0.82);
+  margin: 0;
+  text-align: center;
+  min-height: 64px; /* consistency */
+  max-width: 90%;
 }
 
-/* Tech tags as pill buttons */
+/* Tech pills */
 .tech-list {
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem;
-  margin-bottom: 14px;
+  justify-content: center;
+  margin: 0 0 4px;
   z-index: 2;
 }
 
@@ -566,11 +589,11 @@ button:focus {
   color: rgba(255,255,255,0.92);
   border: 1px solid rgba(255,255,255,0.04);
   cursor: default;
-  transition: transform 0.16s ease, background 0.16s ease, box-shadow 0.16s ease;
+  transition: transform 0.14s ease, background 0.14s ease, box-shadow 0.14s ease;
   user-select: none;
 }
 
-/* Small hover pop on pills */
+/* Pill hover micro-effect */
 .tech-pill:hover,
 .tech-pill:focus {
   transform: translateY(-3px);
@@ -578,21 +601,19 @@ button:focus {
   box-shadow: 0 6px 18px rgba(120,60,160,0.06);
 }
 
-/* Actions: hidden by default, revealed on hover/focus */
-.project-actions,
-.project-card .project-actions,
-.project-card-view .project-actions {
+/* Actions (hidden until hover/focus) */
+.project-actions {
   display: flex;
   gap: 0.8rem;
+  justify-content: center;
   align-items: center;
   opacity: 0;
   transform: translateY(8px);
   transition: all 0.28s ease;
-  pointer-events: none; /* blocked until revealed */
+  pointer-events: none;
   z-index: 3;
 }
 
-/* Reveal on hover or keyboard focus */
 .project-card:hover .project-actions,
 .project-card:focus-within .project-actions,
 .project-card-view:hover .project-actions,
@@ -602,12 +623,14 @@ button:focus {
   pointer-events: auto;
 }
 
-/* Ghost-style action buttons (GitHub / Demo) */
-.btn-ghost {
+/* Ghost-style action buttons */
+.btn-ghost,
+.btn-ghost:focus,
+.btn-ghost:hover {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 0.9rem;
+  padding: 0.46rem 0.92rem;
   font-weight: 600;
   font-size: 0.93rem;
   border-radius: 8px;
@@ -618,7 +641,6 @@ button:focus {
   transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
 }
 
-/* Action hover */
 .btn-ghost:hover,
 .btn-ghost:focus {
   transform: translateY(-4px);
@@ -626,41 +648,14 @@ button:focus {
   background: linear-gradient(90deg, rgba(160,80,240,0.14), rgba(200,140,255,0.08));
 }
 
-/* Make sure full-card stretched links don't block action buttons */
-.project-card a.stretched-link,
-.project-card-view a.stretched-link {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none; /* do not block buttons */
-}
-
-/* But allow clickable actions */
-.project-actions a,
-.project-actions button {
-  pointer-events: auto;
-}
-
-/* Smaller screens: slightly taller thumbnails and stacked flow */
+/* Responsive adjustments */
 @media (max-width: 680px) {
-  .project-card,
-  .project-card-view {
-    min-height: auto;
-    padding: 0.9rem;
-  }
   .project-thumb { height: 160px; }
-  .tech-pill { font-size: 0.72rem; padding: 0.32rem 0.5rem; }
-  .projects-grid { gap: 1rem; }
+  .project-desc { min-height: auto; max-width: 100%; }
+  .transparent-card { min-height: auto; padding: 0.9rem; }
+  .projects-grid { gap: 1rem; grid-template-columns: 1fr; }
 }
 
-/* Optional: ensure keyboard users also see the outline on focus */
-.project-card:focus-within::after,
-.project-card-view:focus-within::after {
-  box-shadow:
-    0 0 0 1px rgba(200,140,255,0.14) inset,
-    0 0 30px rgba(160,80,240,0.12),
-    0 18px 36px rgba(10,4,20,0.5);
-}
 
 
 
