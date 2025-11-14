@@ -1,7 +1,7 @@
 // src/components/Projects/Projects.jsx
 import React, { useEffect } from "react";
 import { Container } from "react-bootstrap";
-import ProjectCard from "../Projects/ProjectCards";
+import ProjectCard from "./ProjectCards";
 import Particle from "../Particle";
 
 import editor from "../../Assets/Projects/codeEditor.png";
@@ -10,38 +10,62 @@ import bitsOfCode from "../../Assets/Projects/blog.png";
 
 function Projects() {
   useEffect(() => {
-    const cards = document.querySelectorAll(".project-card-view");
+    // observe both possible card class names so this works with older/newer card markup
+    const selector = ".project-card-view, .project-card";
+    const cards = Array.from(document.querySelectorAll(selector));
+    if (!cards.length) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) entry.target.classList.add("show");
+          if (entry.isIntersecting) {
+            entry.target.classList.add("show");
+          }
         });
       },
-      { threshold: 0.2 }
+      { threshold: 0.18 }
     );
 
     cards.forEach((card) => observer.observe(card));
-    return () => cards.forEach((card) => observer.unobserve(card));
+
+    // cleanup: unobserve & disconnect
+    return () => {
+      cards.forEach((card) => {
+        try {
+          observer.unobserve(card);
+        } catch (e) {
+          /* ignore */
+        }
+      });
+      try {
+        observer.disconnect();
+      } catch (e) {
+        /* ignore */
+      }
+    };
   }, []);
 
   return (
-    <Container fluid className="project-section">
+    <Container fluid className="project-section" aria-label="Projects section">
       <Particle />
       <Container>
         <h1 className="project-heading">
           My Recent <strong className="purple">Works</strong>
         </h1>
-        <p className="project-subtext">Here are a few projects I've worked on recently.</p>
 
-        {/* FIXED: correct grid class name */}
-        <div className="projects-grid">
+        <p className="project-subtext">
+          Here are a few projects I've worked on recently.
+        </p>
 
+        {/* Projects grid – CSS targets .projects-grid */}
+        <div className="projects-grid" role="list" aria-label="Project list">
           <ProjectCard
             imgPath={chatify}
             isBlog={false}
             title="Centralized Certificate Collection"
             description="Developed a centralized system for managing certificate submissions for students & faculty."
             ghLink="https://github.com/Rajashekharvn/centralized_certificate_collection"
+            demoLink={null}
             tags={["PHP", "HTML", "CSS", "MySQL", "Form Validation"]}
           />
 
@@ -51,6 +75,7 @@ function Projects() {
             title="Data Hub Collaboration"
             description="A secure data sharing platform with role management & encryption to ensure data safety."
             ghLink="https://github.com/Rajashekharvn/secured-data-hub-collaboration"
+            demoLink={null}
             tags={["PHP", "Data Security", "MySQL", "Hackathon"]}
           />
 
@@ -63,7 +88,6 @@ function Projects() {
             demoLink="https://hmkey.vercel.app/"
             tags={["JavaScript", "API", "CSS", "WebApp", "Vercel"]}
           />
-
         </div>
       </Container>
     </Container>
