@@ -10,25 +10,15 @@ import "./About.css";
 
 function About() {
   useEffect(() => {
-    // select all reveal targets and stagger children
-    const revealSelector = [
-      ".reveal",
-      ".reveal-left",
-      ".reveal-right",
-      ".reveal-child",
-      ".stagger > *",
-    ].join(", ");
-    const revealElements = Array.from(document.querySelectorAll(revealSelector));
-
-    if (!revealElements.length) return;
+    const revealElements = document.querySelectorAll(
+      ".reveal, .reveal-left, .reveal-right, .reveal-child, .stagger > *"
+    );
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("is-visible");
-            // if you only want one-time reveals, unobserve the target
-            observer.unobserve(entry.target);
           }
         });
       },
@@ -36,72 +26,50 @@ function About() {
     );
 
     revealElements.forEach((el) => observer.observe(el));
-
-    return () => {
-      // cleanup observer
-      try {
-        observer.disconnect();
-      } catch (e) {
-        /* ignore */
-      }
-    };
   }, []);
 
   return (
-    <Container fluid className="about-section" id="about">
+    <Container fluid className="about-section">
       <Particle />
 
       <Container>
-        {/* Row: left text + right illustration */}
-        <Row className="about-row" style={{ gap: 24 }}>
-          {/* Left: text / about card */}
-          <Col md={7} className="about-text-col">
-            <div className="reveal-left">
-              <h1 className="project-heading" style={{ marginBottom: 12 }}>
-                Know Who <strong className="purple">I'M</strong>
-              </h1>
+        <Row className="about-top-row">
+          <Col md={7} className="reveal-left">
+            <h1 className="about-heading">
+              Know Who <strong className="purple">I'M</strong>
+            </h1>
 
-              <div className="quote-card-wrapper reveal-child">
-                <Aboutcard />
-              </div>
+            <div className="reveal-left">
+              <Aboutcard />
             </div>
           </Col>
 
-          {/* Right: illustration */}
           <Col md={5} className="about-img reveal-right">
             <img
               src={laptopImg}
               alt="about"
-              className="img-fluid float-animation reveal-child"
+              className="img-fluid float-animation"
             />
           </Col>
         </Row>
 
         {/* Skillset */}
-        <div style={{ marginTop: 28 }}>
-          <h2 className="project-heading reveal-left" style={{ marginTop: 24 }}>
-            Professional <strong className="purple">Skillset</strong>
-          </h2>
-
-          {/* Tech icons row — uses stagger + tech-row to animate and align */}
-          <div className="stagger tech-row" aria-hidden={false}>
-            <Techstack />
-          </div>
+        <h1 className="project-heading reveal">
+          Professional <strong className="purple">Skillset</strong>
+        </h1>
+        <div className="stagger tech-row">
+          <Techstack />
         </div>
 
         {/* Tools */}
-        <div style={{ marginTop: 8 }}>
-          <h2 className="project-heading reveal-left" style={{ marginTop: 8 }}>
-            <strong className="purple">Tools</strong> I use
-          </h2>
-
-          <div className="stagger tech-row" style={{ marginBottom: 12 }}>
-            <Toolstack />
-          </div>
+        <h1 className="project-heading reveal">
+          <strong className="purple">Tools</strong> I use
+        </h1>
+        <div className="stagger tech-row">
+          <Toolstack />
         </div>
 
-        {/* Github snake animation */}
-        <div className="reveal" style={{ marginTop: 18 }}>
+        <div className="reveal">
           <Github />
         </div>
       </Container>
