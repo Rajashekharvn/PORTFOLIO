@@ -7,27 +7,34 @@ import { FaAws, FaCode } from "react-icons/fa";
 function Techstack() {
   return (
     <Row style={{ justifyContent: "center", paddingBottom: "50px" }}>
-      <Col xs={4} md={2} className="tech-icons">
-        <DiJavascript1 />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons">
-        <SiHtml5 />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons">
-        <SiCss3 />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons">
-        <DiPython />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons">
-        <FaCode />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons">
-        <DiGit />
-      </Col>
-      <Col xs={4} md={2} className="tech-icons">
-        <FaAws />
-      </Col>
+      <Col xs={4} md={2} className="tech-icons" data-name="JavaScript">
+  <DiJavascript1 />
+</Col>
+
+<Col xs={4} md={2} className="tech-icons" data-name="HTML">
+  <SiHtml5 />
+</Col>
+
+<Col xs={4} md={2} className="tech-icons" data-name="CSS">
+  <SiCss3 />
+</Col>
+
+<Col xs={4} md={2} className="tech-icons" data-name="Python">
+  <DiPython />
+</Col>
+
+<Col xs={4} md={2} className="tech-icons" data-name="Data Structures">
+  <FaCode />
+</Col>
+
+<Col xs={4} md={2} className="tech-icons" data-name="Git">
+  <DiGit />
+</Col>
+
+<Col xs={4} md={2} className="tech-icons" data-name="AWS">
+  <FaAws />
+</Col>
+
     </Row>
   );
 }
