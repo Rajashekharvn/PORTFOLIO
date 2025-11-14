@@ -823,9 +823,8 @@ button:focus {
   display: none !important;
 }
 
-
 /* ============================================================
-   ABOUT SECTION — FIXED LAYOUT (image sits beside content)
+   ABOUT SECTION — FIXED: force image BESIDE content (overrides Bootstrap .row/.col)
    ============================================================ */
 
 .about-section {
@@ -836,97 +835,108 @@ button:focus {
   color: white !important;
 }
 
-/* Use a CSS grid for the about top row to guarantee a stable two-column layout.
-   This mirrors the md={7} / md={5} proportion but is resilient to image size.
-   On small screens the grid collapses to a single column (image below text). */
+/* Important: override Bootstrap row/col so we get a stable two-column layout.
+   The row often sets display:flex which prevents grid; we explicitly set grid +
+   neutralize the col flex behavior inside this component. */
 .about-top-row {
-  display: grid;
-  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); /* 7:5 ratio */
-  gap: 2rem;
-  align-items: center;    /* vertically center the image and text */
-  margin-bottom: 40px;
+  display: grid !important;
+  grid-template-columns: 58% 42% !important; /* approx 7:5 ratio */
+  gap: 2rem !important;
+  align-items: center !important;
+  margin-bottom: 40px !important;
 }
 
-/* Ensure the left column's content does not shrink awkwardly */
+/* Neutralize bootstrap column flex sizing inside this row so grid owns layout */
+.about-top-row > [class*="col"] {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  max-width: none !important;
+}
+
+/* Ensure the left text column can shrink if needed and aligns nicely */
 .about-top-row > .reveal-left {
-  min-width: 0;
-  align-self: center;
+  min-width: 0 !important;
+  align-self: center !important;
+  padding-right: 0.5rem !important;
 }
 
-/* Image column: center image horizontally and vertically.
-   Prevent image from becoming wider than its column and maintain aspect ratio. */
-.about-top-row > .about-img {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-top: 0; /* reset any small-screen padding */
-  min-width: 0;   /* allow flex/grid to shrink properly */
+/* Image column: center image and prevent overflow/clipping */
+.about-top-row > .about-img,
+.about-top-row > .about-img.reveal-right {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding-top: 0 !important;
+  min-width: 0 !important;
 }
 
-/* Concrete image rules — scale responsively and prevent overflow/clipping.
-   Allow the floating animation class to remain (if applied). */
-.about-top-row .about-img .img-fluid,
+/* Concrete image rules — responsive, no clipping */
+.about-top-row .about-img img,
 .about-img img,
+.about-img .img-fluid,
 .about-img .floating {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-width: 520px;   /* cap width on very large screens to preserve layout */
-  object-fit: contain;
-  margin: 0 auto;
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  max-width: 520px !important;   /* adjust this number to make image larger/smaller */
+  object-fit: contain !important;
+  margin: 0 auto !important;
 }
 
-/* If you prefer the image slightly smaller on very large screens, reduce max-width */
+/* Slightly smaller image cap for very large screens */
 @media (min-width: 1400px) {
-  .about-top-row .about-img .img-fluid,
+  .about-top-row .about-img img,
   .about-img img,
+  .about-img .img-fluid,
   .about-img .floating {
-    max-width: 480px;
+    max-width: 480px !important;
   }
 }
 
-/* Tablet / small desktop adjustments */
+/* Tablet / medium screens: reduce ratio so image doesn't push content too far */
 @media (max-width: 1199px) {
   .about-top-row {
-    grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
-    gap: 1.6rem;
-    margin-bottom: 36px;
+    grid-template-columns: 55% 45% !important;
+    gap: 1.6rem !important;
+    margin-bottom: 36px !important;
   }
-  .about-top-row .about-img .img-fluid,
-  .about-img img,
-  .about-img .floating {
-    max-width: 420px;
+  .about-top-row .about-img img,
+  .about-img img {
+    max-width: 420px !important;
   }
 }
 
-/* Mobile: stack columns (text first, image below) */
+/* Mobile: collapse to single column (text first, image below) */
 @media (max-width: 767px) {
   .about-top-row {
-    grid-template-columns: 1fr;
-    gap: 1.2rem;
-    margin-bottom: 28px;
-    align-items: start;
+    display: block !important;
+    gap: 1.2rem !important;
+    margin-bottom: 28px !important;
+    align-items: start !important;
   }
 
-  /* keep the image size reasonable on small devices */
-  .about-top-row .about-img .img-fluid,
+  .about-top-row > [class*="col"] {
+    width: 100% !important;
+    flex: 0 0 auto !important;
+  }
+
+  .about-top-row .about-img img,
   .about-img img,
+  .about-img .img-fluid,
   .about-img .floating {
-    max-width: 320px;
-    width: 80%;
+    max-width: 320px !important;
+    width: 80% !important;
+    margin: 0 auto 0.6rem !important;
   }
 
   .about-section .project-heading {
-    margin-top: 28px;
-    font-size: 1.6rem;
+    margin-top: 28px !important;
+    font-size: 1.6rem !important;
   }
 }
 
-/* Keep the rest of your tech/tool and card styles as they were.
-   (No changes below this line — these are preserved from your original file.) */
-
 /* ============================================================
-   TECH + TOOL ICONS — ICON UP + NAME REVEAL EFFECT
+   TECH + TOOL ICONS — ICON UP + NAME REVEAL EFFECT (preserved)
    ============================================================ */
 
 .tech-icons {
@@ -974,7 +984,7 @@ button:focus {
 }
 
 /* ============================================================
-   LABEL (data-name) — Slides Up to Replace Icon
+   LABEL (data-name) — Slides Up to Replace Icon (preserved)
    ============================================================ */
 
 .tech-icons::after {
@@ -1027,7 +1037,7 @@ button:focus {
 }
 
 /* ============================================================
-   ABOUT CARD
+   ABOUT CARD (preserved)
    ============================================================ */
 
 .quote-card-view {
