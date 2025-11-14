@@ -454,6 +454,59 @@ button:focus {
   color: white !important;
 }
 
+/* ===============================
+   FIX: SPACING BELOW ABOUT SECTION
+   =============================== */
+
+.about-top-row {
+  align-items: center;
+  margin-bottom: 56px;  /* pushes Skillset heading down */
+  gap: 2rem;
+}
+
+/* Improve heading spacing */
+.about-section .project-heading {
+  margin-top: 72px;     /* ensures distance from image block */
+  margin-bottom: 18px;
+}
+
+/* Prevent large image from squeezing following content */
+.about-img .img-fluid {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  max-height: 480px;
+  object-fit: contain;
+}
+
+/* Large tablets */
+@media (max-width: 1199px) {
+  .about-top-row {
+    margin-bottom: 48px;
+  }
+  .about-section .project-heading {
+    margin-top: 56px;
+  }
+  .about-img .img-fluid {
+    max-height: 380px;
+  }
+}
+
+/* Mobile spacing adjustments */
+@media (max-width: 767px) {
+  .about-top-row {
+    margin-bottom: 28px;
+    gap: 1rem;
+  }
+  .about-section .project-heading {
+    margin-top: 28px;
+    font-size: 1.6rem;
+  }
+  .about-img .img-fluid {
+    max-height: 260px;
+  }
+}
+
 /* ============================================================
    TECH + TOOL ICONS — ICON UP + NAME REVEAL EFFECT
    ============================================================ */
@@ -506,7 +559,7 @@ button:focus {
 .tech-icons::after {
   content: attr(data-name);
   position: absolute;
-  bottom: 14px; /* where icon usually sits */
+  bottom: 14px;
   left: 50%;
   transform: translateX(-50%) translateY(20px);
 
@@ -573,8 +626,6 @@ button:focus {
     padding-top: 0 !important;
   }
 }
-
-
 
 
 /* ------------------------------
