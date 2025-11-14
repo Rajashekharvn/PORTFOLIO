@@ -441,95 +441,221 @@ button:focus {
 .blockquote-footer {
   color: #a588c0 !important;
 }
-/* --------- */
-/* Projects */
-/* --------- */
+/* ============================================================
+   PROJECT CARDS — Compact, transparent, glowing outline
+   ============================================================ */
 
-.project-section {
-  position: relative !important;
-  padding-top: 150px !important;
-  padding-bottom: 30px !important;
-  background-image: var(--section-background-color) !important;
-}
-
-.project-heading {
-  color: white !important;
-  font-size: 2.3em !important;
-  font-weight: 500 !important;
-  padding-top: 10px !important;
-  text-align: center;
-}
-
-.project-subtext {
-  text-align: center;
-  color: #ccc;
-  margin-bottom: 40px;
-  font-size: 1.1rem;
-}
-
-/* ---------------- Grid Layout ---------------- */
+/* Container for the grid of project cards */
+.projects-row,
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: 32px;
-  margin-top: 30px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.4rem;
+  align-items: start;
+  margin-top: 32px;
+  margin-bottom: 56px;
 }
 
-/* Tablet: 2 cards */
-@media (min-width: 700px) {
+/* Make grid responsive */
+@media (max-width: 1100px) {
+  .projects-row,
   .projects-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
   }
 }
-
-/* Desktop: 3 cards */
-@media (min-width: 1100px) {
+@media (max-width: 680px) {
+  .projects-row,
   .projects-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr;
   }
 }
 
-/* ---------------- Project Card ---------------- */
-.project-card-view {
-  background: rgba(255, 255, 255, 0.04) !important;
-  border-radius: 14px;
-  padding: 20px;
-  backdrop-filter: blur(10px);
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
-  opacity: 0;
-  transform: translateY(40px);
+/* Project card base - transparent background and minimal height */
+.project-card,
+.project-card .card {
+  background: transparent !important;
+  border: none !important;
+  padding: 1.25rem !important;
+  min-height: 360px;          /* compact height that still fits content */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: visible;
 }
 
-.project-card-view.show {
+/* Card inner container box (outline + glow) */
+.project-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  padding: 1px;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  -webkit-mask:
+    linear-gradient(#fff, #fff) content-box,
+    linear-gradient(#fff, #fff);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  box-shadow: 0 0 0 1px rgba(200,140,255,0.14) inset,  /* subtle inner border */
+              0 8px 28px rgba(20,8,40,0.5);              /* soft base shadow */
+  z-index: 0;
+  transition: box-shadow 0.35s ease, transform 0.35s ease;
+}
+
+/* Hover: strong glow outline and slight lift */
+.project-card:hover::before,
+.project-card:focus-within::before {
+  box-shadow:
+    0 0 0 1px rgba(200,140,255,0.18) inset,
+    0 0 24px rgba(160,80,240,0.18),        /* outer soft glow */
+    0 18px 40px rgba(10,4,20,0.55);
+  transform: translateY(-6px);
+}
+
+/* Card content sits above the decorative outline */
+.project-card .card-body {
+  position: relative;
+  z-index: 2;
+  color: rgba(255,255,255,0.95);
+}
+
+/* Thumbnail image: smaller and centered */
+.project-card .project-thumb {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+  margin-bottom: 14px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(15,9,30,0.05));
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45) inset;
+}
+
+/* Title and description styling */
+.project-card .project-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+.project-card .project-desc {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.78);
+  margin-bottom: 12px;
+  min-height: 64px; /* keeps cards consistent */
+}
+
+/* Tech list — styled as pill buttons */
+.project-card .tech-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-bottom: 18px;
+}
+
+.project-card .tech-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .38rem .65rem;
+  font-size: 0.78rem;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.03);
+  color: rgba(255,255,255,0.9);
+  border: 1px solid rgba(255,255,255,0.04);
+  cursor: default;
+  transition: transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+  user-select: none;
+}
+
+/* Hover micro-effect for tech pills */
+.project-card .tech-pill:hover {
+  transform: translateY(-4px);
+  background: rgba(200,140,255,0.06);
+  box-shadow: 0 6px 16px rgba(120,60,160,0.08);
+}
+
+/* Action buttons area (hidden by default, revealed on hover) */
+.project-card .project-actions {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+  z-index: 3;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: all 0.28s ease;
+  pointer-events: none;
+}
+
+/* Reveal action buttons when hovering card */
+.project-card:hover .project-actions,
+.project-card:focus-within .project-actions {
   opacity: 1;
   transform: translateY(0);
+  pointer-events: auto;
 }
 
-.project-card-view:hover {
-  transform: translateY(-6px) scale(1.02);
-  box-shadow: 0 8px 20px rgba(192, 132, 245, 0.35) !important;
+/* Button styles (GitHub / Demo) */
+.project-card .btn-ghost {
+  background: linear-gradient(90deg, rgba(120,60,160,0.12), rgba(200,140,255,0.06));
+  color: #fff;
+  padding: 10px 16px;
+  border: 1px solid rgba(200,140,255,0.18);
+  border-radius: 8px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.25s ease;
+  text-decoration: none;
 }
 
-.card-img-top {
-  padding: 20px !important;
-  border-radius: 12px !important;
-  opacity: 0.9;
+/* Hover for action buttons */
+.project-card .btn-ghost:hover,
+.project-card .btn-ghost:focus {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(160,80,240,0.14);
+  background: linear-gradient(90deg, rgba(160,80,240,0.16), rgba(200,140,255,0.08));
 }
 
-.btn-primary {
-  background-color: #623686 !important;
-  border-color: #623686 !important;
+/* Make the whole card clickable without overlapping buttons */
+.project-card a.stretched-link {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  /* keep pointer events off so we don't block the action buttons */
+  pointer-events: none;
 }
 
-.btn-primary:hover {
-  background-color: #7a3bdb !important;
-  border-color: #7a3bdb !important;
+/* Ensure action buttons remain clickable */
+.project-card .project-actions a,
+.project-card .project-actions button {
+  pointer-events: auto;
 }
 
-.btn:focus {
-  outline: none !important;
-  box-shadow: none !important;
+/* Small screens: make card taller and stack actions */
+@media (max-width: 680px) {
+  .project-card {
+    min-height: auto;
+    padding: 1rem;
+  }
+  .project-card .project-thumb {
+    height: 160px;
+  }
+  .project-card .project-actions {
+    width: 100%;
+    margin-top: 8px;
+    justify-content: flex-start;
+  }
 }
+
 
 
 
