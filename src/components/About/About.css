@@ -1,8 +1,11 @@
 /* ============================================================
-   ABOUT SECTION — MODERN GLASSY DESIGN + SCROLL ANIMATIONS
-   (Updated: bigger glassy tech/tool tiles)
+   About.css — Polished glassy About section (full file)
+   - True frosted glass tiles
+   - Smooth reveal animations
+   - Clean tool/tech labels and responsive sizing
    ============================================================ */
 
+/* Container */
 .about-section {
   position: relative;
   padding-top: 150px;
@@ -13,218 +16,212 @@
   -webkit-font-smoothing: antialiased;
 }
 
-/* Keep particles behind content */
+/* Make sure particles stay behind content */
 #tsparticles { z-index: 0 !important; }
 
-/* Top row */
-.about-top-row {
-  justify-content: center;
-  padding: 10px;
-}
+/* Top heading spacing */
+.about-top-row { justify-content: center; padding: 10px; }
+.about-heading { font-size: 2.1em; padding-bottom: 20px; }
 
-.about-heading {
-  font-size: 2.1em;
-  padding-bottom: 20px;
-}
-
-/* ============================================================
-   REVEAL ANIMATION
-   ============================================================ */
-
+/* ======================
+   Reveal animation
+   ====================== */
 .reveal {
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 600ms ease, transform 600ms ease;
+  will-change: opacity, transform;
 }
-
 .reveal-left {
   opacity: 0;
   transform: translateX(-35px);
   transition: all 700ms ease;
 }
-
 .reveal-right {
   opacity: 0;
   transform: translateX(35px);
   transition: all 700ms ease;
 }
-
 .reveal.is-visible,
 .reveal-left.is-visible,
 .reveal-right.is-visible {
   opacity: 1;
   transform: translateX(0) translateY(0);
 }
-
 .reveal-child {
   opacity: 0;
   transform: translateY(14px);
   transition: opacity 550ms ease, transform 550ms ease;
 }
+.reveal-child.is-visible { opacity: 1; transform: translateY(0); }
 
-.reveal-child.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* ============================================================
-   TECH + TOOLS ROW (glassy tiles)
-   ============================================================ */
-
+/* ======================
+   Tech/Tool row container
+   Keeps icons clustered and centered; prevents extreme spreading
+   ====================== */
 .tech-row {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1.2rem 1.6rem;
-  margin: 0 auto;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  max-width: 1200px;
+  gap: 1rem 1.3rem;      /* row-gap, column-gap */
+  margin: 0 auto 18px auto;
+  padding: 6px 12px;
+  max-width: 980px;      /* keeps icons grouped */
 }
 
 /* ======================
-   GLASSY ICON TILE (updated larger size)
+   GLASS TILE — frosted, translucent, subtle rim
    ====================== */
 .tech-icons {
   position: relative;
   cursor: pointer;
 
-  /* Slightly larger "tile" */
-  width: 120px;
-  height: 120px;
-  min-width: 100px;
-  min-height: 100px;
+  width: 112px;
+  height: 112px;
+  min-width: 96px;
+  min-height: 96px;
   border-radius: 14px;
-
-  /* Glass base */
-  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-  border: 1px solid rgba(255,255,255,0.06);
-  backdrop-filter: blur(8px) saturate(1.05);
-  -webkit-backdrop-filter: blur(8px) saturate(1.05);
-
-  /* subtle colored rim */
-  box-shadow:
-    0 10px 30px rgba(10, 8, 15, 0.5),
-    inset 0 1px 0 rgba(255,255,255,0.02);
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  transition: transform 260ms cubic-bezier(.2,.9,.2,1), box-shadow 260ms ease, border-color 260ms ease;
+  /* TRUE glass: very light base, strong blur — background will bleed through */
+  background: rgba(255, 255, 255, 0.045);        /* light glass base */
+  backdrop-filter: blur(18px) saturate(1.25);
+  -webkit-backdrop-filter: blur(18px) saturate(1.25);
+
+  /* light glass rim */
+  border: 1px solid rgba(255, 255, 255, 0.10);
+
+  /* soft outer shadow + subtle inner highlight */
+  box-shadow:
+    0 18px 40px rgba(4, 4, 8, 0.45),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+
+  transition: transform 300ms cubic-bezier(.2,.9,.2,1), box-shadow 300ms ease, border-color 300ms ease, background 300ms ease;
   overflow: visible;
   z-index: 5;
 }
 
-/* subtle glossy sheen (top-left) */
+/* Sheen layer (top-left) for realism */
 .tech-icons::before {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: 14px;
-  background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.00) 45%);
-  mix-blend-mode: overlay;
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0.85;
-  transform: translateZ(0);
-}
-
-/* colored accent rim overlay */
-.tech-icons::after {
-  /* tooltip is handled by the tooltip rule below; keep pseudo usage separate */
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 14px;
-  box-shadow: inset 0 0 0 1px rgba(200,140,255,0.04);
   pointer-events: none;
   z-index: 2;
+  background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.00) 45%);
+  mix-blend-mode: overlay;
+  opacity: 0.95;
 }
 
-/* Icon svg sizing and foreground */
+/* Icon size above the sheen */
 .tech-icons svg {
   width: 52px;
   height: 52px;
-  color: #fff;
   z-index: 3;
-  transition: transform 300ms ease, opacity 300ms ease;
+  transition: transform 260ms ease, opacity 260ms ease;
+  color: #fff;
 }
 
-/* Hover: lift, stronger rim and glow */
+/* Hover: lift, brighter glass, more rim (but still translucent) */
 .tech-icons:hover {
   transform: translateY(-8px) scale(1.03);
-  border-color: rgba(200,137,230,0.42);
+  background: rgba(255, 255, 255, 0.08);    /* slightly brighter on hover */
+  border-color: rgba(255,255,255,0.18);
   box-shadow:
-    0 30px 60px rgba(120,45,140,0.22),
-    inset 0 1px 0 rgba(255,255,255,0.02);
+    0 30px 60px rgba(120,45,140,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.06);
 }
 
-/* On hover, move icon up & fade so tooltip can replace it */
+/* Subtle icon movement to make room for label */
 .tech-icons:hover svg {
-  transform: translateY(-18px) scale(0.92);
-  opacity: 0;
+  transform: translateY(-12px) scale(0.98);
+  opacity: 0.02; /* nearly hidden so label is visible — subtle */
 }
 
 /* ======================
-   Tooltip / name reveal (slides up into icon area)
+   Tooltip / label for tech name
+   Two fallback mechanisms:
+    - recommended: have React render an inner <span class="tech-label">Name</span>
+    - fallback: use data-name pseudo ::after
+   Both supported — label is neat and does not create blocky overlay.
    ====================== */
-.tech-icons[data-name]::after { /* reuse ::after for tooltip when showing name */
-  content: attr(data-name);
-  position: absolute;
-  bottom: 14px;
-  left: 50%;
-  transform: translateX(-50%) translateY(20px);
-  z-index: 6;
 
-  background: rgba(43, 24, 74, 0.92);
+/* Preferred: if you include an inner element with class .tech-label */
+.tech-icons .tech-label {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%) translateY(18px);
+  background: rgba(28, 14, 50, 0.92);
   color: #fff;
-  padding: 8px 14px;
+  padding: 8px 12px;
   border-radius: 8px;
-  border: 1px solid rgba(200,140,255,0.28);
-  box-shadow: 0 10px 28px rgba(120,60,160,0.20);
-  font-size: 0.9rem;
+  border: 1px solid rgba(200,140,255,0.22);
+  box-shadow: 0 10px 28px rgba(120,60,160,0.18);
+  font-size: 0.88rem;
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
-  transition: transform 300ms cubic-bezier(.2,.9,.2,1), opacity 300ms ease;
+  z-index: 9;
+  transition: transform 300ms cubic-bezier(.2,.9,.2,1), opacity 260ms ease;
 }
 
-/* Show tooltip on hover — slide up into the icon spot */
-.tech-icons:hover[data-name]::after {
+/* show the label on hover or focus */
+.tech-icons:hover .tech-label,
+.tech-icons:focus .tech-label {
   opacity: 1;
   transform: translateX(-50%) translateY(-6px);
 }
 
-/* Accessibility: focus should also show name */
-.tech-icons:focus[data-name]::after,
-.tech-icons:active[data-name]::after {
+/* Fallback pseudo label if you only use data-name attributes */
+.tech-icons[data-name]::after {
+  content: attr(data-name);
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%) translateY(18px);
+  background: rgba(28, 14, 50, 0.92);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(200,140,255,0.22);
+  box-shadow: 0 10px 28px rgba(120,60,160,0.18);
+  font-size: 0.88rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9;
+  transition: transform 300ms cubic-bezier(.2,.9,.2,1), opacity 260ms ease;
+}
+
+/* show fallback label on hover */
+.tech-icons[data-name]:hover::after,
+.tech-icons[data-name]:focus::after {
   opacity: 1;
   transform: translateX(-50%) translateY(-6px);
 }
 
-/* ============================================================
-   ABOUT CARD
-   ============================================================ */
-
+/* ======================
+   About card + illustration
+   ====================== */
 .quote-card-view {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255,255,255,0.03);
   border-radius: 12px;
   padding: 22px;
-  border: 1px solid rgba(200, 140, 255, 0.06);
+  border: 1px solid rgba(200,140,255,0.06);
   backdrop-filter: blur(6px);
   box-shadow: 0 10px 30px rgba(0,0,0,0.28);
+  color: rgba(255,255,255,0.95);
   z-index: 4;
   text-align: left;
-  color: rgba(255,255,255,0.95);
 }
 
-.about-activity {
-  list-style: none;
-  padding-left: 2px;
-}
+.about-activity { list-style: none; padding-left: 2px; }
 
-/* Illustration sizing */
 .about-img img {
   width: 100%;
   max-width: 460px;
@@ -233,31 +230,27 @@
   filter: drop-shadow(0 12px 30px rgba(0,0,0,0.45));
 }
 
-/* ============================================================
+/* ======================
    Responsive adjustments
-   ============================================================ */
-
+   ====================== */
 @media (max-width: 991px) {
-  .tech-row { gap: 0.9rem 1.1rem; max-width: 900px; }
-  .tech-icons { width: 110px; height: 110px; border-radius: 12px; }
-  .tech-icons svg { width: 46px; height: 46px; }
+  .tech-row { gap: 0.85rem 1rem; max-width: 860px; }
+  .tech-icons { width: 100px; height: 100px; border-radius: 12px; }
+  .tech-icons svg { width: 44px; height: 44px; }
   .about-img img { max-width: 380px; }
 }
 
 @media (max-width: 520px) {
-  .tech-row { gap: 0.6rem 0.8rem; }
-  .tech-icons { width: 88px; height: 88px; }
+  .tech-row { gap: 0.6rem 0.8rem; max-width: 480px; }
+  .tech-icons { width: 84px; height: 84px; min-width: 70px; min-height: 70px; }
   .tech-icons svg { width: 36px; height: 36px; }
-  .tech-icons[data-name]::after { font-size: 0.78rem; padding: 6px 10px; bottom: 10px; }
+  .tech-icons[data-name]::after { font-size: 0.78rem; padding: 6px 10px; bottom: 8px; }
   .about-heading { text-align: center; }
   .quote-card-view { padding: 16px; }
   .about-img img { max-width: 320px; }
 }
 
-/* ============================================================
-   Optional small visual helpers (uncomment for debugging boxes)
-   ============================================================ */
-/*
-.tech-icons { outline: 1px solid rgba(255,255,255,0.03); }
+/* Optional debug outlines (uncomment if you need to visualize boxes)
+.tech-icons { outline: 1px dashed rgba(255,255,255,0.03); }
 .quote-card-view { outline: 1px dashed rgba(255,0,0,0.04); }
 */
