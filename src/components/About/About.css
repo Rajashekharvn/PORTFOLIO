@@ -73,35 +73,35 @@
    GLASS TILE — frosted, translucent, subtle rim
    ====================== */
 .tech-icons {
-  position: relative;
-  cursor: pointer;
+  position: relative !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 
-  width: 112px;
-  height: 112px;
-  min-width: 96px;
-  min-height: 96px;
-  border-radius: 14px;
+  /* ---------- SIZE: added for consistent tiles ---------- */
+  width: 112px !important;         /* tile width */
+  height: 112px !important;        /* tile height */
+  min-width: 96px !important;
+  min-height: 96px !important;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-size: 4.5em !important;
+  margin: 15px !important;
+  padding: 10px !important;
 
-  /* TRUE glass: very light base, strong blur — background will bleed through */
-  background: rgba(255, 255, 255, 0.045);        /* light glass base */
-  backdrop-filter: blur(18px) saturate(1.25);
-  -webkit-backdrop-filter: blur(18px) saturate(1.25);
+  /* ---------- TRANSPARENCY: subtle frosted glass ---------- */
+  background: rgba(255, 255, 255, 0.04) !important; /* light translucent base */
+  backdrop-filter: blur(8px) saturate(1.05) !important;
+  -webkit-backdrop-filter: blur(8px) saturate(1.05) !important;
 
-  /* light glass rim */
-  border: 1px solid rgba(255, 255, 255, 0.10);
-
-  /* soft outer shadow + subtle inner highlight */
-  box-shadow:
-    0 18px 40px rgba(4, 4, 8, 0.45),
-    inset 0 1px 0 rgba(255,255,255,0.06);
-
-  transition: transform 300ms cubic-bezier(.2,.9,.2,1), box-shadow 300ms ease, border-color 300ms ease, background 300ms ease;
-  overflow: visible;
-  z-index: 5;
+  opacity: 0.93 !important;
+  border: 1.7px solid rgba(200, 137, 230, 0.637) !important;
+  border-radius: 8px !important;
+  text-align: center !important;
+  box-shadow: 4px 5px 4px 3px rgba(89, 4, 168, 0.137) !important;
+  transition: all 0.35s ease !important;
+  overflow: visible !important;
+  z-index: 5 !important;
 }
 
 /* Sheen layer (top-left) for realism */
