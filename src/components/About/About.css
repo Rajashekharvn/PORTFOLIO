@@ -1,5 +1,6 @@
 /* ============================================================
    ABOUT SECTION — FINAL UPGRADED VERSION
+   (Full updated About.css — includes your requested TECH + TOOL block)
    ============================================================ */
 .about-section {
   position: relative !important;
@@ -78,6 +79,7 @@
 
 /* ============================================================
    TECH + TOOL ICONS — ORIGINAL STYLE + TRANSPARENCY + NEW HOVER
+   (this block matches exactly the style you provided)
    ============================================================ */
 .tech-icons {
   position: relative !important;
@@ -180,4 +182,35 @@
   .tech-icons {
     margin: 10px !important;
   }
+}
+
+/* ============================================================
+   Optional: small layout helpers (keeps About content readable)
+   ============================================================ */
+
+/* Make headings inside About left-aligned for better layout */
+.about-section .project-heading {
+  text-align: left;
+}
+
+/* Constrain tech rows if you render icons as direct children (avoid huge gaps) */
+.tech-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem 1.3rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 8px 12px;
+}
+
+/* If your Techstack/Toolstack components use bootstrap Cols, this helps center them */
+.tech-row .tech-icons {
+  margin: 12px !important;
+}
+
+/* Small-screen readability */
+@media (max-width: 520px) {
+  .about-section { padding-top: 90px !important; padding-bottom: 30px !important; }
+  .about-section .project-heading { text-align: center !important; }
 }
