@@ -1,15 +1,27 @@
 import React from "react";
-import { Col, Row } from "react-bootstrap";
-import { SiVisualstudiocode, SiVercel, SiWindows, SiNetlify } from "react-icons/si";
+import {
+  SiVisualstudiocode,
+  SiVercel,
+  SiWindows,
+  SiNetlify,
+} from "react-icons/si";
 
 function Toolstack() {
+  const items = [
+    { Icon: SiWindows, name: "Windows" },
+    { Icon: SiVisualstudiocode, name: "VS Code" },
+    { Icon: SiVercel, name: "Vercel" },
+    { Icon: SiNetlify, name: "Netlify" },
+  ];
+
   return (
-    <Row style={{ justifyContent: "center", paddingBottom: "50px" }}>
-      <Col className="tech-icons" data-name="Windows"><SiWindows /></Col>
-      <Col className="tech-icons" data-name="VS Code"><SiVisualstudiocode /></Col>
-      <Col className="tech-icons" data-name="Vercel"><SiVercel /></Col>
-      <Col className="tech-icons" data-name="Netlify"><SiNetlify /></Col>
-    </Row>
+    <>
+      {items.map(({ Icon, name }) => (
+        <div key={name} className="tech-icons" data-name={name}>
+          <Icon />
+        </div>
+      ))}
+    </>
   );
 }
 
