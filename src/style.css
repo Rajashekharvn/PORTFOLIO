@@ -824,80 +824,106 @@ button:focus {
 }
 
 
-
 /* ============================================================
-   ABOUT SECTION — FINAL (REVISED, CLIPPING FIX)
+   ABOUT SECTION — FIXED LAYOUT (image sits beside content)
    ============================================================ */
 
 .about-section {
   position: relative !important;
   padding-top: 150px !important;
-  padding-bottom: 80px !important; /* increased to ensure space below the About block */
+  padding-bottom: 80px !important;
   background-image: var(--section-background-color) !important;
   color: white !important;
 }
 
-/* ===============================
-   SPACING: keep Skillset below About
-   =============================== */
-
+/* Use a CSS grid for the about top row to guarantee a stable two-column layout.
+   This mirrors the md={7} / md={5} proportion but is resilient to image size.
+   On small screens the grid collapses to a single column (image below text). */
 .about-top-row {
-  align-items: center;
-  margin-bottom: 40px;     /* moderate spacing so Skillset sits below the About block */
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); /* 7:5 ratio */
   gap: 2rem;
+  align-items: center;    /* vertically center the image and text */
+  margin-bottom: 40px;
 }
 
-/* Ensure the project heading sits lower on larger screens */
-.about-section .project-heading {
-  margin-top: 48px;        /* safe distance from the About content */
-  margin-bottom: 18px;
+/* Ensure the left column's content does not shrink awkwardly */
+.about-top-row > .reveal-left {
+  min-width: 0;
+  align-self: center;
 }
 
-/* Image: allow it to scale naturally (no clipping) */
-.about-img {
+/* Image column: center image horizontally and vertically.
+   Prevent image from becoming wider than its column and maintain aspect ratio. */
+.about-top-row > .about-img {
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: visible;       /* allow small floats/animations to be visible */
+  padding-top: 0; /* reset any small-screen padding */
+  min-width: 0;   /* allow flex/grid to shrink properly */
 }
 
-.about-img .img-fluid {
+/* Concrete image rules — scale responsively and prevent overflow/clipping.
+   Allow the floating animation class to remain (if applied). */
+.about-top-row .about-img .img-fluid,
+.about-img img,
+.about-img .floating {
   display: block;
   width: 100%;
   height: auto;
-  max-width: 520px;        /* optional: caps width on very large screens */
+  max-width: 520px;   /* cap width on very large screens to preserve layout */
   object-fit: contain;
-  /* remove any max-height to avoid clipping */
+  margin: 0 auto;
 }
 
-/* Large tablets / small desktops */
+/* If you prefer the image slightly smaller on very large screens, reduce max-width */
+@media (min-width: 1400px) {
+  .about-top-row .about-img .img-fluid,
+  .about-img img,
+  .about-img .floating {
+    max-width: 480px;
+  }
+}
+
+/* Tablet / small desktop adjustments */
 @media (max-width: 1199px) {
   .about-top-row {
+    grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+    gap: 1.6rem;
     margin-bottom: 36px;
   }
-  .about-section .project-heading {
-    margin-top: 40px;
-  }
-  .about-img .img-fluid {
-    max-width: 460px;
+  .about-top-row .about-img .img-fluid,
+  .about-img img,
+  .about-img .floating {
+    max-width: 420px;
   }
 }
 
-/* Mobile spacing adjustments */
+/* Mobile: stack columns (text first, image below) */
 @media (max-width: 767px) {
   .about-top-row {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
     margin-bottom: 28px;
-    gap: 1rem;
-    align-items: flex-start; /* let text flow above image on very small widths */
+    align-items: start;
   }
+
+  /* keep the image size reasonable on small devices */
+  .about-top-row .about-img .img-fluid,
+  .about-img img,
+  .about-img .floating {
+    max-width: 320px;
+    width: 80%;
+  }
+
   .about-section .project-heading {
     margin-top: 28px;
     font-size: 1.6rem;
   }
-  .about-img .img-fluid {
-    max-width: 320px;
-  }
 }
+
+/* Keep the rest of your tech/tool and card styles as they were.
+   (No changes below this line — these are preserved from your original file.) */
 
 /* ============================================================
    TECH + TOOL ICONS — ICON UP + NAME REVEAL EFFECT
