@@ -1,27 +1,34 @@
 import React from "react";
-import { FaAws, FaCode } from "react-icons/fa";
+import { Col, Row } from "react-bootstrap";
 import { DiJavascript1, DiPython, DiGit } from "react-icons/di";
 import { SiHtml5, SiCss3 } from "react-icons/si";
+import { FaAws, FaCode } from "react-icons/fa";
 
 function Techstack() {
-  const items = [
-    { Icon: DiJavascript1, name: "JavaScript" },
-    { Icon: SiHtml5, name: "HTML5" },
-    { Icon: SiCss3, name: "CSS3" },
-    { Icon: DiPython, name: "Python" },
-    { Icon: FaCode, name: "DSA" },
-    { Icon: DiGit, name: "Git" },
-    { Icon: FaAws, name: "AWS" },
-  ];
-
   return (
-    <>
-      {items.map(({ Icon, name }) => (
-        <div key={name} className="tech-icons" data-name={name}>
-          <Icon />
-        </div>
-      ))}
-    </>
+    <Row style={{ justifyContent: "center", paddingBottom: "50px" }}>
+      <Col xs={4} md={2} className="tech-icons">
+        <DiJavascript1 />
+      </Col>
+      <Col xs={4} md={2} className="tech-icons">
+        <SiHtml5 />
+      </Col>
+      <Col xs={4} md={2} className="tech-icons">
+        <SiCss3 />
+      </Col>
+      <Col xs={4} md={2} className="tech-icons">
+        <DiPython />
+      </Col>
+      <Col xs={4} md={2} className="tech-icons">
+        <FaCode />
+      </Col>
+      <Col xs={4} md={2} className="tech-icons">
+        <DiGit />
+      </Col>
+      <Col xs={4} md={2} className="tech-icons">
+        <FaAws />
+      </Col>
+    </Row>
   );
 }
 
