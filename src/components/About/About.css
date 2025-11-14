@@ -1,243 +1,185 @@
 /* ============================================================
-   ABOUT SECTION — Improved alignment & spacing
+   ABOUT SECTION — MODERN DESIGN + SCROLL ANIMATIONS
    ============================================================ */
 
 .about-section {
   position: relative;
-  z-index: 2;
-  padding-top: 120px; /* tightened for a balanced look */
-  padding-bottom: 48px;
+  padding-top: 150px;
+  padding-bottom: 30px;
   background-image: var(--section-background-color);
   color: white;
   overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
 }
 
-/* Force particles behind the content */
-#tsparticles { z-index: 0 !important; }
+.about-top-row {
+  justify-content: center;
+  padding: 10px;
+}
 
-/* ------------------------------------------------------------
-   Grid / layout helpers
-   ------------------------------------------------------------ */
+.about-heading {
+  font-size: 2.1em;
+  padding-bottom: 20px;
+}
 
-.about-row {
+/* ============================================================
+   REVEAL ANIMATION
+   ============================================================ */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 600ms ease, transform 600ms ease;
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-35px);
+  transition: all 700ms ease;
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(35px);
+  transition: all 700ms ease;
+}
+
+.reveal.is-visible,
+.reveal-left.is-visible,
+.reveal-right.is-visible {
+  opacity: 1;
+  transform: translateX(0) translateY(0);
+}
+
+.reveal-child {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 550ms ease, transform 550ms ease;
+}
+
+.reveal-child.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================================
+   FLEX LAYOUT FOR TECH + TOOLS (FIXED VERSION)
+   ============================================================ */
+
+.tech-row {
   display: flex;
-  gap: 2.25rem;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.1rem 1.5rem;
+  margin: 0 auto;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  max-width: 1100px;
 }
 
-/* Left column (text) */
-.about-text-col {
-  flex: 0 0 58%;
-  max-width: 58%;
-  padding-right: 2rem;
-  box-sizing: border-box;
-}
+/* ICON TILE */
+.tech-icons {
+  position: relative;
+  cursor: pointer;
 
-/* Right column (illustration) */
-.about-img {
-  flex: 0 0 40%;
-  max-width: 40%;
+  width: 96px;
+  height: 96px;
+  min-width: 80px;
+  min-height: 80px;
+
+  border-radius: 10px;
+  border: 1.4px solid rgba(200, 137, 230, 0.25);
+
   display: flex;
   align-items: center;
   justify-content: center;
-  box-sizing: border-box;
-  padding-left: 1rem;
+
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(6px);
+
+  box-shadow: 0 6px 18px rgba(10, 8, 15, 0.4);
+
+  transition: all 260ms ease;
 }
 
-/* On small screens stack nicely */
-@media (max-width: 991px) {
-  .about-text-col,
-  .about-img {
-    max-width: 100%;
-    flex: 1 1 100%;
-    padding: 0;
+.tech-icons svg {
+  width: 40px;
+  height: 40px;
+  transition: all 260ms ease;
+}
+
+/* HOVER EFFECT */
+.tech-icons:hover {
+  transform: translateY(-6px) scale(1.04);
+  border-color: rgba(200, 137, 230, 0.6);
+  box-shadow: 0 20px 45px rgba(120, 45, 140, 0.25);
+}
+
+.tech-icons:hover svg {
+  opacity: 0;
+  transform: translateY(-20px) scale(0.9);
+}
+
+/* Tooltip */
+.tech-icons::after {
+  content: attr(data-name);
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+
+  background: rgba(40, 20, 70, 0.85);
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(200, 140, 255, 0.35);
+  font-size: 0.82rem;
+  color: #fff;
+
+  opacity: 0;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: all 0.35s ease;
+}
+
+.tech-icons:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-2px);
+}
+
+/* Mobile tweaks */
+@media (max-width: 520px) {
+  .tech-icons {
+    width: 78px;
+    height: 78px;
   }
 
-  .about-row {
-    flex-direction: column-reverse;
-    gap: 1.4rem;
-    align-items: stretch;
+  .tech-icons svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .tech-icons::after {
+    font-size: 0.72rem;
   }
 }
 
-/* ------------------------------------------------------------
-   Headings & intro
-   ------------------------------------------------------------ */
-
-.about-section .project-heading {
-  /* override the global center rule for About section */
-  text-align: left;
-  font-size: clamp(1.6rem, 3.4vw, 2.6rem);
-  margin: 0 0 18px 0;
-  line-height: 1.05;
-  font-weight: 700;
-}
-
-.about-intro {
-  margin-top: 12px;
-  margin-bottom: 20px;
-  color: rgba(255,255,255,0.96);
-  font-size: 1.05rem;
-  line-height: 1.6;
-  text-align: left;
-  max-width: 880px;
-}
-
-/* Slight emphasis for inline purple spans */
-.about-intro .purple {
-  color: var(--imp-text-color);
-  font-weight: 600;
-}
-
-/* ------------------------------------------------------------
-   Quote / about card styling (left column)
-   ------------------------------------------------------------ */
+/* ============================================================
+   ABOUT CARD
+   ============================================================ */
 
 .quote-card-view {
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  background: rgba(255, 255, 255, 0.04);
   border-radius: 12px;
-  padding: 22px 26px;
-  border: 1px solid rgba(200, 140, 255, 0.06);
-  backdrop-filter: blur(6px);
-  box-shadow: 0 8px 30px rgba(5, 3, 8, 0.25);
-  color: rgba(255,255,255,0.96);
-
-  /* ensure card content uses left alignment */
-  text-align: left;
-  line-height: 1.6;
+  padding: 20px;
+  border: 1px solid rgba(200, 140, 255, 0.25);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
 }
 
-/* Blockquote content */
-.quote-card-view .blockquote {
-  margin: 0;
-}
-
-/* Paragraph inside card */
-.quote-card-view p {
-  margin: 0 0 16px 0;
-  font-size: 1.02rem;
-  color: rgba(255,255,255,0.95);
-}
-
-/* Footer / quote */
-.quote-card-view .blockquote-footer {
-  margin-top: 14px;
-  color: rgba(155, 126, 172, 0.95);
-  font-style: normal;
-  font-weight: 500;
-}
-
-/* ------------------------------------------------------------
-   Activity list (icon + text) — aligned nicely
-   ------------------------------------------------------------ */
-
-.about-activity-list {
-  list-style: none;
-  padding: 0;
-  margin: 12px 0 18px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
+/* Fix UL alignment */
 .about-activity {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: rgba(255,255,255,0.95);
-  font-size: 1.02rem;
+  list-style: none;
+  padding-left: 2px;
 }
-
-/* icon inside activity (small) */
-.about-activity svg,
-.about-activity .activity-icon {
-  font-size: 1.05rem;
-  color: var(--imp-text-color);
-  min-width: 1.2rem;
-}
-
-/* ------------------------------------------------------------
-   Illustration / image sizing
-   ------------------------------------------------------------ */
 
 .about-img img {
-  display: block;
-  max-width: 420px;
   width: 100%;
-  height: auto;
-  object-fit: contain;
-  transform: translateZ(0); /* hardware accel */
-  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.45));
-}
-
-/* On small screens reduce size */
-@media (max-width: 520px) {
-  .about-img img {
-    max-width: 320px;
-  }
-}
-
-/* ------------------------------------------------------------
-   Tech & Tools rows — keep stagger and hover intact
-   ------------------------------------------------------------ */
-
-.reveal, .reveal-left, .reveal-right, .stagger, .stagger > * {
-  /* keep original animation defaults, do not override */
-}
-
-/* small visual improvement for the tech/tool rows spacing */
-.stagger.tech-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start; /* left align on wide screens */
-  gap: 0.75rem 1rem;
-  padding-top: 12px;
-  padding-bottom: 18px;
-}
-
-/* On small screens center the icons for balance */
-@media (max-width: 767px) {
-  .stagger.tech-row {
-    justify-content: center;
-  }
-}
-
-/* ------------------------------------------------------------
-   Accessibility & small typography tweaks
-   ------------------------------------------------------------ */
-
-.about-section .project-heading .purple { color: var(--imp-text-color); }
-.quote-card-view small { color: rgba(255,255,255,0.72); }
-a { color: var(--imp-text-color); }
-
-/* ------------------------------------------------------------
-   Mobile / small screen adjustments
-   ------------------------------------------------------------ */
-
-@media (max-width: 767px) {
-  .about-section {
-    padding-top: 80px;
-    padding-bottom: 40px;
-  }
-
-  .about-section .project-heading {
-    text-align: center;
-    font-size: 1.8rem;
-  }
-
-  .about-text-col {
-    text-align: center;
-    padding: 0 12px;
-  }
-
-  .quote-card-view {
-    padding: 16px;
-  }
-
-  .about-activity {
-    justify-content: center;
-  }
 }
