@@ -1,5 +1,6 @@
 /* ============================================================
-   ABOUT SECTION — MODERN DESIGN + SCROLL ANIMATIONS
+   ABOUT SECTION — MODERN GLASSY DESIGN + SCROLL ANIMATIONS
+   (Updated: bigger glassy tech/tool tiles)
    ============================================================ */
 
 .about-section {
@@ -9,8 +10,13 @@
   background-image: var(--section-background-color);
   color: white;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
+/* Keep particles behind content */
+#tsparticles { z-index: 0 !important; }
+
+/* Top row */
 .about-top-row {
   justify-content: center;
   padding: 10px;
@@ -62,104 +68,139 @@
 }
 
 /* ============================================================
-   FLEX LAYOUT FOR TECH + TOOLS (FIXED VERSION)
+   TECH + TOOLS ROW (glassy tiles)
    ============================================================ */
 
 .tech-row {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1.1rem 1.5rem;
+  gap: 1.2rem 1.6rem;
   margin: 0 auto;
   padding-top: 10px;
   padding-bottom: 10px;
-  max-width: 1100px;
+  max-width: 1200px;
 }
 
-/* ICON TILE */
+/* ======================
+   GLASSY ICON TILE (updated larger size)
+   ====================== */
 .tech-icons {
   position: relative;
   cursor: pointer;
 
-  width: 96px;
-  height: 96px;
-  min-width: 80px;
-  min-height: 80px;
+  /* Slightly larger "tile" */
+  width: 120px;
+  height: 120px;
+  min-width: 100px;
+  min-height: 100px;
+  border-radius: 14px;
 
-  border-radius: 10px;
-  border: 1.4px solid rgba(200, 137, 230, 0.25);
+  /* Glass base */
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.06);
+  backdrop-filter: blur(8px) saturate(1.05);
+  -webkit-backdrop-filter: blur(8px) saturate(1.05);
+
+  /* subtle colored rim */
+  box-shadow:
+    0 10px 30px rgba(10, 8, 15, 0.5),
+    inset 0 1px 0 rgba(255,255,255,0.02);
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(6px);
-
-  box-shadow: 0 6px 18px rgba(10, 8, 15, 0.4);
-
-  transition: all 260ms ease;
+  transition: transform 260ms cubic-bezier(.2,.9,.2,1), box-shadow 260ms ease, border-color 260ms ease;
+  overflow: visible;
+  z-index: 5;
 }
 
-.tech-icons svg {
-  width: 40px;
-  height: 40px;
-  transition: all 260ms ease;
+/* subtle glossy sheen (top-left) */
+.tech-icons::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.00) 45%);
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.85;
+  transform: translateZ(0);
 }
 
-/* HOVER EFFECT */
-.tech-icons:hover {
-  transform: translateY(-6px) scale(1.04);
-  border-color: rgba(200, 137, 230, 0.6);
-  box-shadow: 0 20px 45px rgba(120, 45, 140, 0.25);
-}
-
-.tech-icons:hover svg {
-  opacity: 0;
-  transform: translateY(-20px) scale(0.9);
-}
-
-/* Tooltip */
+/* colored accent rim overlay */
 .tech-icons::after {
+  /* tooltip is handled by the tooltip rule below; keep pseudo usage separate */
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  box-shadow: inset 0 0 0 1px rgba(200,140,255,0.04);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Icon svg sizing and foreground */
+.tech-icons svg {
+  width: 52px;
+  height: 52px;
+  color: #fff;
+  z-index: 3;
+  transition: transform 300ms ease, opacity 300ms ease;
+}
+
+/* Hover: lift, stronger rim and glow */
+.tech-icons:hover {
+  transform: translateY(-8px) scale(1.03);
+  border-color: rgba(200,137,230,0.42);
+  box-shadow:
+    0 30px 60px rgba(120,45,140,0.22),
+    inset 0 1px 0 rgba(255,255,255,0.02);
+}
+
+/* On hover, move icon up & fade so tooltip can replace it */
+.tech-icons:hover svg {
+  transform: translateY(-18px) scale(0.92);
+  opacity: 0;
+}
+
+/* ======================
+   Tooltip / name reveal (slides up into icon area)
+   ====================== */
+.tech-icons[data-name]::after { /* reuse ::after for tooltip when showing name */
   content: attr(data-name);
   position: absolute;
-  bottom: 12px;
+  bottom: 14px;
   left: 50%;
   transform: translateX(-50%) translateY(20px);
+  z-index: 6;
 
-  background: rgba(40, 20, 70, 0.85);
-  padding: 6px 12px;
-  border-radius: 6px;
-  border: 1px solid rgba(200, 140, 255, 0.35);
-  font-size: 0.82rem;
+  background: rgba(43, 24, 74, 0.92);
   color: #fff;
-
-  opacity: 0;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(200,140,255,0.28);
+  box-shadow: 0 10px 28px rgba(120,60,160,0.20);
+  font-size: 0.9rem;
   white-space: nowrap;
+  opacity: 0;
   pointer-events: none;
-  transition: all 0.35s ease;
+  transition: transform 300ms cubic-bezier(.2,.9,.2,1), opacity 300ms ease;
 }
 
-.tech-icons:hover::after {
+/* Show tooltip on hover — slide up into the icon spot */
+.tech-icons:hover[data-name]::after {
   opacity: 1;
-  transform: translateX(-50%) translateY(-2px);
+  transform: translateX(-50%) translateY(-6px);
 }
 
-/* Mobile tweaks */
-@media (max-width: 520px) {
-  .tech-icons {
-    width: 78px;
-    height: 78px;
-  }
-
-  .tech-icons svg {
-    width: 30px;
-    height: 30px;
-  }
-
-  .tech-icons::after {
-    font-size: 0.72rem;
-  }
+/* Accessibility: focus should also show name */
+.tech-icons:focus[data-name]::after,
+.tech-icons:active[data-name]::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-6px);
 }
 
 /* ============================================================
@@ -167,19 +208,56 @@
    ============================================================ */
 
 .quote-card-view {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.03);
   border-radius: 12px;
-  padding: 20px;
-  border: 1px solid rgba(200, 140, 255, 0.25);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  padding: 22px;
+  border: 1px solid rgba(200, 140, 255, 0.06);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.28);
+  z-index: 4;
+  text-align: left;
+  color: rgba(255,255,255,0.95);
 }
 
-/* Fix UL alignment */
 .about-activity {
   list-style: none;
   padding-left: 2px;
 }
 
+/* Illustration sizing */
 .about-img img {
   width: 100%;
+  max-width: 460px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 30px rgba(0,0,0,0.45));
 }
+
+/* ============================================================
+   Responsive adjustments
+   ============================================================ */
+
+@media (max-width: 991px) {
+  .tech-row { gap: 0.9rem 1.1rem; max-width: 900px; }
+  .tech-icons { width: 110px; height: 110px; border-radius: 12px; }
+  .tech-icons svg { width: 46px; height: 46px; }
+  .about-img img { max-width: 380px; }
+}
+
+@media (max-width: 520px) {
+  .tech-row { gap: 0.6rem 0.8rem; }
+  .tech-icons { width: 88px; height: 88px; }
+  .tech-icons svg { width: 36px; height: 36px; }
+  .tech-icons[data-name]::after { font-size: 0.78rem; padding: 6px 10px; bottom: 10px; }
+  .about-heading { text-align: center; }
+  .quote-card-view { padding: 16px; }
+  .about-img img { max-width: 320px; }
+}
+
+/* ============================================================
+   Optional small visual helpers (uncomment for debugging boxes)
+   ============================================================ */
+/*
+.tech-icons { outline: 1px solid rgba(255,255,255,0.03); }
+.quote-card-view { outline: 1px dashed rgba(255,0,0,0.04); }
+*/
