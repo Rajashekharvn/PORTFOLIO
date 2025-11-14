@@ -444,6 +444,25 @@ button:focus {
 /* ---------------------------
    Projects: card + pill + actions
    --------------------------- */
+/* ============================
+   FIX: Project section top space
+   ============================ */
+.project-section {
+  padding-top: 140px !important;   /* perfect for fixed navbar */
+}
+
+/* Slightly smaller spacing on mobile */
+@media (max-width: 768px) {
+  .project-section {
+    padding-top: 120px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .project-section {
+    padding-top: 100px !important;
+  }
+}
 
 .projects-grid {
   display: grid;
