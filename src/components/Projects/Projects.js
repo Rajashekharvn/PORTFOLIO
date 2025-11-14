@@ -1,7 +1,9 @@
+// src/components/Projects/Projects.jsx
 import React, { useEffect } from "react";
 import { Container } from "react-bootstrap";
 import ProjectCard from "../Projects/ProjectCards";
 import Particle from "../Particle";
+
 import editor from "../../Assets/Projects/codeEditor.png";
 import chatify from "../../Assets/Projects/chatify.png";
 import bitsOfCode from "../../Assets/Projects/blog.png";
@@ -10,16 +12,16 @@ function Projects() {
   useEffect(() => {
     const cards = document.querySelectorAll(".project-card-view");
     const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
+      (entries) => {
+        entries.forEach((entry) => {
           if (entry.isIntersecting) entry.target.classList.add("show");
         });
       },
       { threshold: 0.2 }
     );
 
-    cards.forEach(card => observer.observe(card));
-    return () => cards.forEach(card => observer.unobserve(card));
+    cards.forEach((card) => observer.observe(card));
+    return () => cards.forEach((card) => observer.unobserve(card));
   }, []);
 
   return (
@@ -29,11 +31,10 @@ function Projects() {
         <h1 className="project-heading">
           My Recent <strong className="purple">Works</strong>
         </h1>
-        <p className="project-subtext">
-          Here are a few projects I've worked on recently.
-        </p>
+        <p className="project-subtext">Here are a few projects I've worked on recently.</p>
 
-        <div className="project-grid">
+        {/* FIXED: correct grid class name */}
+        <div className="projects-grid">
 
           <ProjectCard
             imgPath={chatify}
