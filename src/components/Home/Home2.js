@@ -26,7 +26,7 @@ function Home2() {
               <br />
               <br />I am fluent in classics like
               <i>
-                <b className="purple"> HTML, Javascript and Python. </b>
+                <b className="purple"> HTML, Javascript and Java. </b>
               </i>
               <br />
               <br />
@@ -84,7 +84,7 @@ function Home2() {
               </li>
               <li className="social-icons">
                 <a
-                  href="https://www.linkedin.com/in/rajashekhar-naduvinahalli-476b15253"
+                  href="https://www.linkedin.com/in/rajashekhar-naduvinahalli"
                   target="_blank"
                   rel="noreferrer"
                   className="icon-colour  home-social-icons"
