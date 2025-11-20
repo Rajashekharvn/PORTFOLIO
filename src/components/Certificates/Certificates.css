@@ -90,7 +90,7 @@
 /* Hover surrounding card lift */
 .cert-card:hover { transform: translateY(-6px); }
 
-/* small-thumb (purple area) is handled inline in JSX styles but reinforce here */
+/* small-thumb (purple area) */
 .small-thumb {
   height: 80px;
   width: 100%;
@@ -132,6 +132,33 @@
   background-color: #c084f5;
   color: #fff;
   box-shadow: 0 0 12px rgba(192, 132, 245, 0.6);
+}
+
+/* -------------------------------
+   Viewer & Tabs Enhancements (added)
+-------------------------------- */
+
+/* skeleton + shadow */
+.skeleton { box-shadow: 0 10px 30px rgba(10,7,20,0.35); }
+
+/* window hover */
+.vscode-like-window { transition: transform 320ms cubic-bezier(.2,.9,.2,1); }
+.vscode-like-window:hover { transform: translateY(-4px); }
+
+/* tab focus and hover micro-interactions */
+.tab { transition: transform 240ms cubic-bezier(.2,.9,.2,1), box-shadow 240ms ease; }
+.tab:focus-visible { outline: 3px solid rgba(192,132,245,0.12); outline-offset: 2px; }
+.tab.active { box-shadow: 0 8px 28px rgba(14,11,30,0.28); transform: translateY(-4px); }
+
+/* small thumb micro-3d on hover */
+.hover-reveal:hover .small-thumb .initials,
+.hover-reveal:focus-within .small-thumb .initials {
+  transform: translateY(-6px) rotateX(6deg);
+}
+
+/* keep reduced-motion respectful */
+@media (prefers-reduced-motion: reduce) {
+  .vscode-like-window, .tab, .skeleton { transition: none !important; animation: none !important; transform: none !important; }
 }
 
 /* -------------------------------
