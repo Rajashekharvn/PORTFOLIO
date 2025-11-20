@@ -47,30 +47,41 @@ button:focus {
   height: 100vh;
 }
 
-/* --------- */
-/*Scrollbar   */
-/* --------- */
+/* Smooth Scroll Behavior */
+html {
+  scroll-behavior: smooth;
+}
 
+/* Scrollbar Base */
 ::-webkit-scrollbar {
-  width: 7px;
+  width: 8px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #2d1950;
+  background: #24163d;
+  border-radius: 10px;
 }
 
-/* Handle */
+/* Thumb */
 ::-webkit-scrollbar-thumb {
-  background: rgba(178, 121, 216, 0.959);
+  background: linear-gradient(180deg, rgba(178, 121, 216, 0.95), rgba(160, 90, 210, 0.95));
   border-radius: 12px;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Handle on hover */
+/* Hover Effect */
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(222, 130, 235, 0.911);
-  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(222, 130, 235, 0.95), rgba(198, 110, 255, 0.95));
+  box-shadow: 0 0 6px rgba(222, 130, 235, 0.6);
 }
+
+/* Firefox Support */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(178, 121, 216, 0.95) #24163d;
+}
+
 
 /* --------- */
 /* Navbar Section  */
