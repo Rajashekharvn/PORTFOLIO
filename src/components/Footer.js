@@ -1,29 +1,18 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import {
-  AiFillGithub,
-  AiFillInstagram,
-  AiOutlineMail,
-} from "react-icons/ai";
+import { AiFillGithub, AiFillInstagram, AiOutlineMail } from "react-icons/ai";
 import { FaLinkedinIn } from "react-icons/fa";
 import { EMAIL } from "../config/contact";
 
-function Footer() {
+const social = [
+  { label: "Email", href: `mailto:${EMAIL}`, icon: <AiOutlineMail /> },
+  { label: "GitHub", href: "https://github.com/Rajashekharvn", icon: <AiFillGithub /> },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/rajashekhar-naduvinahalli-476b15253/", icon: <FaLinkedinIn /> },
+  { label: "Instagram", href: "https://www.instagram.com/rajashekhar_v_n?igsh=MTM0bmJhZ2d4dWFnbg==", icon: <AiFillInstagram /> },
+];
+
+export default function Footer() {
   const year = new Date().getFullYear();
-
-  const socialLinks = [
-    { icon: <AiOutlineMail />, link: `mailto:${EMAIL}` },
-    { icon: <AiFillGithub />, link: "https://github.com/Rajashekharvn" },
-    {
-      icon: <FaLinkedinIn />,
-      link: "https://www.linkedin.com/in/rajashekhar-naduvinahalli-476b15253/",
-    },
-    {
-      icon: <AiFillInstagram />,
-      link: "https://www.instagram.com/rajashekhar_v_n?igsh=MTM0bmJhZ2d4dWFnbg==",
-    },
-  ];
-
   return (
     <Container fluid className="footer">
       <Row>
@@ -36,16 +25,16 @@ function Footer() {
         </Col>
 
         <Col md={4} className="footer-body">
-          <ul className="footer-icons">
-            {socialLinks.map((item, index) => (
-              <li className="social-icons" key={index}>
+          <ul className="footer-icons" aria-label="Social links">
+            {social.map((s) => (
+              <li key={s.label}>
                 <a
-                  href={item.link}
+                  href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Social Media Link"
+                  aria-label={s.label}
                 >
-                  {item.icon}
+                  {s.icon}
                 </a>
               </li>
             ))}
@@ -55,5 +44,3 @@ function Footer() {
     </Container>
   );
 }
-
-export default Footer;
