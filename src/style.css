@@ -408,83 +408,65 @@ html {
 .icon-colour {
   color: #700c86 !important;
 }
-
-/* --------- */
-/* Footer */
-/* --------- */
-
+/* Footer — Minimal & Elegant */
 .footer {
-  background: linear-gradient(135deg, rgb(10, 4, 22), rgb(15, 5, 30));
-  padding: 12px 0;
-  position: relative;
-  overflow: hidden;
+  background: #07040b;
+  padding: 14px 0;
+  color: #e9e6ef;
+  border-top: 1px solid rgba(255,255,255,0.03);
 }
 
-/* Soft Glow Background Animation */
-.footer::before {
-  content: "";
-  position: absolute;
-  top: -40%;
-  left: -20%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(120, 70, 200, 0.15), transparent 70%);
-  animation: footerGlow 10s ease-in-out infinite alternate;
-  pointer-events: none;
-}
-
-@keyframes footerGlow {
-  0% { transform: translate(0, 0) scale(1); }
-  100% { transform: translate(10%, 10%) scale(1.2); }
+.footer .row {
+  align-items: center;
 }
 
 .footer-copywright,
 .footer-body {
   text-align: center;
-  position: relative;
-  z-index: 2;
 }
 
 .footer h3 {
-  font-size: 1rem;
-  color: #fff;
-  margin: 0.4em 0;
-  opacity: 0.9;
+  margin: 0;
+  font-weight: 500;
+  font-size: 0.98rem;
+  color: #f4f3f8;
+  opacity: 0.95;
 }
 
 .footer-icons {
-  margin: 0.6em 0;
-  padding: 0;
   display: flex;
+  gap: 14px;
   justify-content: center;
-  gap: 18px;
-}
-
-.footer-icons li {
+  margin: 6px 0 0 0;
+  padding: 0;
   list-style: none;
 }
 
-.social-icons a {
-  font-size: 1.4rem;
-  transition: transform 0.3s ease, color 0.3s ease, text-shadow 0.3s ease;
+.footer-icons li a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #dcd8e8;
+  transition: transform .18s ease, background .18s ease, color .18s ease;
 }
 
-.social-icons a:hover {
-  transform: translateY(-4px);
-  color: #d29cff !important;
-  text-shadow: 0 0 10px rgba(210, 156, 255, 0.7);
+.footer-icons li a:focus,
+.footer-icons li a:hover {
+  transform: translateY(-3px);
+  background: rgba(255,255,255,0.03);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45);
 }
 
-/* Small screens */
 @media (max-width: 767px) {
-  .footer h3 {
-    font-size: 0.9rem;
-  }
+  .footer h3 { font-size: 0.9rem; }
+  .footer-icons { gap: 10px; }
 }
 
-.blockquote-footer {
-  color: #bfa7da !important;
-}
 
 /* ---------------------------
    Projects: card + pill + actions
