@@ -412,46 +412,80 @@ html {
 /* --------- */
 /* Footer */
 /* --------- */
+
 .footer {
-  background-color: rgb(10, 4, 22);
-  bottom: 0 !important;
-  padding-top: 10px !important;
-  padding-bottom: 8px !important ;
-}
-.footer-copywright {
-  text-align: center !important;
+  background: linear-gradient(135deg, rgb(10, 4, 22), rgb(15, 5, 30));
+  padding: 12px 0;
+  position: relative;
+  overflow: hidden;
 }
 
+/* Soft Glow Background Animation */
+.footer::before {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -20%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(120, 70, 200, 0.15), transparent 70%);
+  animation: footerGlow 10s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes footerGlow {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(10%, 10%) scale(1.2); }
+}
+
+.footer-copywright,
 .footer-body {
-  z-index: 1;
-  text-align: center !important;
-}
-
-@media (max-width: 767px) {
-  .footer-copywright {
-    text-align: center !important;
-  }
-
-  .footer-body {
-    text-align: center !important;
-  }
+  text-align: center;
+  position: relative;
+  z-index: 2;
 }
 
 .footer h3 {
-  font-size: 1em;
-  color: white !important;
-  margin-top: 0.5em !important;
-  margin-bottom: 0.5em !important;
+  font-size: 1rem;
+  color: #fff;
+  margin: 0.4em 0;
+  opacity: 0.9;
 }
+
 .footer-icons {
-  margin-top: 0.5em !important;
-  margin-bottom: 0.5em !important;
-  padding: 0 !important;
+  margin: 0.6em 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+}
+
+.footer-icons li {
+  list-style: none;
+}
+
+.social-icons a {
+  font-size: 1.4rem;
+  transition: transform 0.3s ease, color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.social-icons a:hover {
+  transform: translateY(-4px);
+  color: #d29cff !important;
+  text-shadow: 0 0 10px rgba(210, 156, 255, 0.7);
+}
+
+/* Small screens */
+@media (max-width: 767px) {
+  .footer h3 {
+    font-size: 0.9rem;
+  }
 }
 
 .blockquote-footer {
-  color: #a588c0 !important;
+  color: #bfa7da !important;
 }
+
 /* ---------------------------
    Projects: card + pill + actions
    --------------------------- */
