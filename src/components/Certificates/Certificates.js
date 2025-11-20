@@ -13,12 +13,20 @@ import certificate4 from "../../Assets/Certificate-4.pdf";
 // configure pdf worker
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
+// small helper to create URL-friendly slugs from certificate names
+const slugify = (str) =>
+  String(str)
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
 const certificatesData = [
   { name: "Professional Certificate", url: certificate1, issuer: "Certification Authority", year: "2024" },
   { name: "Technical Certification", url: certificate2, issuer: "Tech Institute", year: "2024" },
   { name: "Advanced Certification", url: certificate3, issuer: "Advanced Academy", year: "2023" },
   { name: "Specialized Training", url: certificate4, issuer: "Training Institute", year: "2023" },
-];
+].map((c) => ({ ...c, slug: slugify(c.name) }));
 
 export default function Certificates() {
   // Open the first certificate by default
@@ -38,20 +46,65 @@ export default function Certificates() {
 
     const onResize = () => setWidth(window.innerWidth);
     window.addEventListener("resize", onResize);
+
+    // when mount, read URL param to auto-open a certificate if provided
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const certParam = params.get("cert");
+      if (certParam) {
+        const foundIndex = certificatesData.findIndex((c) => c.slug === certParam);
+        if (foundIndex !== -1) {
+          // open that certificate and set it as active
+          const tabId = `cert-${foundIndex}`;
+          setOpenTabs([{ id: tabId, cert: certificatesData[foundIndex] }]);
+          setActiveTab(tabId);
+          // mark loadedPages false until rendered
+          setLoadedPages((p) => ({ ...p, [tabId]: false }));
+        }
+      }
+    } catch (e) {
+      // ignore URL parse errors
+      // console.warn('Failed to parse cert param', e);
+    }
+
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
+  const pushCertToUrl = (cert) => {
+    try {
+      const url = new URL(window.location.href);
+      if (cert && cert.slug) {
+        url.searchParams.set("cert", cert.slug);
+      } else {
+        url.searchParams.delete("cert");
+      }
+      // replaceState so navigation back/forward is predictable
+      window.history.replaceState(null, "", url.toString());
+    } catch (e) {
+      // fallback to hash if URL API is not available
+      if (cert && cert.slug) {
+        window.location.hash = `cert-${cert.slug}`;
+      } else {
+        window.location.hash = "";
+      }
+    }
+  };
+
   const openCertificate = (cert, index) => {
-    console.log("openCertificate clicked:", cert.name, index);
+    // console.log("openCertificate clicked:", cert.name, index);
     const tabId = `cert-${index}`;
     setRenderError((prev) => ({ ...prev, [tabId]: false }));
     setOpenTabs((prev) => {
       if (!prev.find((t) => t.id === tabId)) {
         setLoadedPages((p) => ({ ...p, [tabId]: false }));
         setActiveTab(tabId);
+        // update URL to include this cert slug
+        pushCertToUrl(cert);
         return [...prev, { id: tabId, cert }];
       }
       setActiveTab(tabId);
+      // update URL when switching to an already open tab
+      pushCertToUrl(cert);
       return prev;
     });
 
@@ -72,8 +125,14 @@ export default function Certificates() {
       // compute new active
       setActiveTab((cur) => {
         if (cur !== tabId) return cur;
-        if (newTabs.length === 0) return null;
+        if (newTabs.length === 0) {
+          // remove cert param from URL when all tabs closed
+          pushCertToUrl(null);
+          return null;
+        }
         const newIndex = idx - 1 >= 0 ? idx - 1 : 0;
+        // update URL to new active cert
+        pushCertToUrl(newTabs[newIndex].cert);
         return newTabs[newIndex].id;
       });
 
@@ -178,7 +237,11 @@ export default function Certificates() {
                 {openTabs.map((tab) => (
                   <div
                     key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
+                    onClick={() => {
+                      setActiveTab(tab.id);
+                      // update url when switching active tab
+                      pushCertToUrl(tab.cert);
+                    }}
                     className={`tab ${activeTab === tab.id ? "active" : ""}`}
                     style={{
                       padding: "8px 14px",
