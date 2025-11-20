@@ -4,6 +4,7 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import Particle from "../Particle";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 
 import certificate1 from "../../Assets/Certificate-1.pdf";
 import certificate2 from "../../Assets/Certificate-2.pdf";
@@ -39,6 +40,7 @@ export default function Certificates() {
   const [loadedPages, setLoadedPages] = useState({});
   const [renderError, setRenderError] = useState({});
   const [width, setWidth] = useState(typeof window !== "undefined" ? window.innerWidth : 1200);
+  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
     // ensure worker is set (helps with HMR too)
@@ -64,7 +66,6 @@ export default function Certificates() {
       }
     } catch (e) {
       // ignore URL parse errors
-      // console.warn('Failed to parse cert param', e);
     }
 
     return () => window.removeEventListener("resize", onResize);
@@ -91,7 +92,6 @@ export default function Certificates() {
   };
 
   const openCertificate = (cert, index) => {
-    // console.log("openCertificate clicked:", cert.name, index);
     const tabId = `cert-${index}`;
     setRenderError((prev) => ({ ...prev, [tabId]: false }));
     setOpenTabs((prev) => {
@@ -177,6 +177,19 @@ export default function Certificates() {
   const viewerWidth = Math.min(850, Math.round(width * 0.85));
   const viewerHeight = 550;
 
+  // framer-motion variants (respect reduced motion)
+  const tabVariant = {
+    hidden: { opacity: 0, y: 8, scale: 0.995 },
+    enter: { opacity: 1, y: 0, scale: 1 },
+    exit: { opacity: 0, y: 8, scale: 0.995 },
+  };
+
+  const viewerVariant = {
+    hidden: { opacity: 0, y: 6, scale: 0.998 },
+    enter: { opacity: 1, y: 0, scale: 1 },
+    exit: { opacity: 0, y: 6, scale: 0.998 },
+  };
+
   return (
     <Container fluid className="about-section certificates-container" id="certificates">
       <Particle />
@@ -234,39 +247,44 @@ export default function Certificates() {
               {/* Tab bar */}
               <div className="tab-bar" style={{ display: "flex", gap: 8, padding: 8, background: "rgba(255,255,255,0.02)", borderBottom: "1px solid rgba(255,255,255,0.04)", overflowX: "auto" }}>
                 {openTabs.length === 0 && <div style={{ color: "#bda9e6", padding: "8px 16px" }}>No open certificates — click any certificate to open</div>}
-                {openTabs.map((tab) => (
-                  <div
-                    key={tab.id}
-                    onClick={() => {
-                      setActiveTab(tab.id);
-                      // update url when switching active tab
-                      pushCertToUrl(tab.cert);
-                    }}
-                    className={`tab ${activeTab === tab.id ? "active" : ""}`}
-                    style={{
-                      padding: "8px 14px",
-                      borderRadius: 8,
-                      cursor: "pointer",
-                      background: activeTab === tab.id ? "rgba(192,132,245,0.12)" : "transparent",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 8,
-                      minWidth: 160,
-                    }}
-                  >
-                    <div style={{ flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontSize: "0.95rem" }}>
-                      {tab.cert.name}
-                    </div>
-                    <button
-                      type="button"
-                      onClick={(e) => closeTab(tab.id, e)}
-                      style={{ background: "transparent", border: "none", color: "#c8b5e9", cursor: "pointer", padding: "0 6px" }}
-                      aria-label={`Close ${tab.cert.name}`}
+                <AnimatePresence initial={false} mode="popLayout">
+                  {openTabs.map((tab) => (
+                    <motion.div
+                      key={tab.id}
+                      data-tab={tab.id}
+                      layout
+                      initial={reduceMotion ? "enter" : "hidden"}
+                      animate="enter"
+                      exit={reduceMotion ? "enter" : "exit"}
+                      variants={tabVariant}
+                      transition={reduceMotion ? { duration: 0 } : { duration: 0.36, ease: [0.2, 0.9, 0.2, 1] }}
+                      onClick={() => { setActiveTab(tab.id); pushCertToUrl(tab.cert); }}
+                      className={`tab ${activeTab === tab.id ? "active" : ""}`}
+                      style={{
+                        padding: "8px 14px",
+                        borderRadius: 8,
+                        cursor: "pointer",
+                        background: activeTab === tab.id ? "rgba(192,132,245,0.12)" : "transparent",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 8,
+                        minWidth: 160,
+                      }}
                     >
-                      ✕
-                    </button>
-                  </div>
-                ))}
+                      <div style={{ flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontSize: "0.95rem" }}>
+                        {tab.cert.name}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={(e) => closeTab(tab.id, e)}
+                        style={{ background: "transparent", border: "none", color: "#c8b5e9", cursor: "pointer", padding: "0 6px" }}
+                        aria-label={`Close ${tab.cert.name}`}
+                      >
+                        ✕
+                      </button>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
               </div>
 
               {/* Viewer */}
@@ -282,32 +300,53 @@ export default function Certificates() {
                     </div>
 
                     <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
+                      {/* skeleton loader */}
                       {!loadedPages[activeTab] && !renderError[activeTab] && (
-                        <div style={{ width: viewerWidth, height: viewerHeight, borderRadius: 12, background: "linear-gradient(90deg, rgba(255,255,255,0.03) 0%, rgba(192,132,245,0.06) 50%, rgba(255,255,255,0.03) 100%)", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid rgba(255,255,255,0.04)" }}>
+                        <div className="skeleton" style={{ width: viewerWidth, height: viewerHeight, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid rgba(255,255,255,0.04)" }}>
                           <div style={{ color: "#bda9e6" }}>Loading certificate…</div>
                         </div>
                       )}
 
-                      {!renderError[activeTab] && (
-                        <div style={{ width: viewerWidth, maxWidth: "100%", display: loadedPages[activeTab] ? "block" : "none" }}>
-                          <Document
-                            key={`${activeCert.url}-${activeTab}`}
-                            file={activeCert.url}
-                            onLoadSuccess={onDocumentLoadSuccess(activeTab)}
-                            onLoadError={onDocumentLoadError(activeTab)}
-                            loading={null}
+                      {/* viewer with framer-motion enter/exit */}
+                      <AnimatePresence mode="wait" initial={false}>
+                        {!renderError[activeTab] && loadedPages[activeTab] && (
+                          <motion.div
+                            key={activeTab}
+                            initial={reduceMotion ? "enter" : "hidden"}
+                            animate="enter"
+                            exit={reduceMotion ? "enter" : "exit"}
+                            variants={viewerVariant}
+                            transition={reduceMotion ? { duration: 0 } : { duration: 0.44, ease: [0.2,0.9,0.2,1] }}
+                            style={{ width: viewerWidth, maxWidth: "100%" }}
                           >
-                            <Page pageNumber={1} width={viewerWidth} onRenderSuccess={onPageRenderSuccess(activeTab)} />
-                          </Document>
+                            <Document
+                              key={`${activeCert.url}-${activeTab}`}
+                              file={activeCert.url}
+                              onLoadSuccess={onDocumentLoadSuccess(activeTab)}
+                              onLoadError={onDocumentLoadError(activeTab)}
+                              loading={null}
+                            >
+                              <Page pageNumber={1} width={viewerWidth} onRenderSuccess={onPageRenderSuccess(activeTab)} />
+                            </Document>
 
-                          {pageCounts[activeTab] > 1 && (
-                            <div style={{ marginTop: 8, color: "#bda9e6", fontSize: 13 }}>Page 1 of {pageCounts[activeTab]}</div>
-                          )}
-                        </div>
-                      )}
+                            {pageCounts[activeTab] > 1 && (
+                              <div style={{ marginTop: 8, color: "#bda9e6", fontSize: 13 }}>Page 1 of {pageCounts[activeTab]}</div>
+                            )}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
 
+                      {/* render fallback iframe on error */}
                       {renderError[activeTab] && (
-                        <iframe src={activeCert.url} title={activeCert.name} style={{ width: viewerWidth, height: viewerHeight, borderRadius: 12, border: "1px solid rgba(255,255,255,0.04)" }} />
+                        <motion.div
+                          key={`iframe-${activeTab}`}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.28 }}
+                        >
+                          <iframe src={activeCert.url} title={activeCert.name} style={{ width: viewerWidth, height: viewerHeight, borderRadius: 12, border: "1px solid rgba(255,255,255,0.04)" }} />
+                        </motion.div>
                       )}
                     </div>
                   </div>
@@ -323,7 +362,7 @@ export default function Certificates() {
         </Row>
       </Container>
 
-      {/* Important CSS overrides to ensure clicks reach cards */}
+      {/* Important CSS overrides to ensure clicks reach cards. Kept inline for component encapsulation. */}
       <style>{`
         /* MAKE SURE particle canvas doesn't intercept clicks */
         #tsparticles, canvas, .tsparticles-canvas-el {
@@ -414,6 +453,31 @@ export default function Certificates() {
           clip: rect(0, 0, 0, 0) !important;
           white-space: nowrap !important;
           border: 0 !important;
+        }
+
+        /* skeleton shimmer while page renders */
+        .skeleton {
+          border-radius: 12px;
+          background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.035), rgba(255,255,255,0.02));
+          position: relative;
+          overflow: hidden;
+        }
+        .skeleton::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          transform: translateX(-100%);
+          background: linear-gradient(90deg, rgba(255,255,255,0.00) 0%, rgba(255,255,255,0.03) 50%, rgba(255,255,255,0.00) 100%);
+          animation: shimmer 950ms linear infinite;
+        }
+        @keyframes shimmer { to { transform: translateX(100%); } }
+
+        /* respect reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+          .cert-card, .tab, .vscode-like-window, .viewer-fade, .skeleton {
+            transition: none !important;
+            animation: none !important;
+          }
         }
       `}</style>
     </Container>
