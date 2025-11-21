@@ -469,10 +469,10 @@ html {
 
 
 /* =========================================================
-   Projects — refined button colors + softer outline
+   Projects — refined button colors + softer outline + active gradient
    ========================================================= */
 
-/* Theme tokens (tuned to be more subtle) */
+/* Theme tokens (tuned) */
 :root {
   --page-pad-top-large: 140px;
   --page-pad-top-medium: 120px;
@@ -486,6 +486,9 @@ html {
 
   /* accents tuned down */
   --accent-glow: rgba(180,120,220,0.09);
+  --accent-1: rgb(191,89,244);
+  --accent-2: rgb(143,62,214);
+
   --pill-bg: rgba(255,255,255,0.03);
   --pill-border: rgba(200,137,230,0.45);
   --pill-border-strong: rgba(200,137,230,0.72);
@@ -503,11 +506,17 @@ html {
 .project-section {
   padding-top: var(--page-pad-top-large) !important;
 }
-@media (max-width: 768px) {
-  .project-section { padding-top: var(--page-pad-top-medium) !important; }
-}
-@media (max-width: 480px) {
-  .project-section { padding-top: var(--page-pad-top-small) !important; }
+@media (max-width: 768px) { .project-section { padding-top: var(--page-pad-top-medium) !important; } }
+@media (max-width: 480px) { .project-section { padding-top: var(--page-pad-top-small) !important; } }
+
+/* Heading/Subtext tweaks */
+.project-heading { /* keep existing styles but ensure contrast */ }
+.project-subtext {
+  color: #ffffff; /* requested: white */
+  font-size: 1.02rem;
+  margin-top: 6px;
+  margin-bottom: 12px;
+  opacity: 1;
 }
 
 /* Grid */
@@ -537,7 +546,7 @@ html {
   outline: none;
 }
 
-/* Outer subtle outline — less intense than before */
+/* Outer subtle outline */
 .project-card::before,
 .project-card-view::before {
   content: "";
@@ -679,7 +688,7 @@ html {
   z-index: 3;
 }
 
-/* Card-like pill style (unchanged visually but integrated) */
+/* Card-like pill style */
 .tech-pill-card {
   display: inline-flex;
   align-items: center;
@@ -711,7 +720,7 @@ html {
   transform: translateY(-4px);
 }
 
-/* Actions (button) — RECOLORED to match glass style */
+/* Actions (button) — RECOLORED and hover/active states */
 .btn-ghost,
 .btn-ghost:focus,
 .btn-ghost:hover {
@@ -724,21 +733,30 @@ html {
   border-radius: 10px;
   color: #fff;
   text-decoration: none;
-  /* tonal, glass button */
   background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
   border: 1.4px solid var(--pill-border);
   opacity: 0.98;
   transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease, background 160ms ease;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.28);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.24);
 }
 
-/* Hover: stronger border and a soft accent shadow — subtle */
+/* Hover: subtle lift + slightly stronger border + soft accent tint */
 .btn-ghost:hover,
 .btn-ghost:focus {
   transform: translateY(-3px);
   border-color: var(--pill-border-strong);
-  box-shadow: 0 10px 30px rgba(120, 60, 160, 0.06);
-  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+  box-shadow: 0 10px 22px rgba(120, 60, 160, 0.06);
+  background: linear-gradient(180deg, rgba(200,140,255,0.03), rgba(255,255,255,0.015));
+}
+
+/* Active (pressed) state — primary purple gradient for clear affordance */
+.btn-ghost:active,
+.btn-ghost.active,
+.btn-ghost:focus:active {
+  transform: translateY(-1px) scale(0.998);
+  box-shadow: 0 6px 16px rgba(80, 36, 120, 0.12) inset;
+  background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+  border-color: rgba(120, 60, 160, 0.9);
 }
 
 /* Slightly smaller icon weight so it blends */
