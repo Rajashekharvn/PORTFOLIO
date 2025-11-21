@@ -49,11 +49,17 @@ function ProjectCards({ imgPath, title, description, ghLink, demoLink, isBlog, t
             {description}
           </Card.Text>
 
-          {/* Tech stacks rendered as visible pill elements */}
+          {/* Tech stacks rendered as visible pill elements — updated visual style */}
           <div className="tech-list" aria-hidden="false">
             {tags && tags.length
               ? tags.map((t, i) => (
-                  <span key={`${t}-${i}`} className="tech-pill" title={t}>
+                  <span
+                    key={`${t}-${i}`}
+                    className="tech-pill tech-pill-card"
+                    title={t}
+                    role="note"
+                    aria-label={`Technology: ${t}`}
+                  >
                     {t}
                   </span>
                 ))
