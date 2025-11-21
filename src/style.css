@@ -469,11 +469,10 @@ html {
 
 
 /* =========================================================
-   Projects — Pro Designer Upgrade (matches Contact Option B)
-   Updated: project card outer outline (glassy) matching pill style
+   Projects — refined button colors + softer outline
    ========================================================= */
 
-/* Theme tokens */
+/* Theme tokens (tuned to be more subtle) */
 :root {
   --page-pad-top-large: 140px;
   --page-pad-top-medium: 120px;
@@ -482,18 +481,19 @@ html {
   --grid-gap: 2rem;
   --card-radius: 12px;
 
-  --card-bg-start: rgba(24,8,36,0.06); /* subtle background for outlines */
+  --card-bg-start: rgba(24,8,36,0.04);
   --card-bg-end: rgba(12,6,28,0.02);
 
-  --accent-glow: rgba(200,140,255,0.14);
+  /* accents tuned down */
+  --accent-glow: rgba(180,120,220,0.09);
   --pill-bg: rgba(255,255,255,0.03);
-  --pill-border: rgba(200,137,230,0.637);
-  --pill-border-strong: rgba(200,137,230,0.9);
-  --shadow-inset: rgba(0,0,0,0.45);
-  --focus-ring: rgba(180,120,255,0.22);
+  --pill-border: rgba(200,137,230,0.45);
+  --pill-border-strong: rgba(200,137,230,0.72);
+  --shadow-inset: rgba(0,0,0,0.35);
+  --focus-ring: rgba(160,110,200,0.14);
   --danger: rgba(255,120,140,1);
 
-  /* outer outline offsets (for visual spacing) */
+  /* outline offset */
   --outline-offset: 6px;
 }
 
@@ -501,20 +501,13 @@ html {
    FIX: Project section top space
    ============================ */
 .project-section {
-  padding-top: var(--page-pad-top-large) !important;   /* perfect for fixed navbar */
+  padding-top: var(--page-pad-top-large) !important;
 }
-
-/* Slightly smaller spacing on mobile */
 @media (max-width: 768px) {
-  .project-section {
-    padding-top: var(--page-pad-top-medium) !important;
-  }
+  .project-section { padding-top: var(--page-pad-top-medium) !important; }
 }
-
 @media (max-width: 480px) {
-  .project-section {
-    padding-top: var(--page-pad-top-small) !important;
-  }
+  .project-section { padding-top: var(--page-pad-top-small) !important; }
 }
 
 /* Grid */
@@ -526,15 +519,10 @@ html {
   margin-top: 2.25rem;
   margin-bottom: 3.5rem;
 }
+@media (max-width: 1100px) { .projects-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; } }
+@media (max-width: 680px) { .projects-grid { grid-template-columns: 1fr; gap: 1rem; } }
 
-@media (max-width: 1100px) {
-  .projects-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
-}
-@media (max-width: 680px) {
-  .projects-grid { grid-template-columns: 1fr; gap: 1rem; }
-}
-
-/* Card outer wrapper (we add an outer glassy outline via ::before) */
+/* Card outer wrapper (outer glassy outline via ::before) */
 .project-card,
 .project-card-view {
   background: transparent !important;
@@ -549,13 +537,11 @@ html {
   outline: none;
 }
 
-/* OUTER outline: subtle glass border that matches pill style.
-   Using ::before so the outline sits behind content but outside the inner card. */
+/* Outer subtle outline — less intense than before */
 .project-card::before,
 .project-card-view::before {
   content: "";
   position: absolute;
-  /* place slightly outside the inner card to create a halo/outline */
   left: calc(-1 * var(--outline-offset));
   top: calc(-1 * var(--outline-offset));
   right: calc(-1 * var(--outline-offset));
@@ -563,37 +549,29 @@ html {
   border-radius: calc(var(--card-radius) + var(--outline-offset));
   pointer-events: none;
   z-index: 0;
-  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.01));
-  border: 1.7px solid var(--pill-border);
-  box-shadow: 0 6px 18px rgba(89, 4, 168, 0.06);
-  transition: border-color 260ms ease, box-shadow 260ms ease, transform 260ms ease;
+  background: linear-gradient(180deg, rgba(255,255,255,0.006), rgba(255,255,255,0.006));
+  border: 1.2px solid var(--pill-border);
+  box-shadow: 0 4px 12px rgba(89, 4, 168, 0.04);
+  transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
 }
 
-/* Make card revealable for keyboard users */
-.project-card:focus,
-.project-card:focus-within {
-  outline: none;
-  box-shadow: 0 8px 30px var(--accent-glow);
-  border-radius: var(--card-radius);
-}
-
-/* Inner bootstrap card */
+/* Inner card */
 .transparent-card {
   background: linear-gradient(180deg, var(--card-bg-start), var(--card-bg-end)) !important;
   border: none !important;
   width: 100%;
-  min-height: 360px;               /* consistent card height */
+  min-height: 360px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   position: relative;
   padding: 1rem;
-  z-index: 2; /* above outer outline */
+  z-index: 2;
   border-radius: var(--card-radius);
-  transition: transform 260ms cubic-bezier(.2,.9,.2,1), box-shadow 260ms ease;
+  transition: transform 220ms cubic-bezier(.2,.9,.2,1), box-shadow 220ms ease;
 }
 
-/* inner accent via ::after (preserved) */
+/* inner accent */
 .transparent-card::after {
   content: "";
   position: absolute;
@@ -602,37 +580,36 @@ html {
   pointer-events: none;
   z-index: 1;
   background: transparent;
-  box-shadow: 0 0 0 1px rgba(255,255,255,0.02) inset;
-  transition: box-shadow 0.32s ease, transform 0.32s ease;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.01) inset;
+  transition: box-shadow 0.28s ease, transform 0.28s ease;
 }
 
-/* Hover/focus glow + lift for both outlines & inner card */
+/* Hover/focus: soften lift and glows */
 .project-card:hover .transparent-card,
 .project-card:focus-within .transparent-card,
 .project-card-view:hover .transparent-card,
 .project-card-view:focus-within .transparent-card {
-  transform: translateY(-6px);
+  transform: translateY(-4px);
 }
 
-/* Strengthen inner accent on hover */
+/* Inner accent strength on hover (subtle) */
 .project-card:hover .transparent-card::after,
 .project-card:focus-within .transparent-card::after,
 .project-card-view:hover .transparent-card::after,
 .project-card-view:focus-within .transparent-card::after {
   box-shadow:
-    0 0 0 1px rgba(200,140,255,0.14) inset,
-    0 8px 34px rgba(120,60,160,0.14),
-    0 0 40px rgba(160,80,240,0.12);
+    0 0 0 1px rgba(200,140,255,0.08) inset,
+    0 6px 24px rgba(100,50,140,0.08);
 }
 
-/* Strengthen outer outline on hover/focus */
+/* Outer outline hover: gentler */
 .project-card:hover::before,
 .project-card:focus-within::before,
 .project-card-view:hover::before,
 .project-card-view:focus-within::before {
   border-color: var(--pill-border-strong);
-  box-shadow: 0 12px 40px rgba(160,80,240,0.10);
-  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(120, 60, 160, 0.06);
+  transform: translateY(-2px);
 }
 
 /* Ensure card content sits above the outline */
@@ -665,14 +642,13 @@ html {
   object-fit: cover;
   border-radius: 8px;
   display: block;
-  box-shadow: 0 6px 18px var(--shadow-inset) inset;
-  transition: transform 300ms ease;
+  box-shadow: 0 6px 16px var(--shadow-inset) inset;
+  transition: transform 240ms ease;
 }
 
-/* subtle parallax on hover */
 .project-card:hover .project-thumb,
 .project-card:focus-within .project-thumb {
-  transform: scale(1.03);
+  transform: scale(1.02);
 }
 
 /* Title + description */
@@ -683,23 +659,17 @@ html {
   color: #fff;
   text-align: center;
 }
-
 .project-desc {
   font-size: 0.95rem;
   line-height: 1.45;
-  color: rgba(255,255,255,0.82);
+  color: rgba(255,255,255,0.8);
   margin: 0;
   text-align: center;
-  min-height: 64px; /* consistency */
+  min-height: 64px;
   max-width: 90%;
 }
 
-/* ============================
-   TECH / TOOL STACK — Card-like transparent pills
-   Adopted style from .tech-icons (about.css)
-   ============================ */
-
-/* Container remains same */
+/* Tech list */
 .tech-list {
   display: flex;
   flex-wrap: wrap;
@@ -709,106 +679,39 @@ html {
   z-index: 3;
 }
 
-/* New, card-like pill style */
+/* Card-like pill style (unchanged visually but integrated) */
 .tech-pill-card {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
-  /* responsive sizing so pills fit into project cards elegantly */
   padding: clamp(6px, 0.9vw, 10px) clamp(10px, 1.8vw, 14px);
   font-size: clamp(0.72rem, 1vw, 0.9rem);
   border-radius: 10px;
   line-height: 1;
   min-height: 36px;
   white-space: nowrap;
-
-  /* transparent, glassy background */
-  background: rgba(30, 15, 55, 0.65);   /* matches project inputs glass */
+  background: rgba(30, 15, 55, 0.62);
   color: #fff;
-  border: 1.7px solid var(--pill-border);
-  box-shadow: 4px 5px 8px rgba(89, 4, 168, 0.08);
-  transition: all 0.35s ease;
+  border: 1.4px solid var(--pill-border);
+  box-shadow: 3px 4px 8px rgba(89, 4, 168, 0.06);
+  transition: all 0.28s ease;
   user-select: none;
-  -webkit-user-select: none;
-  cursor: default;
-  backdrop-filter: blur(6px) saturate(120%);
-  -webkit-backdrop-filter: blur(6px) saturate(120%);
+  backdrop-filter: blur(6px) saturate(110%);
 }
-
-/* Hover / focus lift + border strength */
 .tech-pill-card:hover,
 .tech-pill-card:focus {
-  transform: translateY(-6px);
-  border: 1.9px solid var(--pill-border-strong);
-  box-shadow: 6px 9px 22px rgba(120, 60, 160, 0.12);
+  transform: translateY(-4px);
+  border: 1.6px solid var(--pill-border-strong);
+  box-shadow: 5px 7px 18px rgba(120, 60, 160, 0.08);
   outline: none;
 }
-
-/* Small inner text adjustments for long labels */
-.tech-pill-card[title] {
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Accessibility: keyboard visible focus */
 .tech-pill-card:focus-visible {
-  box-shadow: 0 0 30px var(--focus-ring), 0 6px 18px rgba(120,60,160,0.08);
-  transform: translateY(-6px);
+  box-shadow: 0 0 22px var(--focus-ring), 0 4px 12px rgba(120,60,160,0.06);
+  transform: translateY(-4px);
 }
 
-/* preserve earlier micro interaction if hovering project card */
-.project-card:hover .tech-pill-card,
-.project-card:focus-within .tech-pill-card {
-  transform: translateY(-6px);
-}
-
-/* allow smaller gaps on mobile */
-@media (max-width: 680px) {
-  .tech-pill-card {
-    padding: 6px 10px;
-    font-size: 0.78rem;
-    min-height: 34px;
-  }
-}
-
-/* Pill hover effect reduced on reduced-motion */
-@media (prefers-reduced-motion: reduce) {
-  .tech-pill-card {
-    transition: none !important;
-  }
-  .tech-pill-card:hover,
-  .tech-pill-card:focus {
-    transform: none !important;
-  }
-}
-
-/* ============================
-   Actions (hidden until hover/focus)
-   ============================ */
-.project-actions {
-  display: flex;
-  gap: 0.8rem;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  transform: translateY(8px);
-  transition: all 0.28s ease;
-  pointer-events: none;
-  z-index: 3;
-}
-
-.project-card:hover .project-actions,
-.project-card:focus-within .project-actions,
-.project-card-view:hover .project-actions,
-.project-card-view:focus-within .project-actions {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-
-/* Ghost-style action buttons */
+/* Actions (button) — RECOLORED to match glass style */
 .btn-ghost,
 .btn-ghost:focus,
 .btn-ghost:hover {
@@ -816,30 +719,38 @@ html {
   align-items: center;
   gap: 0.5rem;
   padding: 0.46rem 0.92rem;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.93rem;
-  border-radius: 8px;
+  border-radius: 10px;
   color: #fff;
   text-decoration: none;
-  background: linear-gradient(90deg, rgba(120,60,160,0.08), rgba(200,140,255,0.04));
-  border: 1px solid rgba(200,140,255,0.16);
-  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  /* tonal, glass button */
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1.4px solid var(--pill-border);
+  opacity: 0.98;
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease, background 160ms ease;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.28);
 }
 
+/* Hover: stronger border and a soft accent shadow — subtle */
 .btn-ghost:hover,
 .btn-ghost:focus {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(160,80,240,0.12);
-  background: linear-gradient(90deg, rgba(160,80,240,0.14), rgba(200,140,255,0.08));
+  transform: translateY(-3px);
+  border-color: var(--pill-border-strong);
+  box-shadow: 0 10px 30px rgba(120, 60, 160, 0.06);
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
 }
 
-/* small accessibility helpers */
+/* Slightly smaller icon weight so it blends */
+.btn-ghost svg { opacity: 0.95; transform: translateY(-1px); }
+
+/* Focus-visible */
 .project-card:focus-visible {
-  box-shadow: 0 10px 40px var(--accent-glow), 0 0 6px var(--focus-ring);
+  box-shadow: 0 8px 32px var(--accent-glow), 0 0 6px var(--focus-ring);
   border-radius: var(--card-radius);
 }
 
-/* Responsive adjustments */
+/* Responsive tweaks */
 @media (max-width: 680px) {
   .project-thumb { height: 160px; }
   .project-desc { min-height: auto; max-width: 100%; }
@@ -854,12 +765,12 @@ html {
   .project-thumb,
   .project-actions,
   .tech-pill-card,
-  .project-card::before {
+  .project-card::before,
+  .btn-ghost {
     transition: none !important;
     animation: none !important;
   }
 }
-
 
 
 
