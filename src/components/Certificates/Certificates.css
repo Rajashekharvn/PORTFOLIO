@@ -9,6 +9,31 @@
   color: #fff;
   overflow-x: hidden;
 }
+/* Viewer container responsiveness (prevents horizontal cutting) */
+.viewer-container {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+/* ensure the inner viewer respects width constraints */
+.viewer-container > div {
+  width: 100%;
+  max-width: 920px; /* same max used in JSX */
+  box-sizing: border-box;
+}
+
+/* iframe fallbacks should be responsive */
+.viewer-container iframe {
+  width: 100% !important;
+  max-width: 920px !important;
+  height: 560px;
+  border-radius: 12px;
+  box-sizing: border-box;
+}
 
 /* -------------------------------
    Certificates Section
