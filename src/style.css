@@ -470,7 +470,7 @@ html {
 
 /* =========================================================
    Projects — Pro Designer Upgrade (matches Contact Option B)
-   Updated: tech/tool stack pill style (transparent card look)
+   Updated: project card outer outline (glassy) matching pill style
    ========================================================= */
 
 /* Theme tokens */
@@ -492,6 +492,9 @@ html {
   --shadow-inset: rgba(0,0,0,0.45);
   --focus-ring: rgba(180,120,255,0.22);
   --danger: rgba(255,120,140,1);
+
+  /* outer outline offsets (for visual spacing) */
+  --outline-offset: 6px;
 }
 
 /* ============================
@@ -531,19 +534,39 @@ html {
   .projects-grid { grid-template-columns: 1fr; gap: 1rem; }
 }
 
-/* Card outer */
+/* Card outer wrapper (we add an outer glassy outline via ::before) */
 .project-card,
 .project-card-view {
   background: transparent !important;
   border: none !important;
   padding: 0 !important;
-  border-radius: var(--card-radius);
+  border-radius: calc(var(--card-radius) + var(--outline-offset));
   position: relative;
   display: flex;
   align-items: stretch;
   overflow: visible;
   -webkit-tap-highlight-color: transparent;
   outline: none;
+}
+
+/* OUTER outline: subtle glass border that matches pill style.
+   Using ::before so the outline sits behind content but outside the inner card. */
+.project-card::before,
+.project-card-view::before {
+  content: "";
+  position: absolute;
+  /* place slightly outside the inner card to create a halo/outline */
+  left: calc(-1 * var(--outline-offset));
+  top: calc(-1 * var(--outline-offset));
+  right: calc(-1 * var(--outline-offset));
+  bottom: calc(-1 * var(--outline-offset));
+  border-radius: calc(var(--card-radius) + var(--outline-offset));
+  pointer-events: none;
+  z-index: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.01));
+  border: 1.7px solid var(--pill-border);
+  box-shadow: 0 6px 18px rgba(89, 4, 168, 0.06);
+  transition: border-color 260ms ease, box-shadow 260ms ease, transform 260ms ease;
 }
 
 /* Make card revealable for keyboard users */
@@ -565,25 +588,25 @@ html {
   justify-content: flex-start;
   position: relative;
   padding: 1rem;
-  z-index: 1;
+  z-index: 2; /* above outer outline */
   border-radius: var(--card-radius);
   transition: transform 260ms cubic-bezier(.2,.9,.2,1), box-shadow 260ms ease;
 }
 
-/* outline / glow via pseudo-element */
+/* inner accent via ::after (preserved) */
 .transparent-card::after {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: var(--card-radius);
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
   background: transparent;
   box-shadow: 0 0 0 1px rgba(255,255,255,0.02) inset;
   transition: box-shadow 0.32s ease, transform 0.32s ease;
 }
 
-/* Hover/focus glow + lift */
+/* Hover/focus glow + lift for both outlines & inner card */
 .project-card:hover .transparent-card,
 .project-card:focus-within .transparent-card,
 .project-card-view:hover .transparent-card,
@@ -591,6 +614,7 @@ html {
   transform: translateY(-6px);
 }
 
+/* Strengthen inner accent on hover */
 .project-card:hover .transparent-card::after,
 .project-card:focus-within .transparent-card::after,
 .project-card-view:hover .transparent-card::after,
@@ -601,10 +625,20 @@ html {
     0 0 40px rgba(160,80,240,0.12);
 }
 
+/* Strengthen outer outline on hover/focus */
+.project-card:hover::before,
+.project-card:focus-within::before,
+.project-card-view:hover::before,
+.project-card-view:focus-within::before {
+  border-color: var(--pill-border-strong);
+  box-shadow: 0 12px 40px rgba(160,80,240,0.10);
+  transform: translateY(-4px);
+}
+
 /* Ensure card content sits above the outline */
 .card-body {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   padding: 0;
   display: flex;
   flex-direction: column;
@@ -619,7 +653,7 @@ html {
   justify-content: center;
   align-items: center;
   margin-bottom: 8px;
-  z-index: 2;
+  z-index: 3;
   overflow: hidden;
   border-radius: 8px;
 }
@@ -672,7 +706,7 @@ html {
   gap: 0.5rem;
   justify-content: center;
   margin: 0 0 6px;
-  z-index: 2;
+  z-index: 3;
 }
 
 /* New, card-like pill style */
@@ -819,12 +853,12 @@ html {
   .transparent-card::after,
   .project-thumb,
   .project-actions,
-  .tech-pill-card {
+  .tech-pill-card,
+  .project-card::before {
     transition: none !important;
     animation: none !important;
   }
 }
-
 
 
 
