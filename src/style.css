@@ -468,11 +468,9 @@ html {
 }
 
 
-/* ---------------------------
-   Projects: card + pill + actions
-   --------------------------- */
 /* =========================================================
    Projects — Pro Designer Upgrade (matches Contact Option B)
+   Updated: tech/tool stack pill style (transparent card look)
    ========================================================= */
 
 /* Theme tokens */
@@ -489,7 +487,8 @@ html {
 
   --accent-glow: rgba(200,140,255,0.14);
   --pill-bg: rgba(255,255,255,0.03);
-  --pill-border: rgba(255,255,255,0.04);
+  --pill-border: rgba(200,137,230,0.637);
+  --pill-border-strong: rgba(200,137,230,0.9);
   --shadow-inset: rgba(0,0,0,0.45);
   --focus-ring: rgba(180,120,255,0.22);
   --danger: rgba(255,120,140,1);
@@ -661,39 +660,99 @@ html {
   max-width: 90%;
 }
 
-/* Tech pills */
+/* ============================
+   TECH / TOOL STACK — Card-like transparent pills
+   Adopted style from .tech-icons (about.css)
+   ============================ */
+
+/* Container remains same */
 .tech-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.45rem;
+  gap: 0.5rem;
   justify-content: center;
-  margin: 0 0 4px;
+  margin: 0 0 6px;
   z-index: 2;
 }
 
-.tech-pill {
+/* New, card-like pill style */
+.tech-pill-card {
   display: inline-flex;
   align-items: center;
-  padding: 0.32rem 0.64rem;
-  font-size: 0.78rem;
-  border-radius: 999px;
-  background: var(--pill-bg);
-  color: rgba(255,255,255,0.92);
-  border: 1px solid var(--pill-border);
-  cursor: default;
-  transition: transform 0.14s ease, background 0.14s ease, box-shadow 0.14s ease;
+  justify-content: center;
+  gap: 0.4rem;
+  /* responsive sizing so pills fit into project cards elegantly */
+  padding: clamp(6px, 0.9vw, 10px) clamp(10px, 1.8vw, 14px);
+  font-size: clamp(0.72rem, 1vw, 0.9rem);
+  border-radius: 10px;
+  line-height: 1;
+  min-height: 36px;
+  white-space: nowrap;
+
+  /* transparent, glassy background */
+  background: rgba(30, 15, 55, 0.65);   /* matches project inputs glass */
+  color: #fff;
+  border: 1.7px solid var(--pill-border);
+  box-shadow: 4px 5px 8px rgba(89, 4, 168, 0.08);
+  transition: all 0.35s ease;
   user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
+  backdrop-filter: blur(6px) saturate(120%);
+  -webkit-backdrop-filter: blur(6px) saturate(120%);
 }
 
-/* Pill hover micro-effect */
-.tech-pill:hover,
-.tech-pill:focus {
-  transform: translateY(-3px);
-  background: rgba(200,140,255,0.06);
-  box-shadow: 0 6px 18px rgba(120,60,160,0.06);
+/* Hover / focus lift + border strength */
+.tech-pill-card:hover,
+.tech-pill-card:focus {
+  transform: translateY(-6px);
+  border: 1.9px solid var(--pill-border-strong);
+  box-shadow: 6px 9px 22px rgba(120, 60, 160, 0.12);
+  outline: none;
 }
 
-/* Actions (hidden until hover/focus) */
+/* Small inner text adjustments for long labels */
+.tech-pill-card[title] {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Accessibility: keyboard visible focus */
+.tech-pill-card:focus-visible {
+  box-shadow: 0 0 30px var(--focus-ring), 0 6px 18px rgba(120,60,160,0.08);
+  transform: translateY(-6px);
+}
+
+/* preserve earlier micro interaction if hovering project card */
+.project-card:hover .tech-pill-card,
+.project-card:focus-within .tech-pill-card {
+  transform: translateY(-6px);
+}
+
+/* allow smaller gaps on mobile */
+@media (max-width: 680px) {
+  .tech-pill-card {
+    padding: 6px 10px;
+    font-size: 0.78rem;
+    min-height: 34px;
+  }
+}
+
+/* Pill hover effect reduced on reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .tech-pill-card {
+    transition: none !important;
+  }
+  .tech-pill-card:hover,
+  .tech-pill-card:focus {
+    transform: none !important;
+  }
+}
+
+/* ============================
+   Actions (hidden until hover/focus)
+   ============================ */
 .project-actions {
   display: flex;
   gap: 0.8rem;
@@ -760,11 +819,12 @@ html {
   .transparent-card::after,
   .project-thumb,
   .project-actions,
-  .tech-pill {
+  .tech-pill-card {
     transition: none !important;
     animation: none !important;
   }
 }
+
 
 
 
