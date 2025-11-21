@@ -471,30 +471,55 @@ html {
 /* ---------------------------
    Projects: card + pill + actions
    --------------------------- */
+/* =========================================================
+   Projects — Pro Designer Upgrade (matches Contact Option B)
+   ========================================================= */
+
+/* Theme tokens */
+:root {
+  --page-pad-top-large: 140px;
+  --page-pad-top-medium: 120px;
+  --page-pad-top-small: 100px;
+
+  --grid-gap: 2rem;
+  --card-radius: 12px;
+
+  --card-bg-start: rgba(24,8,36,0.06); /* subtle background for outlines */
+  --card-bg-end: rgba(12,6,28,0.02);
+
+  --accent-glow: rgba(200,140,255,0.14);
+  --pill-bg: rgba(255,255,255,0.03);
+  --pill-border: rgba(255,255,255,0.04);
+  --shadow-inset: rgba(0,0,0,0.45);
+  --focus-ring: rgba(180,120,255,0.22);
+  --danger: rgba(255,120,140,1);
+}
+
 /* ============================
    FIX: Project section top space
    ============================ */
 .project-section {
-  padding-top: 140px !important;   /* perfect for fixed navbar */
+  padding-top: var(--page-pad-top-large) !important;   /* perfect for fixed navbar */
 }
 
 /* Slightly smaller spacing on mobile */
 @media (max-width: 768px) {
   .project-section {
-    padding-top: 120px !important;
+    padding-top: var(--page-pad-top-medium) !important;
   }
 }
 
 @media (max-width: 480px) {
   .project-section {
-    padding-top: 100px !important;
+    padding-top: var(--page-pad-top-small) !important;
   }
 }
 
+/* Grid */
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+  gap: var(--grid-gap);
   align-items: start;
   margin-top: 2.25rem;
   margin-bottom: 3.5rem;
@@ -513,16 +538,26 @@ html {
   background: transparent !important;
   border: none !important;
   padding: 0 !important;
-  border-radius: 12px;
+  border-radius: var(--card-radius);
   position: relative;
   display: flex;
   align-items: stretch;
   overflow: visible;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+
+/* Make card revealable for keyboard users */
+.project-card:focus,
+.project-card:focus-within {
+  outline: none;
+  box-shadow: 0 8px 30px var(--accent-glow);
+  border-radius: var(--card-radius);
 }
 
 /* Inner bootstrap card */
 .transparent-card {
-  background: transparent !important;
+  background: linear-gradient(180deg, var(--card-bg-start), var(--card-bg-end)) !important;
   border: none !important;
   width: 100%;
   min-height: 360px;               /* consistent card height */
@@ -532,6 +567,8 @@ html {
   position: relative;
   padding: 1rem;
   z-index: 1;
+  border-radius: var(--card-radius);
+  transition: transform 260ms cubic-bezier(.2,.9,.2,1), box-shadow 260ms ease;
 }
 
 /* outline / glow via pseudo-element */
@@ -539,7 +576,7 @@ html {
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: 12px;
+  border-radius: var(--card-radius);
   pointer-events: none;
   z-index: 0;
   background: transparent;
@@ -584,6 +621,8 @@ html {
   align-items: center;
   margin-bottom: 8px;
   z-index: 2;
+  overflow: hidden;
+  border-radius: 8px;
 }
 
 .project-thumb {
@@ -593,7 +632,14 @@ html {
   object-fit: cover;
   border-radius: 8px;
   display: block;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.45) inset;
+  box-shadow: 0 6px 18px var(--shadow-inset) inset;
+  transition: transform 300ms ease;
+}
+
+/* subtle parallax on hover */
+.project-card:hover .project-thumb,
+.project-card:focus-within .project-thumb {
+  transform: scale(1.03);
 }
 
 /* Title + description */
@@ -631,9 +677,9 @@ html {
   padding: 0.32rem 0.64rem;
   font-size: 0.78rem;
   border-radius: 999px;
-  background: rgba(255,255,255,0.03);
+  background: var(--pill-bg);
   color: rgba(255,255,255,0.92);
-  border: 1px solid rgba(255,255,255,0.04);
+  border: 1px solid var(--pill-border);
   cursor: default;
   transition: transform 0.14s ease, background 0.14s ease, box-shadow 0.14s ease;
   user-select: none;
@@ -694,6 +740,12 @@ html {
   background: linear-gradient(90deg, rgba(160,80,240,0.14), rgba(200,140,255,0.08));
 }
 
+/* small accessibility helpers */
+.project-card:focus-visible {
+  box-shadow: 0 10px 40px var(--accent-glow), 0 0 6px var(--focus-ring);
+  border-radius: var(--card-radius);
+}
+
 /* Responsive adjustments */
 @media (max-width: 680px) {
   .project-thumb { height: 160px; }
@@ -702,6 +754,17 @@ html {
   .projects-grid { gap: 1rem; grid-template-columns: 1fr; }
 }
 
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .transparent-card,
+  .transparent-card::after,
+  .project-thumb,
+  .project-actions,
+  .tech-pill {
+    transition: none !important;
+    animation: none !important;
+  }
+}
 
 
 
