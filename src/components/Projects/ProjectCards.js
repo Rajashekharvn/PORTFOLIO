@@ -5,10 +5,33 @@ import Button from "react-bootstrap/Button";
 import { CgWebsite } from "react-icons/cg";
 import { BsGithub } from "react-icons/bs";
 
+/**
+ * ProjectCards
+ *
+ * Accessibility notes:
+ * - article is made focusable so keyboard users can reveal action buttons (CSS uses :focus-within)
+ * - pressing Enter or Space on the card will activate the primary action (demo if present, otherwise GitHub)
+ */
 function ProjectCards({ imgPath, title, description, ghLink, demoLink, isBlog, tags = [] }) {
+  const primaryHref = demoLink || ghLink || null;
+
+  const onKeyAction = (e) => {
+    // If Enter or Space pressed, activate primary link (if any)
+    if ((e.key === "Enter" || e.key === " ") && primaryHref) {
+      // emulate link activation
+      window.open(primaryHref, "_blank", "noopener,noreferrer");
+    }
+  };
+
   return (
-    <article className="project-card project-card-view" role="article" aria-label={title}>
-      <Card className="transparent-card">
+    <article
+      className="project-card project-card-view"
+      role="article"
+      aria-label={title}
+      tabIndex={0}
+      onKeyDown={onKeyAction}
+    >
+      <Card className="transparent-card" aria-hidden="false">
         {/* Thumbnail wrapper so we can control sizing consistently */}
         <div className="thumb-wrap" aria-hidden="false">
           <img
