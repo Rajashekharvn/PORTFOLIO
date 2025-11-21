@@ -1,338 +1,214 @@
-/* =========================================================
-   Certificates — Refined (purple theme, glassmorphism tokens)
-   ========================================================= */
+/* ------------------------------- Certificates Page Layout -------------------------------- */ 
+.certificates-container { 
+  display: flex; 
+  flex-direction: column; 
+  min-height: 100vh; 
+  background: radial-gradient(circle at top left, #1a0b2e 0%, #0f051b 100%); 
+  color: #fff; 
+  overflow-x: hidden; 
+} 
 
-/* Theme tokens */
-:root {
-  --page-bg-start: #1a0b2e;
-  --page-bg-end: #0f051b;
+/* ------------------------------- Certificates Section -------------------------------- */ 
+.certificates-section { 
+  flex: 1; 
+  position: relative; 
+  text-align: center; 
+  padding: 80px 20px 60px; 
+  z-index: 1; 
+  background: transparent; 
+} 
 
-  --accent-1: rgb(191,89,244); /* lighter purple */
-  --accent-2: rgb(143,62,214); /* deeper purple */
+/* Animated glowing overlay */ 
+.certificates-section::before { 
+  content: ""; 
+  position: absolute; 
+  inset: 0; 
+  background: linear-gradient(135deg, rgba(147, 51, 234, 0.15), rgba(192, 132, 245, 0.05)); 
+  animation: gradientMove 6s ease-in-out infinite alternate; 
+  z-index: -1; 
+} 
 
-  --muted-white: rgba(255,255,255,0.92);
-  --muted-2: rgba(187,167,233,0.9);
+@keyframes gradientMove { 
+  0% { background-position: left top; } 
+  100% { background-position: right bottom; } 
+} 
 
-  --card-bg: rgba(255,255,255,0.04);
-  --card-border: rgba(192,132,245,0.12);
-  --card-radius: 10px;
+/* ------------------------------- Title Styling -------------------------------- */ 
+.certificates-title { 
+  font-size: 2.5rem; 
+  font-weight: 700; 
+  letter-spacing: 1px; 
+  margin-bottom: 40px; 
+  text-shadow: 0 0 12px rgba(192, 132, 245, 0.7); 
+} 
 
-  --pill-border: rgba(200,137,230,0.45);
-  --pill-border-strong: rgba(200,137,230,0.8);
+.white-text { 
+  color: #fff; 
+} 
 
-  --shadow-weak: rgba(192,132,245,0.06);
-  --shadow-strong: rgba(10,7,20,0.35);
+.violet-text { 
+  color: #c084f5; 
+} 
 
-  --outline-offset: 6px;
+/* ------------------------------- Certificate Cards (legacy grid items) -------------------------------- */ 
+.cert-row { 
+  display: flex; 
+  flex-wrap: wrap; 
+  justify-content: center; 
+  gap: 1.5rem; 
+} 
 
-  --glass-blur: 8px;
-  --transition-fast: 180ms;
-  --transition-med: 260ms;
-}
+/* Each card base */ 
+.cert-card { 
+  background: rgba(255, 255, 255, 0.05); 
+  border: 1px solid rgba(192, 132, 245, 0.12); 
+  border-radius: 10px; 
+  padding: 1rem; 
+  width: 100%; 
+  text-align: center; 
+  transition: all 0.3s ease; 
+  box-shadow: 0 0 12px rgba(192, 132, 245, 0.08); 
+} 
 
-/* -------------------------------
-   Page + Container
--------------------------------- */
-.certificates-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background: radial-gradient(circle at top left, var(--page-bg-start) 0%, var(--page-bg-end) 100%);
-  color: var(--muted-white);
-  overflow-x: hidden;
-}
+/* make column cards consistent width on larger screens */ 
+@media (min-width: 992px) { 
+  .cert-card { width: 220px; } 
+} 
 
-/* -------------------------------
-   Certificates Section
--------------------------------- */
-.certificates-section {
-  flex: 1;
-  position: relative;
-  text-align: center;
-  padding: 80px 20px 60px;
-  z-index: 1;
-  background: transparent;
-}
+/* Hover surrounding card lift */ 
+.cert-card:hover { 
+  transform: translateY(-6px); 
+} 
 
-/* Animated glowing overlay (softened) */
-.certificates-section::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(147, 51, 234, 0.12), rgba(192, 132, 245, 0.04));
-  animation: gradientMove 6s ease-in-out infinite alternate;
-  z-index: -1;
-  filter: blur(10px);
-}
+/* small-thumb (purple area) */ 
+.small-thumb { 
+  height: 80px; 
+  width: 100%; 
+  border-radius: 8px; 
+  background: linear-gradient(135deg, #7e22ce, #c084f5); 
+  display:flex; align-items:center; justify-content:center; 
+  color:#fff; font-weight:700; font-size:1rem; margin-bottom:0.7rem; 
+  position: relative; 
+  overflow: hidden; 
+} 
 
-@keyframes gradientMove {
-  0% { background-position: left top; }
-  100% { background-position: right bottom; }
-}
+/* Info text style fallback if you ever show it */ 
+.cert-meta { 
+  color: #bba7e9; 
+  font-size: 0.9rem; 
+  margin-bottom: 0.6rem; 
+} 
 
-/* -------------------------------
-   Title Styling
--------------------------------- */
-.certificates-title {
-  font-size: clamp(1.6rem, 3.2vw, 2.5rem);
-  font-weight: 700;
-  letter-spacing: 1px;
-  margin-bottom: 40px;
-  text-shadow: 0 0 12px rgba(192, 132, 245, 0.65);
-  color: var(--muted-white);
-}
+/* ------------------------------- Buttons (View / Download) -------------------------------- */ 
+.cert-actions { 
+  display: flex; 
+  justify-content: center; 
+  gap: 0.8rem; 
+} 
 
-.white-text { color: #fff; }
-.violet-text { color: var(--muted-2); }
+.cert-actions button { 
+  border-radius: 8px; 
+  border: 1px solid rgba(192, 132, 245, 0.4); 
+  color: #c084f5; 
+  background-color: transparent; 
+  transition: all 0.3s ease; 
+  font-size: 0.9rem; 
+  padding: 0.4rem 0.8rem; 
+} 
 
-/* -------------------------------
-   Card grid + outline
--------------------------------- */
-.cert-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1.5rem;
-  align-items: stretch;
-}
+.cert-actions button:hover { 
+  background-color: #c084f5; 
+  color: #fff; 
+  box-shadow: 0 0 12px rgba(192, 132, 245, 0.6); 
+} 
 
-/* Each card base (with outer glassy outline like projects) */
-.cert-card {
-  position: relative;
-  width: 100%;
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  border-radius: calc(var(--card-radius));
-  padding: 1rem;
-  text-align: center;
-  transition: transform var(--transition-med) cubic-bezier(.2,.9,.2,1), box-shadow var(--transition-med);
-  box-shadow: 0 0 12px var(--shadow-weak);
-  border: 1px solid var(--card-border);
-  overflow: hidden;
-  z-index: 1;
-}
+/* ------------------------------- Viewer & Tabs Enhancements (added) -------------------------------- */ 
 
-/* Outer subtle outline (behind the card) */
-.cert-card::before {
-  content: "";
-  position: absolute;
-  left: calc(-1 * var(--outline-offset));
-  top: calc(-1 * var(--outline-offset));
-  right: calc(-1 * var(--outline-offset));
-  bottom: calc(-1 * var(--outline-offset));
-  border-radius: calc(var(--card-radius) + var(--outline-offset));
-  pointer-events: none;
-  z-index: 0;
-  background: linear-gradient(180deg, rgba(255,255,255,0.004), rgba(255,255,255,0.004));
-  border: 1.2px solid var(--pill-border);
-  box-shadow: 0 6px 18px rgba(89, 4, 168, 0.04);
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
-}
+/* skeleton + shadow */ 
+.skeleton { 
+  box-shadow: 0 10px 30px rgba(10,7,20,0.35); 
+} 
 
-.cert-card:hover,
-.cert-card:focus-within {
-  transform: translateY(-6px);
-}
+/* window hover */ 
+.vscode-like-window { 
+  transition: transform 320ms cubic-bezier(.2,.9,.2,1); 
+} 
 
-/* Strengthen outline on hover (subtle) */
-.cert-card:hover::before,
-.cert-card:focus-within::before {
-  border-color: var(--pill-border-strong);
-  box-shadow: 0 10px 26px rgba(120, 60, 160, 0.06);
-  transform: translateY(-3px);
-}
+.vscode-like-window:hover { 
+  transform: translateY(-4px); 
+} 
 
-/* consistent width at large screens */
-@media (min-width: 992px) {
-  .cert-card { width: 220px; }
-}
+/* tab focus and hover micro-interactions */ 
+.tab { 
+  transition: transform 240ms cubic-bezier(.2,.9,.2,1), box-shadow 240ms ease; 
+} 
 
-/* -------------------------------
-   Small thumb (purple area)
--------------------------------- */
-.small-thumb {
-  height: 80px;
-  width: 100%;
-  border-radius: 8px;
-  background: linear-gradient(135deg, var(--accent-2), var(--accent-1));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-weight: 700;
-  font-size: 1rem;
-  margin-bottom: 0.7rem;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 6px 18px rgba(10,7,20,0.25) inset;
-}
+.tab:focus-visible { 
+  outline: 3px solid rgba(192,132,245,0.12); 
+  outline-offset: 2px; 
+} 
 
-/* initials/label micro movement (preserved) */
-.small-thumb .initials {
-  display: inline-block;
-  transition: transform var(--transition-med) var(--transition-med);
-}
+.tab.active { 
+  box-shadow: 0 8px 28px rgba(14,11,30,0.28); 
+  transform: translateY(-4px); 
+} 
 
-/* Info text */
-.cert-meta {
-  color: var(--muted-2);
-  font-size: 0.9rem;
-  margin-bottom: 0.6rem;
-}
+/* small thumb micro-3d on hover */ 
+.hover-reveal:hover .small-thumb .initials, 
+.hover-reveal:focus-within .small-thumb .initials { 
+  transform: translateY(-6px) rotateX(6deg); 
+} 
 
-/* -------------------------------
-   Viewer, Tabs, Skeleton
--------------------------------- */
+/* keep reduced-motion respectful */ 
+@media (prefers-reduced-motion: reduce) { 
+  .vscode-like-window, .tab, .skeleton { 
+    transition: none !important; 
+    animation: none !important; 
+    transform: none !important; 
+  } 
+} 
 
-/* skeleton + shadow */
-.skeleton { box-shadow: 0 10px 30px rgba(10,7,20,0.35); border-radius: 10px; }
+/* ------------------------------- Footer -------------------------------- */ 
+.footer { 
+  background: rgba(0, 0, 0, 0.4); 
+  color: #d6cfe6; 
+  text-align: center; 
+  padding: 14px 0; 
+  font-size: 0.9rem; 
+  width: 100%; 
+  margin-top: auto; 
+  border-top: 1px solid rgba(192, 132, 245, 0.2); 
+} 
 
-/* window hover */
-.vscode-like-window {
-  transition: transform var(--transition-med) cubic-bezier(.2,.9,.2,1), box-shadow var(--transition-med);
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.02);
-}
-.vscode-like-window:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(10,7,20,0.45); }
+/* ------------------------------- Responsive -------------------------------- */ 
+@media (max-width: 576px) { 
+  .certificates-title { 
+    font-size: 1.8rem; 
+  } 
+  .small-thumb { 
+    height: 70px; 
+    font-size: 0.95rem; 
+  } 
+  .cert-card { 
+    width: 90%; 
+  } 
+} 
 
-/* tab focus and hover micro-interactions */
-.tab {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-radius: 8px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
-  border: 1px solid rgba(255,255,255,0.02);
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
-}
-.tab:focus-visible { outline: 3px solid rgba(192,132,245,0.12); outline-offset: 2px; }
-.tab.active {
-  box-shadow: 0 8px 28px rgba(14,11,30,0.28);
-  transform: translateY(-4px);
-}
+/* ------------------------------- Accessibility helper -------------------------------- */ 
+/* sr-only utility (used to keep semantic info for screen readers) */ 
+.sr-only { 
+  position: absolute !important; 
+  width: 1px !important; 
+  height: 1px !important; 
+  padding: 0 !important; 
+  margin: -1px !important; 
+  overflow: hidden !important; 
+  clip: rect(0, 0, 0, 0) !important; 
+  white-space: nowrap !important; 
+  border: 0 !important; 
+} 
 
-/* small thumb micro-3d on hover */
-.hover-reveal:hover .small-thumb .initials,
-.hover-reveal:focus-within .small-thumb .initials {
-  transform: translateY(-6px) rotateX(6deg);
-}
-
-/* -------------------------------
-   Buttons (View / Download) — purple glass buttons
--------------------------------- */
-.cert-actions {
-  display: flex;
-  justify-content: center;
-  gap: 0.8rem;
-  margin-top: 0.6rem;
-}
-
-/* base button */
-.cert-actions button,
-.cert-actions a.button {
-  border-radius: 8px;
-  padding: 0.42rem 0.9rem;
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: #fff;
-  background: linear-gradient(90deg, rgba(191,89,244,0.9), rgba(143,62,214,0.9));
-  border: 1.4px solid rgba(200,137,230,0.72);
-  box-shadow: 0 8px 24px rgba(130,60,200,0.14);
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast);
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-/* hover */
-.cert-actions button:hover,
-.cert-actions a.button:hover {
-  transform: translateY(-4px);
-  background: linear-gradient(90deg, rgba(200,120,255,1), rgba(155,70,230,1));
-  box-shadow: 0 14px 36px rgba(140,70,220,0.18);
-  border-color: rgba(220,160,255,0.95);
-}
-
-/* active / pressed */
-.cert-actions button:active,
-.cert-actions a.button:active {
-  transform: translateY(-1px) scale(0.995);
-  background: linear-gradient(90deg, rgba(160,70,230,1), rgba(120,40,190,1));
-  border-color: rgba(150,80,210,1);
-  box-shadow: inset 0 6px 14px rgba(0,0,0,0.35);
-}
-
-/* color inverted (outline only) small variant */
-.cert-actions .outline {
-  background: transparent;
-  color: var(--muted-2);
-  border: 1px solid rgba(192,132,245,0.28);
-  box-shadow: none;
-}
-.cert-actions .outline:hover {
-  background: rgba(192,132,245,0.06);
-  color: #fff;
-}
-
-/* -------------------------------
-   Footer
--------------------------------- */
-.footer {
-  background: rgba(0,0,0,0.42);
-  color: #d6cfe6;
-  text-align: center;
-  padding: 14px 0;
-  font-size: 0.9rem;
-  width: 100%;
-  margin-top: auto;
-  border-top: 1px solid rgba(192, 132, 245, 0.2);
-}
-
-/* -------------------------------
-   Responsive
--------------------------------- */
-@media (max-width: 576px) {
-  .certificates-title { font-size: 1.8rem; }
-  .small-thumb { height: 70px; font-size: 0.95rem; }
-  .cert-card { width: 90%; margin: 0 auto; }
-}
-
-/* -------------------------------
-   Accessibility helper (sr-only)
--------------------------------- */
-.sr-only {
-  position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  padding: 0 !important;
-  margin: -1px !important;
-  overflow: hidden !important;
-  clip: rect(0, 0, 0, 0) !important;
-  white-space: nowrap !important;
-  border: 0 !important;
-}
-
-/* Ensure particle canvas doesn't intercept clicks (if using tsparticles) */
-#tsparticles, canvas, .tsparticles-canvas-el {
-  pointer-events: none !important;
-}
-
-/* -------------------------------
-   Reduced motion
--------------------------------- */
-@media (prefers-reduced-motion: reduce) {
-  .certificates-section::before,
-  .vscode-like-window,
-  .tab,
-  .skeleton,
-  .small-thumb .initials,
-  .cert-card,
-  .cert-card::before {
-    transition: none !important;
-    animation: none !important;
-    transform: none !important;
-  }
+/* ensure particle canvas doesn't intercept clicks (if you use tsparticles) */ 
+#tsparticles, canvas, .tsparticles-canvas-el { 
+  pointer-events: none !important; 
 }
