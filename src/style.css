@@ -467,9 +467,8 @@ html {
   .footer-icons { gap: 10px; }
 }
 
-
 /* =========================================================
-   Projects — refined button colors + softer outline + active gradient
+   Projects — full stylesheet (buttons show on hover + purple theme)
    ========================================================= */
 
 /* Theme tokens (tuned) */
@@ -484,7 +483,7 @@ html {
   --card-bg-start: rgba(24,8,36,0.04);
   --card-bg-end: rgba(12,6,28,0.02);
 
-  /* accents tuned down */
+  /* accents tuned */
   --accent-glow: rgba(180,120,220,0.09);
   --accent-1: rgb(191,89,244);
   --accent-2: rgb(143,62,214);
@@ -510,7 +509,7 @@ html {
 @media (max-width: 480px) { .project-section { padding-top: var(--page-pad-top-small) !important; } }
 
 /* Heading/Subtext tweaks */
-.project-heading { /* keep existing styles but ensure contrast */ }
+.project-heading { /* preserve existing heading styles */ }
 .project-subtext {
   color: #ffffff; /* requested: white */
   font-size: 1.02rem;
@@ -720,49 +719,95 @@ html {
   transform: translateY(-4px);
 }
 
-/* Actions (button) — RECOLORED and hover/active states */
+/* Actions (button) — initially HIDDEN; appear on hover/focus of the card */
+.project-actions {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+  align-items: center;
+
+  /* hidden by default, then fade/slide into view on hover/focus */
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 240ms ease, transform 240ms ease;
+  pointer-events: none;
+  z-index: 4;
+}
+
+/* Reveal action buttons when card is hovered or focused (keyboard accessible) */
+.project-card:hover .project-actions,
+.project-card:focus-within .project-actions,
+.project-card-view:hover .project-actions,
+.project-card-view:focus-within .project-actions {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* -------------------------------------------------------
+   PURPLE BUTTONS (match page purple theme)
+   ------------------------------------------------------- */
+
 .btn-ghost,
 .btn-ghost:focus,
 .btn-ghost:hover {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.46rem 0.92rem;
+
+  padding: 0.50rem 1rem;
   font-weight: 700;
   font-size: 0.93rem;
+
   border-radius: 10px;
   color: #fff;
   text-decoration: none;
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  border: 1.4px solid var(--pill-border);
+
+  /* Purple gradient (base state) */
+  background: linear-gradient(90deg, rgba(191,89,244,0.92), rgba(143,62,214,0.92));
+  border: 1.6px solid rgba(200,137,230,0.72);
+
+  box-shadow: 0 8px 22px rgba(150, 60, 200, 0.18);
   opacity: 0.98;
-  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease, background 160ms ease;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.24);
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease,
+    opacity 160ms ease;
 }
 
-/* Hover: subtle lift + slightly stronger border + soft accent tint */
+/* Hover: brighter purple + lift */
 .btn-ghost:hover,
 .btn-ghost:focus {
-  transform: translateY(-3px);
-  border-color: var(--pill-border-strong);
-  box-shadow: 0 10px 22px rgba(120, 60, 160, 0.06);
-  background: linear-gradient(180deg, rgba(200,140,255,0.03), rgba(255,255,255,0.015));
+  transform: translateY(-4px);
+  background: linear-gradient(90deg, rgba(200,120,255,1), rgba(155,70,230,1));
+  box-shadow: 0 14px 32px rgba(150, 60, 220, 0.28);
+  border-color: rgba(220,160,255,0.95);
 }
 
-/* Active (pressed) state — primary purple gradient for clear affordance */
+/* Active (pressed) state — darker + pressed effect */
 .btn-ghost:active,
 .btn-ghost.active,
 .btn-ghost:focus:active {
-  transform: translateY(-1px) scale(0.998);
-  box-shadow: 0 6px 16px rgba(80, 36, 120, 0.12) inset;
-  background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
-  border-color: rgba(120, 60, 160, 0.9);
+  transform: translateY(-1px) scale(0.995);
+  background: linear-gradient(90deg, rgba(160,70,230,1), rgba(120,40,190,1));
+  border-color: rgba(150, 80, 210, 1);
+  box-shadow: inset 0 4px 14px rgba(0,0,0,0.35);
 }
 
-/* Slightly smaller icon weight so it blends */
-.btn-ghost svg { opacity: 0.95; transform: translateY(-1px); }
+/* Icon tint */
+.btn-ghost svg {
+  opacity: 0.92;
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+.btn-ghost:hover svg,
+.btn-ghost:focus svg {
+  opacity: 1;
+  transform: translateY(-1px);
+}
 
-/* Focus-visible */
+/* small accessibility helpers */
 .project-card:focus-visible {
   box-shadow: 0 8px 32px var(--accent-glow), 0 0 6px var(--focus-ring);
   border-radius: var(--card-radius);
@@ -789,6 +834,7 @@ html {
     animation: none !important;
   }
 }
+
 
 
 
