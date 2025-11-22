@@ -1,6 +1,6 @@
 // src/components/Certificates/Certificates.jsx
-import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Button } from "react-bootstrap";
+import React, { useEffect, useState, useRef } from "react";
+import { Container, Row, Col } from "react-bootstrap";
 import Particle from "../Particle";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
@@ -38,48 +38,55 @@ export default function Certificates() {
   const [pageCounts, setPageCounts] = useState({});
   const [loadedPages, setLoadedPages] = useState({});
   const [renderError, setRenderError] = useState({});
-  const [width, setWidth] = useState(typeof window !== "undefined" ? window.innerWidth : 1200);
 
+  // responsive viewer sizing based on container, not window
+  const [viewerWidth, setViewerWidth] = useState(820);
+  const viewerHeight = 550;
+  const viewerContainerRef = useRef(null);
+
+  // refs for reveal animations
+  const sectionRef = useRef(null);
+  const titleRef = useRef(null);
+  const leftColRef = useRef(null);
+  const viewerRef = useRef(null);
+
+  // measure viewer container and keep width in sync
   useEffect(() => {
-    // ensure worker is set (helps with HMR too)
-    pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+    const updateWidth = () => {
+      const el = viewerContainerRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const w = Math.max(320, Math.min(900, rect.width)); // safe bounds
+      setViewerWidth(w);
+    };
 
-    const onResize = () => setWidth(window.innerWidth);
-    window.addEventListener("resize", onResize);
+    updateWidth();
 
-    // when mount, read URL param to auto-open a certificate if provided
-    try {
-      const params = new URLSearchParams(window.location.search);
-      const certParam = params.get("cert");
-      if (certParam) {
-        const foundIndex = certificatesData.findIndex((c) => c.slug === certParam);
-        if (foundIndex !== -1) {
-          // open that certificate and set it as active
-          const tabId = `cert-${foundIndex}`;
-          setOpenTabs([{ id: tabId, cert: certificatesData[foundIndex] }]);
-          setActiveTab(tabId);
-          // mark loadedPages false until rendered
-          setLoadedPages((p) => ({ ...p, [tabId]: false }));
-        }
+    let ro;
+    if (typeof ResizeObserver !== "undefined") {
+      ro = new ResizeObserver(updateWidth);
+      if (viewerContainerRef.current) {
+        ro.observe(viewerContainerRef.current);
       }
-    } catch (e) {
-      // ignore URL parse errors
-      // console.warn('Failed to parse cert param', e);
+    } else {
+      window.addEventListener("resize", updateWidth);
     }
 
-    return () => window.removeEventListener("resize", onResize);
+    return () => {
+      if (ro) ro.disconnect();
+      else window.removeEventListener("resize", updateWidth);
+    };
   }, []);
 
-  // --- NEW: fallback timeout to avoid infinite 'Loading' state ---
+  // --- fallback timeout to avoid infinite 'Loading' state ---
   useEffect(() => {
-    // If nothing loads for the active tab within 8s, show iframe fallback
     if (!activeTab) return;
     const t = setTimeout(() => {
-      // only trigger fallback if the page hasn't loaded and no explicit render error
       setLoadedPages((prev) => {
         if (!prev[activeTab] && !renderError[activeTab]) {
-          console.warn(`[Certificates] PDF did not render in time for ${activeTab}, enabling iframe fallback.`);
-          // mark as "loaded" so the UI switches from skeleton -> viewer (iframe will render)
+          console.warn(
+            `[Certificates] PDF did not render in time for ${activeTab}, enabling iframe fallback.`
+          );
           return { ...prev, [activeTab]: true };
         }
         return prev;
@@ -89,6 +96,39 @@ export default function Certificates() {
     return () => clearTimeout(t);
   }, [activeTab, renderError]);
 
+  // --- Section entrance reveal: medium intensity (option 2) ---
+  useEffect(() => {
+    const root = sectionRef.current;
+    if (!root || !("IntersectionObserver" in window)) {
+      // If no IO support, reveal immediately
+      titleRef.current?.classList?.add("reveal--active");
+      leftColRef.current?.classList?.add("reveal--active");
+      viewerRef.current?.classList?.add("reveal--active");
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Reveal the parts with a tiny stagger for feel
+            setTimeout(() => titleRef.current?.classList?.add("reveal--active"), 0);
+            setTimeout(() => leftColRef.current?.classList?.add("reveal--active"), 120);
+            setTimeout(() => viewerRef.current?.classList?.add("reveal--active"), 220);
+            observer.disconnect();
+          }
+        });
+      },
+      { root: null, threshold: 0.12 }
+    );
+
+    io.observe(root);
+
+    return () => {
+      try { io.disconnect(); } catch (e) { /* ignore */ }
+    };
+  }, []);
+
   const pushCertToUrl = (cert) => {
     try {
       const url = new URL(window.location.href);
@@ -97,10 +137,8 @@ export default function Certificates() {
       } else {
         url.searchParams.delete("cert");
       }
-      // replaceState so navigation back/forward is predictable
       window.history.replaceState(null, "", url.toString());
     } catch (e) {
-      // fallback to hash if URL API is not available
       if (cert && cert.slug) {
         window.location.hash = `cert-${cert.slug}`;
       } else {
@@ -126,7 +164,9 @@ export default function Certificates() {
 
     setTimeout(() => {
       const preview = document.querySelector(".vscode-like-window");
-      if (preview) preview.scrollIntoView({ behavior: "smooth", block: "center" });
+      if (preview) {
+        preview.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
     }, 80);
   };
 
@@ -148,9 +188,21 @@ export default function Certificates() {
         return newTabs[newIndex].id;
       });
 
-      setLoadedPages((lp) => { const c = { ...lp }; delete c[tabId]; return c; });
-      setPageCounts((pc) => { const c = { ...pc }; delete c[tabId]; return c; });
-      setRenderError((re) => { const c = { ...re }; delete c[tabId]; return c; });
+      setLoadedPages((lp) => {
+        const c = { ...lp };
+        delete c[tabId];
+        return c;
+      });
+      setPageCounts((pc) => {
+        const c = { ...pc };
+        delete c[tabId];
+        return c;
+      });
+      setRenderError((re) => {
+        const c = { ...re };
+        delete c[tabId];
+        return c;
+      });
 
       return newTabs;
     });
@@ -188,46 +240,82 @@ export default function Certificates() {
   };
 
   const activeCert = openTabs.find((t) => t.id === activeTab)?.cert || null;
-  const viewerWidth = Math.min(850, Math.round(width * 0.85));
-  const viewerHeight = 550;
 
   return (
-    <Container fluid className="about-section certificates-container" id="certificates">
+    <Container
+      fluid
+      className="about-section certificates-container"
+      id="certificates"
+      ref={sectionRef}
+    >
       <Particle />
 
       <Container>
-        <h1 className="project-heading certificates-title">
+        <h1
+          ref={titleRef}
+          className="project-heading certificates-title reveal title-reveal"
+        >
           My <strong className="purple violet-text">Certificates</strong>
         </h1>
 
-        <Row style={{ justifyContent: "center", padding: "10px" }}>
-          <Col xs={12} lg={3} className="mb-4">
-            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+        {/* upgraded layout: custom grid via CSS */}
+        <Row
+          className="cert-layout-row"
+          style={{ justifyContent: "center", padding: "10px" }}
+        >
+          {/* Left column: smaller, clickable cards (initials reveal on hover) */}
+          <Col
+            xs={12}
+            lg={3}
+            className="mb-4 cert-col-left reveal left-reveal"
+            ref={leftColRef}
+          >
+            <div className="cert-list">
               {certificatesData.map((cert, index) => {
-                const initials = cert.name.split(" ").slice(0, 2).map((w) => w[0]).join("");
+                const initials = cert.name
+                  .split(" ")
+                  .slice(0, 2)
+                  .map((w) => w[0])
+                  .join("");
                 const tabId = `cert-${index}`;
                 const isActive = activeTab === tabId;
                 return (
                   <div
                     key={index}
-                    className={`cert-card clickable-card hover-reveal ${isActive ? "active" : ""}`}
+                    className={`cert-card clickable-card hover-reveal ${
+                      isActive ? "active" : ""
+                    }`}
                     role="button"
                     tabIndex={0}
                     onClick={() => openCertificate(cert, index)}
-                    onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") openCertificate(cert, index); }}
-                    style={{ cursor: "pointer", width: "100%" }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        openCertificate(cert, index);
+                      }
+                    }}
                     aria-label={`Open ${cert.name}`}
                   >
-                    <div className="thumb small-thumb" aria-hidden>
+                    <div className="small-thumb" aria-hidden>
+                      {/* initials (visible by default) */}
                       <span className="initials">{initials}</span>
+
+                      {/* content that will slide in to replace initials on hover/focus */}
                       <div className="thumb-content" aria-hidden>
-                        <div className="thumb-name" title={cert.name}>{cert.name}</div>
-                        <div className="thumb-meta">{cert.issuer} • {cert.year}</div>
+                        <div className="thumb-name" title={cert.name}>
+                          {cert.name}
+                        </div>
+                        <div className="thumb-meta">
+                          {cert.issuer} • {cert.year}
+                        </div>
                       </div>
                     </div>
+
+                    {/* semantic info for screen readers only */}
                     <div className="sr-only card-info">
                       <h6>{cert.name}</h6>
-                      <p>{cert.issuer} • {cert.year}</p>
+                      <p>
+                        {cert.issuer} • {cert.year}
+                      </p>
                     </div>
                   </div>
                 );
@@ -235,10 +323,16 @@ export default function Certificates() {
             </div>
           </Col>
 
-          <Col xs={12} lg={9} className="mb-4">
-            <div className="vscode-like-window" style={{ borderRadius: 12, overflow: "hidden", minHeight: 460 }}>
-              <div className="tab-bar" style={{ display: "flex", gap: 8, padding: 8, background: "rgba(255,255,255,0.02)", borderBottom: "1px solid rgba(255,255,255,0.04)", overflowX: "auto" }}>
-                {openTabs.length === 0 && <div style={{ color: "#bda9e6", padding: "8px 16px" }}>No open certificates — click any certificate to open</div>}
+          {/* Right column: large viewer */}
+          <Col xs={12} lg={9} className="mb-4 cert-col-right reveal right-reveal" ref={viewerRef}>
+            <div className="vscode-like-window" style={{ minHeight: 460 }}>
+              {/* Tab bar */}
+              <div className="tab-bar">
+                {openTabs.length === 0 && (
+                  <div style={{ color: "#bda9e6", padding: "8px 16px" }}>
+                    No open certificates — click any certificate to open
+                  </div>
+                )}
                 {openTabs.map((tab) => (
                   <div
                     key={tab.id}
@@ -251,20 +345,37 @@ export default function Certificates() {
                       padding: "8px 14px",
                       borderRadius: 8,
                       cursor: "pointer",
-                      background: activeTab === tab.id ? "rgba(192,132,245,0.12)" : "transparent",
+                      background:
+                        activeTab === tab.id
+                          ? "rgba(192,132,245,0.12)"
+                          : "transparent",
                       display: "flex",
                       alignItems: "center",
                       gap: 8,
                       minWidth: 160,
                     }}
                   >
-                    <div style={{ flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontSize: "0.95rem" }}>
+                    <div
+                      style={{
+                        flex: 1,
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                        fontSize: "0.95rem",
+                      }}
+                    >
                       {tab.cert.name}
                     </div>
                     <button
                       type="button"
                       onClick={(e) => closeTab(tab.id, e)}
-                      style={{ background: "transparent", border: "none", color: "#c8b5e9", cursor: "pointer", padding: "0 6px" }}
+                      style={{
+                        background: "transparent",
+                        border: "none",
+                        color: "#c8b5e9",
+                        cursor: "pointer",
+                        padding: "0 6px",
+                      }}
                       aria-label={`Close ${tab.cert.name}`}
                     >
                       ✕
@@ -273,49 +384,124 @@ export default function Certificates() {
                 ))}
               </div>
 
-              <div style={{ padding: 16, background: "transparent", minHeight: 400 }}>
+              {/* Viewer */}
+              <div
+                className="viewer-area"
+                style={{ padding: 16, background: "transparent", minHeight: 400 }}
+              >
                 {activeCert ? (
-                  <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      height: "100%",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginBottom: 12,
+                      }}
+                    >
                       <div>
-                        <h4 style={{ margin: 0, color: "#fff" }}>{activeCert.name}</h4>
-                        <div style={{ color: "#bda9e6", fontSize: 14 }}>{activeCert.issuer} • {activeCert.year}</div>
+                        <h4 style={{ margin: 0, color: "#fff" }}>
+                          {activeCert.name}
+                        </h4>
+                        <div style={{ color: "#bda9e6", fontSize: 14 }}>
+                          {activeCert.issuer} • {activeCert.year}
+                        </div>
                       </div>
-                      <Button variant="light" onClick={() => handleDownload(activeCert)}>Download</Button>
+                      <div className="cert-actions">
+                        <button
+                          className="cert-btn"
+                          type="button"
+                          onClick={() => handleDownload(activeCert)}
+                        >
+                          ⤓ Download
+                        </button>
+                        <button
+                          className="cert-btn outline"
+                          type="button"
+                          onClick={() =>
+                            window.open(activeCert.url, "_blank", "noopener")
+                          }
+                        >
+                          View
+                        </button>
+                      </div>
                     </div>
 
-                    <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
-                      {!loadedPages[activeTab] && !renderError[activeTab] && (
-                        <div style={{ width: viewerWidth, height: viewerHeight, borderRadius: 12, background: "linear-gradient(90deg, rgba(255,255,255,0.03) 0%, rgba(192,132,245,0.06) 50%, rgba(255,255,255,0.03) 100%)", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid rgba(255,255,255,0.04)" }}>
-                          <div style={{ color: "#bda9e6" }}>Loading certificate…</div>
-                        </div>
-                      )}
-
-                      {!renderError[activeTab] && (
-                        <div style={{ width: viewerWidth, maxWidth: "100%", display: loadedPages[activeTab] ? "block" : "none" }}>
-                          <Document
-                            key={`${activeCert.url}-${activeTab}`}
-                            file={activeCert.url}
-                            onLoadSuccess={onDocumentLoadSuccess(activeTab)}
-                            onLoadError={onDocumentLoadError(activeTab)}
-                            loading={null}
+                    {/* viewer container measured for width */}
+                    <div ref={viewerContainerRef} className="viewer-container">
+                      <div className="viewer-inner">
+                        {/* skeleton loader */}
+                        {!loadedPages[activeTab] && !renderError[activeTab] && (
+                          <div
+                            className="skeleton"
+                            style={{
+                              width: "100%",
+                              height: viewerHeight,
+                              borderRadius: 12,
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              border: "1px solid rgba(255,255,255,0.04)",
+                            }}
                           >
-                            <Page pageNumber={1} width={viewerWidth} onRenderSuccess={onPageRenderSuccess(activeTab)} />
-                          </Document>
+                            <div style={{ color: "#bda9e6" }}>
+                              Loading certificate…
+                            </div>
+                          </div>
+                        )}
 
-                          {pageCounts[activeTab] > 1 && (
-                            <div style={{ marginTop: 8, color: "#bda9e6", fontSize: 13 }}>Page 1 of {pageCounts[activeTab]}</div>
-                          )}
-                        </div>
-                      )}
+                        {/* PDF viewer */}
+                        {!renderError[activeTab] && (
+                          <div
+                            style={{
+                              width: "100%",
+                              display: loadedPages[activeTab] ? "block" : "none",
+                            }}
+                          >
+                            <Document
+                              key={`${activeCert.url}-${activeTab}`}
+                              file={activeCert.url}
+                              onLoadSuccess={onDocumentLoadSuccess(activeTab)}
+                              onLoadError={onDocumentLoadError(activeTab)}
+                              loading={null}
+                            >
+                              <Page
+                                pageNumber={1}
+                                width={viewerWidth}
+                                onRenderSuccess={onPageRenderSuccess(activeTab)}
+                              />
+                            </Document>
 
-                      {(renderError[activeTab] || (loadedPages[activeTab] && !pageCounts[activeTab])) && (
-                        <iframe
-                          src={activeCert.url}
-                          title={activeCert.name}
-                          style={{ width: viewerWidth, height: viewerHeight, borderRadius: 12, border: "1px solid rgba(255,255,255,0.04)" }}
-                        />
-                      )}
+                            {pageCounts[activeTab] > 1 && (
+                              <div style={{ marginTop: 8, color: "#bda9e6", fontSize: 13 }}>
+                                Page 1 of {pageCounts[activeTab]}
+                              </div>
+                            )}
+                          </div>
+                        )}
+
+                        {/* iframe fallback */}
+                        {(renderError[activeTab] ||
+                          (loadedPages[activeTab] && !pageCounts[activeTab])) && (
+                          <iframe
+                            src={activeCert.url}
+                            title={activeCert.name}
+                            style={{
+                              width: "100%",
+                              maxWidth: viewerWidth,
+                              height: viewerHeight,
+                              borderRadius: 12,
+                              border: "1px solid rgba(255,255,255,0.04)",
+                            }}
+                          />
+                        )}
+                      </div>
                     </div>
                   </div>
                 ) : (
@@ -329,86 +515,6 @@ export default function Certificates() {
           </Col>
         </Row>
       </Container>
-
-      <style>{`
-        #tsparticles, canvas, .tsparticles-canvas-el {
-          pointer-events: none !important;
-        }
-        .cert-card, .clickable-card {
-          pointer-events: auto;
-        }
-        .cert-card {
-          padding: 1rem;
-          background: rgba(255,255,255,0.03);
-          border: 1px solid rgba(192,132,245,0.12);
-          border-radius: 10px;
-          text-align: center;
-          transition: all 0.3s ease;
-        }
-        .cert-card:hover { transform: translateY(-2px); }
-        .small-thumb {
-          height: 80px;
-          width: 100%;
-          border-radius: 8px;
-          background: linear-gradient(135deg, #7e22ce, #c084f5);
-          display:flex; align-items:center; justify-content:center;
-          color:#fff; font-weight:700; font-size:1rem; margin-bottom:0.7rem;
-          position: relative;
-          overflow: hidden;
-        }
-        .tab-bar::-webkit-scrollbar { height: 6px; }
-        .tab-bar::-webkit-scrollbar-thumb { background: rgba(192,132,245,0.25); border-radius: 4px; }
-        .small-thumb .initials {
-          display: inline-block;
-          transition: transform 260ms cubic-bezier(.2,.9,.2,1), opacity 260ms cubic-bezier(.2,.9,.2,1);
-          will-change: transform, opacity;
-          font-size: 1.05rem;
-          letter-spacing: 1px;
-        }
-        .small-thumb .thumb-content {
-          position: absolute;
-          left: 10px;
-          right: 10px;
-          top: 50%;
-          transform: translateY(8px);
-          opacity: 0;
-          text-align: center;
-          transition: transform 260ms cubic-bezier(.2,.9,.2,1), opacity 260ms cubic-bezier(.2,.9,.2,1);
-          color: #ffffff;
-          pointer-events: none;
-        }
-        .small-thumb .thumb-name {
-          font-size: 0.95rem;
-          font-weight: 700;
-          line-height: 1.1;
-        }
-        .small-thumb .thumb-meta {
-          font-size: 0.78rem;
-          color: rgba(255,255,255,0.85);
-          margin-top: 4px;
-        }
-        .hover-reveal:hover .small-thumb .initials,
-        .hover-reveal:focus-within .small-thumb .initials {
-          opacity: 0;
-          transform: translateY(-6px);
-        }
-        .hover-reveal:hover .small-thumb .thumb-content,
-        .hover-reveal:focus-within .small-thumb .thumb-content {
-          opacity: 1;
-          transform: translateY(-50%);
-        }
-        .sr-only.card-info {
-          position: absolute !important;
-          width: 1px !important;
-          height: 1px !important;
-          padding: 0 !important;
-          margin: -1px !important;
-          overflow: hidden !important;
-          clip: rect(0, 0, 0, 0) !important;
-          white-space: nowrap !important;
-          border: 0 !important;
-        }
-      `}</style>
     </Container>
   );
 }
