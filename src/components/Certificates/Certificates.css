@@ -1,214 +1,217 @@
-/* ------------------------------- Certificates Page Layout -------------------------------- */ 
-.certificates-container { 
-  display: flex; 
-  flex-direction: column; 
-  min-height: 100vh; 
-  background: radial-gradient(circle at top left, #1a0b2e 0%, #0f051b 100%); 
-  color: #fff; 
-  overflow-x: hidden; 
-} 
+/* -------------------------------
+   Certificates Page Layout
+-------------------------------- */
+.certificates-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: radial-gradient(circle at top left, #1a0b2e 0%, #0f051b 100%);
+  color: #fff;
+  overflow-x: hidden;
+}
 
-/* ------------------------------- Certificates Section -------------------------------- */ 
-.certificates-section { 
-  flex: 1; 
-  position: relative; 
-  text-align: center; 
-  padding: 80px 20px 60px; 
-  z-index: 1; 
-  background: transparent; 
-} 
+/* -------------------------------
+   Certificates Section
+-------------------------------- */
+.certificates-section {
+  flex: 1;
+  position: relative;
+  text-align: center;
+  padding: 80px 20px 60px;
+  z-index: 1;
+  background: transparent;
+}
 
-/* Animated glowing overlay */ 
-.certificates-section::before { 
-  content: ""; 
-  position: absolute; 
-  inset: 0; 
-  background: linear-gradient(135deg, rgba(147, 51, 234, 0.15), rgba(192, 132, 245, 0.05)); 
-  animation: gradientMove 6s ease-in-out infinite alternate; 
-  z-index: -1; 
-} 
+/* Animated glowing overlay */
+.certificates-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(147, 51, 234, 0.15), rgba(192, 132, 245, 0.05));
+  animation: gradientMove 6s ease-in-out infinite alternate;
+  z-index: -1;
+}
 
-@keyframes gradientMove { 
-  0% { background-position: left top; } 
-  100% { background-position: right bottom; } 
-} 
+@keyframes gradientMove {
+  0% {
+    background-position: left top;
+  }
+  100% {
+    background-position: right bottom;
+  }
+}
 
-/* ------------------------------- Title Styling -------------------------------- */ 
-.certificates-title { 
-  font-size: 2.5rem; 
-  font-weight: 700; 
-  letter-spacing: 1px; 
-  margin-bottom: 40px; 
-  text-shadow: 0 0 12px rgba(192, 132, 245, 0.7); 
-} 
+/* -------------------------------
+   Title Styling
+-------------------------------- */
+.certificates-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 40px;
+  text-shadow: 0 0 12px rgba(192, 132, 245, 0.7);
+}
 
-.white-text { 
-  color: #fff; 
-} 
+.white-text {
+  color: #fff;
+}
 
-.violet-text { 
-  color: #c084f5; 
-} 
+.violet-text {
+  color: #c084f5;
+}
 
-/* ------------------------------- Certificate Cards (legacy grid items) -------------------------------- */ 
-.cert-row { 
-  display: flex; 
-  flex-wrap: wrap; 
-  justify-content: center; 
-  gap: 1.5rem; 
-} 
+/* -------------------------------
+   Certificate Cards (legacy grid items)
+-------------------------------- */
+.cert-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+}
 
-/* Each card base */ 
-.cert-card { 
-  background: rgba(255, 255, 255, 0.05); 
-  border: 1px solid rgba(192, 132, 245, 0.12); 
-  border-radius: 10px; 
-  padding: 1rem; 
-  width: 100%; 
-  text-align: center; 
-  transition: all 0.3s ease; 
-  box-shadow: 0 0 12px rgba(192, 132, 245, 0.08); 
-} 
+/* Each card base */
+.cert-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(192, 132, 245, 0.12);
+  border-radius: 10px;
+  padding: 1rem;
+  width: 100%;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 12px rgba(192, 132, 245, 0.08);
+}
 
-/* make column cards consistent width on larger screens */ 
-@media (min-width: 992px) { 
-  .cert-card { width: 220px; } 
-} 
+/* make column cards consistent width on larger screens */
+@media (min-width: 992px) {
+  .cert-card {
+    width: 220px;
+  }
+}
 
-/* Hover surrounding card lift */ 
-.cert-card:hover { 
-  transform: translateY(-6px); 
-} 
+/* Hover surrounding card lift */
+.cert-card:hover {
+  transform: translateY(-6px);
+}
 
-/* small-thumb (purple area) */ 
-.small-thumb { 
-  height: 80px; 
-  width: 100%; 
-  border-radius: 8px; 
-  background: linear-gradient(135deg, #7e22ce, #c084f5); 
-  display:flex; align-items:center; justify-content:center; 
-  color:#fff; font-weight:700; font-size:1rem; margin-bottom:0.7rem; 
-  position: relative; 
-  overflow: hidden; 
-} 
+/* small-thumb (purple area) */
+.small-thumb {
+  height: 80px;
+  width: 100%;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #7e22ce, #c084f5);
+  display:flex; align-items:center; justify-content:center;
+  color:#fff; font-weight:700; font-size:1rem; margin-bottom:0.7rem;
+  position: relative;
+  overflow: hidden;
+}
 
-/* Info text style fallback if you ever show it */ 
-.cert-meta { 
-  color: #bba7e9; 
-  font-size: 0.9rem; 
-  margin-bottom: 0.6rem; 
-} 
+/* Info text style fallback if you ever show it */
+.cert-meta {
+  color: #bba7e9;
+  font-size: 0.9rem;
+  margin-bottom: 0.6rem;
+}
 
-/* ------------------------------- Buttons (View / Download) -------------------------------- */ 
-.cert-actions { 
-  display: flex; 
-  justify-content: center; 
-  gap: 0.8rem; 
-} 
+/* -------------------------------
+   Buttons (View / Download)
+-------------------------------- */
+.cert-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+}
 
-.cert-actions button { 
-  border-radius: 8px; 
-  border: 1px solid rgba(192, 132, 245, 0.4); 
-  color: #c084f5; 
-  background-color: transparent; 
-  transition: all 0.3s ease; 
-  font-size: 0.9rem; 
-  padding: 0.4rem 0.8rem; 
-} 
+.cert-actions button {
+  border-radius: 8px;
+  border: 1px solid rgba(192, 132, 245, 0.4);
+  color: #c084f5;
+  background-color: transparent;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  padding: 0.4rem 0.8rem;
+}
 
-.cert-actions button:hover { 
-  background-color: #c084f5; 
-  color: #fff; 
-  box-shadow: 0 0 12px rgba(192, 132, 245, 0.6); 
-} 
+.cert-actions button:hover {
+  background-color: #c084f5;
+  color: #fff;
+  box-shadow: 0 0 12px rgba(192, 132, 245, 0.6);
+}
 
-/* ------------------------------- Viewer & Tabs Enhancements (added) -------------------------------- */ 
+/* -------------------------------
+   Viewer & Tabs Enhancements (added)
+-------------------------------- */
 
-/* skeleton + shadow */ 
-.skeleton { 
-  box-shadow: 0 10px 30px rgba(10,7,20,0.35); 
-} 
+/* skeleton + shadow */
+.skeleton { box-shadow: 0 10px 30px rgba(10,7,20,0.35); }
 
-/* window hover */ 
-.vscode-like-window { 
-  transition: transform 320ms cubic-bezier(.2,.9,.2,1); 
-} 
+/* window hover */
+.vscode-like-window { transition: transform 320ms cubic-bezier(.2,.9,.2,1); }
+.vscode-like-window:hover { transform: translateY(-4px); }
 
-.vscode-like-window:hover { 
-  transform: translateY(-4px); 
-} 
+/* tab focus and hover micro-interactions */
+.tab { transition: transform 240ms cubic-bezier(.2,.9,.2,1), box-shadow 240ms ease; }
+.tab:focus-visible { outline: 3px solid rgba(192,132,245,0.12); outline-offset: 2px; }
+.tab.active { box-shadow: 0 8px 28px rgba(14,11,30,0.28); transform: translateY(-4px); }
 
-/* tab focus and hover micro-interactions */ 
-.tab { 
-  transition: transform 240ms cubic-bezier(.2,.9,.2,1), box-shadow 240ms ease; 
-} 
+/* small thumb micro-3d on hover */
+.hover-reveal:hover .small-thumb .initials,
+.hover-reveal:focus-within .small-thumb .initials {
+  transform: translateY(-6px) rotateX(6deg);
+}
 
-.tab:focus-visible { 
-  outline: 3px solid rgba(192,132,245,0.12); 
-  outline-offset: 2px; 
-} 
+/* keep reduced-motion respectful */
+@media (prefers-reduced-motion: reduce) {
+  .vscode-like-window, .tab, .skeleton { transition: none !important; animation: none !important; transform: none !important; }
+}
 
-.tab.active { 
-  box-shadow: 0 8px 28px rgba(14,11,30,0.28); 
-  transform: translateY(-4px); 
-} 
+/* -------------------------------
+   Footer
+-------------------------------- */
+.footer {
+  background: rgba(0, 0, 0, 0.4);
+  color: #d6cfe6;
+  text-align: center;
+  padding: 14px 0;
+  font-size: 0.9rem;
+  width: 100%;
+  margin-top: auto;
+  border-top: 1px solid rgba(192, 132, 245, 0.2);
+}
 
-/* small thumb micro-3d on hover */ 
-.hover-reveal:hover .small-thumb .initials, 
-.hover-reveal:focus-within .small-thumb .initials { 
-  transform: translateY(-6px) rotateX(6deg); 
-} 
+/* -------------------------------
+   Responsive
+-------------------------------- */
+@media (max-width: 576px) {
+  .certificates-title {
+    font-size: 1.8rem;
+  }
+  .small-thumb {
+    height: 70px;
+    font-size: 0.95rem;
+  }
+  .cert-card {
+    width: 90%;
+  }
+}
 
-/* keep reduced-motion respectful */ 
-@media (prefers-reduced-motion: reduce) { 
-  .vscode-like-window, .tab, .skeleton { 
-    transition: none !important; 
-    animation: none !important; 
-    transform: none !important; 
-  } 
-} 
+/* -------------------------------
+   Accessibility helper
+-------------------------------- */
+/* sr-only utility (used to keep semantic info for screen readers) */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
 
-/* ------------------------------- Footer -------------------------------- */ 
-.footer { 
-  background: rgba(0, 0, 0, 0.4); 
-  color: #d6cfe6; 
-  text-align: center; 
-  padding: 14px 0; 
-  font-size: 0.9rem; 
-  width: 100%; 
-  margin-top: auto; 
-  border-top: 1px solid rgba(192, 132, 245, 0.2); 
-} 
-
-/* ------------------------------- Responsive -------------------------------- */ 
-@media (max-width: 576px) { 
-  .certificates-title { 
-    font-size: 1.8rem; 
-  } 
-  .small-thumb { 
-    height: 70px; 
-    font-size: 0.95rem; 
-  } 
-  .cert-card { 
-    width: 90%; 
-  } 
-} 
-
-/* ------------------------------- Accessibility helper -------------------------------- */ 
-/* sr-only utility (used to keep semantic info for screen readers) */ 
-.sr-only { 
-  position: absolute !important; 
-  width: 1px !important; 
-  height: 1px !important; 
-  padding: 0 !important; 
-  margin: -1px !important; 
-  overflow: hidden !important; 
-  clip: rect(0, 0, 0, 0) !important; 
-  white-space: nowrap !important; 
-  border: 0 !important; 
-} 
-
-/* ensure particle canvas doesn't intercept clicks (if you use tsparticles) */ 
-#tsparticles, canvas, .tsparticles-canvas-el { 
-  pointer-events: none !important; 
+/* ensure particle canvas doesn't intercept clicks (if you use tsparticles) */
+#tsparticles, canvas, .tsparticles-canvas-el {
+  pointer-events: none !important;
 }
