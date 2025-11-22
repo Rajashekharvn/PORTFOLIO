@@ -1,4 +1,4 @@
-"// src/components/Certificates/Certificates.jsx
+// src/components/Certificates/Certificates.jsx
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import Particle from "../Particle";
@@ -110,24 +110,20 @@ export default function Certificates() {
   };
 
   const openCertificate = (cert, index) => {
-    // console.log("openCertificate clicked:", cert.name, index);
     const tabId = `cert-${index}`;
     setRenderError((prev) => ({ ...prev, [tabId]: false }));
     setOpenTabs((prev) => {
       if (!prev.find((t) => t.id === tabId)) {
         setLoadedPages((p) => ({ ...p, [tabId]: false }));
         setActiveTab(tabId);
-        // update URL to include this cert slug
         pushCertToUrl(cert);
         return [...prev, { id: tabId, cert }];
       }
       setActiveTab(tabId);
-      // update URL when switching to an already open tab
       pushCertToUrl(cert);
       return prev;
     });
 
-    // keep preview visible
     setTimeout(() => {
       const preview = document.querySelector(".vscode-like-window");
       if (preview) preview.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -141,21 +137,17 @@ export default function Certificates() {
       if (idx === -1) return prev;
       const newTabs = prev.filter((t) => t.id !== tabId);
 
-      // compute new active
       setActiveTab((cur) => {
         if (cur !== tabId) return cur;
         if (newTabs.length === 0) {
-          // remove cert param from URL when all tabs closed
           pushCertToUrl(null);
           return null;
         }
         const newIndex = idx - 1 >= 0 ? idx - 1 : 0;
-        // update URL to new active cert
         pushCertToUrl(newTabs[newIndex].cert);
         return newTabs[newIndex].id;
       });
 
-      // cleanup states
       setLoadedPages((lp) => { const c = { ...lp }; delete c[tabId]; return c; });
       setPageCounts((pc) => { const c = { ...pc }; delete c[tabId]; return c; });
       setRenderError((re) => { const c = { ...re }; delete c[tabId]; return c; });
@@ -186,7 +178,6 @@ export default function Certificates() {
   const onDocumentLoadError = (tabId) => (err) => {
     console.error(`[Certificates] Document load error for ${tabId}:`, err);
     setRenderError((prev) => ({ ...prev, [tabId]: true }));
-    // ensure we don't keep the skeleton forever
     setLoadedPages((prev) => ({ ...prev, [tabId]: true }));
   };
 
@@ -210,7 +201,6 @@ export default function Certificates() {
         </h1>
 
         <Row style={{ justifyContent: "center", padding: "10px" }}>
-          {/* Left column: smaller, clickable cards (initials reveal on hover) */}
           <Col xs={12} lg={3} className="mb-4">
             <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
               {certificatesData.map((cert, index) => {
@@ -229,18 +219,12 @@ export default function Certificates() {
                     aria-label={`Open ${cert.name}`}
                   >
                     <div className="thumb small-thumb" aria-hidden>
-                      {/* initials (visible by default) */}
                       <span className="initials">{initials}</span>
-
-                      {/* content that will slide in to replace initials on hover/focus */}
                       <div className="thumb-content" aria-hidden>
                         <div className="thumb-name" title={cert.name}>{cert.name}</div>
                         <div className="thumb-meta">{cert.issuer} • {cert.year}</div>
                       </div>
                     </div>
-
-                    {/* keep semantic info for screen readers but visually hidden
-                        (we'll not show the info below on hover since it's shown in .thumb) */}
                     <div className="sr-only card-info">
                       <h6>{cert.name}</h6>
                       <p>{cert.issuer} • {cert.year}</p>
@@ -251,10 +235,8 @@ export default function Certificates() {
             </div>
           </Col>
 
-          {/* Right column: large viewer */}
           <Col xs={12} lg={9} className="mb-4">
             <div className="vscode-like-window" style={{ borderRadius: 12, overflow: "hidden", minHeight: 460 }}>
-              {/* Tab bar */}
               <div className="tab-bar" style={{ display: "flex", gap: 8, padding: 8, background: "rgba(255,255,255,0.02)", borderBottom: "1px solid rgba(255,255,255,0.04)", overflowX: "auto" }}>
                 {openTabs.length === 0 && <div style={{ color: "#bda9e6", padding: "8px 16px" }}>No open certificates — click any certificate to open</div>}
                 {openTabs.map((tab) => (
@@ -262,7 +244,6 @@ export default function Certificates() {
                     key={tab.id}
                     onClick={() => {
                       setActiveTab(tab.id);
-                      // update url when switching active tab
                       pushCertToUrl(tab.cert);
                     }}
                     className={`tab ${activeTab === tab.id ? "active" : ""}`}
@@ -292,7 +273,6 @@ export default function Certificates() {
                 ))}
               </div>
 
-              {/* Viewer */}
               <div style={{ padding: 16, background: "transparent", minHeight: 400 }}>
                 {activeCert ? (
                   <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
@@ -305,17 +285,14 @@ export default function Certificates() {
                     </div>
 
                     <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
-                      {/* skeleton loader */}
                       {!loadedPages[activeTab] && !renderError[activeTab] && (
                         <div style={{ width: viewerWidth, height: viewerHeight, borderRadius: 12, background: "linear-gradient(90deg, rgba(255,255,255,0.03) 0%, rgba(192,132,245,0.06) 50%, rgba(255,255,255,0.03) 100%)", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid rgba(255,255,255,0.04)" }}>
                           <div style={{ color: "#bda9e6" }}>Loading certificate…</div>
                         </div>
                       )}
 
-                      {/* show PDF viewer if react-pdf loaded, otherwise iframe fallback will render because we mark loadedPages true in fallback/err handlers */}
                       {!renderError[activeTab] && (
                         <div style={{ width: viewerWidth, maxWidth: "100%", display: loadedPages[activeTab] ? "block" : "none" }}>
-                          {/* Try react-pdf Document (this may fail in some browsers/environments) */}
                           <Document
                             key={`${activeCert.url}-${activeTab}`}
                             file={activeCert.url}
@@ -332,8 +309,6 @@ export default function Certificates() {
                         </div>
                       )}
 
-                      {/* If react-pdf reports an error, or if the fallback timeout marked loadedPages true but renderError is false,
-                          show the iframe so the browser can render the PDF directly. */}
                       {(renderError[activeTab] || (loadedPages[activeTab] && !pageCounts[activeTab])) && (
                         <iframe
                           src={activeCert.url}
@@ -355,19 +330,13 @@ export default function Certificates() {
         </Row>
       </Container>
 
-      {/* Important CSS overrides to ensure clicks reach cards */}
       <style>{`
-        /* MAKE SURE particle canvas doesn't intercept clicks */
         #tsparticles, canvas, .tsparticles-canvas-el {
           pointer-events: none !important;
         }
-
-        /* Ensure cert cards accept pointer events */
         .cert-card, .clickable-card {
           pointer-events: auto;
         }
-
-        /* small card styling */
         .cert-card {
           padding: 1rem;
           background: rgba(255,255,255,0.03);
@@ -377,22 +346,18 @@ export default function Certificates() {
           transition: all 0.3s ease;
         }
         .cert-card:hover { transform: translateY(-2px); }
-
         .small-thumb {
           height: 80px;
           width: 100%;
           border-radius: 8px;
           background: linear-gradient(135deg, #7e22ce, #c084f5);
-          display:flex; align-items:center; justifyContent:center;
+          display:flex; align-items:center; justify-content:center;
           color:#fff; font-weight:700; font-size:1rem; margin-bottom:0.7rem;
           position: relative;
           overflow: hidden;
         }
-
         .tab-bar::-webkit-scrollbar { height: 6px; }
         .tab-bar::-webkit-scrollbar-thumb { background: rgba(192,132,245,0.25); border-radius: 4px; }
-
-        /* Hover-reveal animations within the purple thumb */
         .small-thumb .initials {
           display: inline-block;
           transition: transform 260ms cubic-bezier(.2,.9,.2,1), opacity 260ms cubic-bezier(.2,.9,.2,1);
@@ -422,8 +387,6 @@ export default function Certificates() {
           color: rgba(255,255,255,0.85);
           margin-top: 4px;
         }
-
-        /* on hover or keyboard focus, swap initials -> description in the purple area */
         .hover-reveal:hover .small-thumb .initials,
         .hover-reveal:focus-within .small-thumb .initials {
           opacity: 0;
@@ -434,8 +397,6 @@ export default function Certificates() {
           opacity: 1;
           transform: translateY(-50%);
         }
-
-        /* visually hide the below-card info (we show info in the thumb on hover) */
         .sr-only.card-info {
           position: absolute !important;
           width: 1px !important;
@@ -451,4 +412,3 @@ export default function Certificates() {
     </Container>
   );
 }
-"
