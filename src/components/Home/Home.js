@@ -24,7 +24,7 @@ function Home() {
 
               <h1 className="heading-name">
                 I'M
-                <strong className="main-name"> RAJASHEKHAR N</strong>
+                <strong className="main-name"> RAJASHEKHAR V N</strong>
               </h1>
 
               <div className="type-wrapper">
