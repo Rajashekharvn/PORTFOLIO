@@ -1,0 +1,195 @@
+/* 🌌 Background (same cosmic feel) */
+.project-section {
+    position: relative;
+    padding-top: 40px;
+    padding-bottom: 60px;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.project-section #tsparticles {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0 !important;
+    pointer-events: none !important;
+}
+
+/* 🔠 Heading */
+.project-heading {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.purple {
+    color: #c084f5;
+}
+
+/* 🧱 Grid layout — 3 cards per row */
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(300px, 1fr));
+    gap: 2rem;
+    justify-items: center;
+    align-items: stretch;
+}
+
+@media (max-width: 992px) {
+    .project-grid {
+        grid-template-columns: repeat(2, minmax(280px, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .project-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ✨ Project Card Styling */
+.project-card-view {
+    background: rgba(255, 255, 255, 0.07) !important;
+    border: 1px solid rgba(192, 132, 245, 0.25) !important;
+    border-radius: 16px !important;
+    width: 100%;
+    max-width: 380px;
+    min-height: 430px;
+    transition: all 0.4s ease;
+    overflow: hidden;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.25) !important;
+    backdrop-filter: blur(8px) !important;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Subtle shine overlay */
+.project-card-view::before {
+    content: "";
+    position: absolute;
+    top: -60%;
+    left: -60%;
+    width: 220%;
+    height: 220%;
+    background: radial-gradient(circle at top left,
+            rgba(192, 132, 245, 0.15),
+            transparent 70%);
+    opacity: 0.2;
+    z-index: 0;
+    transition: opacity 0.5s ease;
+}
+
+.project-card-view:hover::before {
+    opacity: 0.5;
+}
+
+/* Hover glow + lift */
+.project-card-view:hover {
+    transform: translateY(-8px);
+    border-color: rgba(192, 132, 245, 0.45) !important;
+    box-shadow: 0 0 35px rgba(192, 132, 245, 0.45) !important;
+}
+
+/* 📸 Image */
+.project-card-view img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    transition: transform 0.5s ease;
+}
+
+.project-card-view:hover img {
+    transform: scale(1.05);
+}
+
+/* 📝 Card Content */
+.project-card-view .card-body {
+    flex: 1;
+    padding: 1.3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    z-index: 2;
+}
+
+.project-card-view .card-title {
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+}
+
+.project-card-view .card-text {
+    color: #d4c6ef;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 1.2rem;
+    flex-grow: 1;
+}
+
+/* 💊 Tech Pills */
+.tech-stack-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.tech-pill {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 12px;
+    background: rgba(192, 132, 245, 0.1);
+    border: 1px solid rgba(192, 132, 245, 0.3);
+    color: #d4c6ef;
+    backdrop-filter: blur(4px);
+    transition: all 0.3s ease;
+}
+
+.tech-pill:hover {
+    background: rgba(192, 132, 245, 0.25);
+    border-color: rgba(192, 132, 245, 0.6);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(192, 132, 245, 0.2);
+}
+
+/* 🔘 Buttons */
+.project-card-view .btn {
+    border-radius: 8px;
+    border: 1px solid rgba(192, 132, 245, 0.4);
+    color: #c084f5;
+    background-color: transparent;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    padding: 0.4rem 1rem;
+    backdrop-filter: blur(4px);
+}
+
+.project-card-view .btn:hover {
+    background-color: #c084f5;
+    color: #fff;
+    box-shadow: 0 0 18px rgba(192, 132, 245, 0.6);
+}
+
+/* 🎞️ Fade-up animation for entry */
+.project-card-view {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.project-card-view.show {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.6s ease;
+}

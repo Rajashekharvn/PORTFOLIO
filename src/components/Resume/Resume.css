@@ -1,0 +1,63 @@
+.resume-section {
+    position: relative;
+    padding-top: 120px !important;
+    padding-bottom: 30px !important;
+    background-image: var(--section-background-color) !important;
+    color: white;
+    overflow: hidden;
+}
+
+.resume {
+    padding-top: 50px;
+    padding-bottom: 50px;
+    justify-content: center;
+}
+
+.resume-left {
+    padding-right: 80px !important;
+}
+
+.resume-right {
+    padding-left: 80px !important;
+}
+
+.resume .react-pdf__Page__canvas {
+    max-width: 100% !important;
+    height: auto !important;
+}
+
+/* Glassmorphism for PDF Container */
+.pdf-container {
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(192, 132, 245, 0.25);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(8px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Resume Button Styling */
+.resume-btn {
+    max-width: 250px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-color: #c084f5 !important;
+    color: #c084f5 !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+    background-color: transparent !important;
+    border-radius: 8px !important;
+    padding: 10px 20px !important;
+    backdrop-filter: blur(4px);
+}
+
+.resume-btn:hover {
+    background-color: #c084f5 !important;
+    color: #fff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(192, 132, 245, 0.6);
+}

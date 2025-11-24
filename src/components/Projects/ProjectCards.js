@@ -13,6 +13,16 @@ function ProjectCards(props) {
         <Card.Text style={{ textAlign: "justify" }}>
           {props.description}
         </Card.Text>
+
+        {props.technologies && (
+          <div className="tech-stack-container">
+            {props.technologies.map((tech, index) => (
+              <span key={index} className="tech-pill">
+                {tech}
+              </span>
+            ))}
+          </div>
+        )}
         <div>
           <Button variant="primary" href={props.ghLink} target="_blank">
             <BsGithub /> &nbsp;

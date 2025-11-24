@@ -1,15 +1,9 @@
 html {
-  --section-background-color: linear-gradient(
-    to bottom left,
-    rgba(17, 16, 16, 0.582),
-    rgba(12, 8, 24, 0.904)
-  );
+  --section-background-color: #000000;
 
-  --image-gradient: linear-gradient(
-    to bottom left,
-    rgba(17, 16, 16, 0.678),
-    rgba(12, 10, 22, 0.863)
-  );
+  --image-gradient: linear-gradient(to bottom left,
+      rgba(0, 0, 0, 0.678),
+      rgba(0, 0, 0, 0.863));
 
   --imp-text-color: #c770f0;
 }
@@ -32,7 +26,7 @@ button:focus {
   width: 100%;
   height: 100%;
   z-index: 999999;
-  background-color: #0c0513;
+  background-color: #000000;
   background-image: url(./Assets/pre.svg);
   background-repeat: no-repeat;
   background-position: center;
@@ -146,10 +140,12 @@ button:focus {
     font-size: 1.4rem !important;
     background-color: #181a27 !important;
   }
+
   .navbar-nav .nav-item a::after {
     display: none !important;
   }
 }
+
 .navbar-brand {
   color: rgb(250, 250, 250) !important;
 }
@@ -209,10 +205,14 @@ button:focus {
 /* Home section */
 /* --------- */
 .wave {
-  animation-name: wave-animation; /* Refers to the name of your @keyframes element below */
-  animation-duration: 2.1s; /* Change to speed up or slow down */
-  animation-iteration-count: infinite; /* Never stop waving :) */
-  transform-origin: 70% 70%; /* Pivot around the bottom-left palm */
+  animation-name: wave-animation;
+  /* Refers to the name of your @keyframes element below */
+  animation-duration: 2.1s;
+  /* Change to speed up or slow down */
+  animation-iteration-count: infinite;
+  /* Never stop waving :) */
+  transform-origin: 70% 70%;
+  /* Pivot around the bottom-left palm */
   display: inline-block;
 }
 
@@ -220,63 +220,86 @@ button:focus {
   0% {
     transform: rotate(0deg);
   }
+
   10% {
     transform: rotate(14deg);
-  } /* The following five values can be played with to make the waving more or less extreme */
+  }
+
+  /* The following five values can be played with to make the waving more or less extreme */
   20% {
     transform: rotate(-8deg);
   }
+
   30% {
     transform: rotate(14deg);
   }
+
   40% {
     transform: rotate(-4deg);
   }
+
   50% {
     transform: rotate(10deg);
   }
+
   60% {
     transform: rotate(0deg);
-  } /* Reset for the last half to pause */
+  }
+
+  /* Reset for the last half to pause */
   100% {
     transform: rotate(0deg);
   }
 }
+
 #tsparticles {
   position: fixed !important;
   background-repeat: no-repeat !important;
   background-size: cover !important;
   width: 100%;
   height: 100%;
+  z-index: -1 !important;
+  top: 0;
+  left: 0;
+  pointer-events: none;
 }
 
 .home-header {
-  padding-top: 80px !important;
+  padding-top: 50px !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .home-section {
   position: relative;
-  z-index: -1;
   background-position: top center;
   background-repeat: no-repeat;
-  padding-bottom: 30px !important;
-  padding-top: 30px !important;
+  padding-bottom: 50px !important;
+  padding-top: 50px !important;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
 }
 
 .home-content {
-  padding: 9rem 0 2rem !important;
+  padding: 2rem 0 !important;
   color: whitesmoke;
   text-align: left;
+  width: 100%;
 }
 
 .heading {
   font-size: 2.4em !important;
   padding-left: 50px !important;
+  margin-bottom: 30px !important;
 }
 
 .heading-name {
   font-size: 2.5em !important;
-  padding-left: 45px !important;
+  padding-left: 50px !important;
+  margin-bottom: 50px !important;
 }
 
 .main-name {
@@ -288,6 +311,7 @@ button:focus {
   color: #be6adf !important;
   font-weight: 600 !important;
 }
+
 .Typewriter__cursor {
   font-size: 2.4em !important;
   color: #b562d6 !important;
@@ -299,6 +323,7 @@ button:focus {
     font-weight: 500 !important;
     position: absolute !important;
   }
+
   .Typewriter__cursor {
     display: none !important;
   }
@@ -404,8 +429,11 @@ button:focus {
   background-color: rgb(10, 4, 22);
   bottom: 0 !important;
   padding-top: 10px !important;
-  padding-bottom: 8px !important ;
+  padding-bottom: 8px !important;
+  border-top: 1px solid rgba(192, 132, 245, 0.1);
+  backdrop-filter: blur(4px);
 }
+
 .footer-copywright {
   text-align: center !important;
 }
@@ -431,15 +459,33 @@ button:focus {
   margin-top: 0.5em !important;
   margin-bottom: 0.5em !important;
 }
+
 .footer-icons {
   margin-top: 0.5em !important;
   margin-bottom: 0.5em !important;
   padding: 0 !important;
 }
 
+.footer-icons .social-icons {
+  display: inline-block;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.footer-social-icons {
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.footer-social-icons:hover {
+  color: #c084f5 !important;
+  text-shadow: 0 0 10px rgba(192, 132, 245, 0.6);
+}
+
 .blockquote-footer {
   color: #a588c0 !important;
 }
+
 /* --------- */
 /* Projects */
 /* --------- */
@@ -447,7 +493,7 @@ button:focus {
   position: relative !important;
   padding-top: 150px !important;
   padding-bottom: 30px !important;
-  background-image: var(--section-background-color) !important;
+  background-image: none !important;
 }
 
 .project-card {
@@ -466,6 +512,7 @@ button:focus {
   transition: all 0.5s ease 0s !important;
   height: 100% !important;
 }
+
 .project-card-view:hover {
   transform: scale(1.02) !important;
   overflow: hidden !important;
@@ -526,10 +573,12 @@ button:focus {
   background-color: #6d20c5d7 !important;
   border-color: #6d20c5d7 !important;
 }
+
 .btn:focus {
   outline: none !important;
   box-shadow: none !important;
 }
+
 .project-heading {
   color: white !important;
   font-size: 2.3em !important;
@@ -545,7 +594,7 @@ button:focus {
   position: relative !important;
   padding-top: 150px !important;
   padding-bottom: 30px !important;
-  background-image: var(--section-background-color) !important;
+  background-image: none !important;
   color: white !important;
 }
 
@@ -575,6 +624,7 @@ button:focus {
   overflow: hidden !important;
   border: 2.2px solid rgba(197, 115, 230, 0.883) !important;
 }
+
 .tech-icon-images {
   padding: 20px !important;
   line-height: 1.6 !important;
@@ -597,6 +647,7 @@ button:focus {
     padding-top: 0 !important;
   }
 }
+
 /* --------- */
 /* Resume */
 /* --------- */
@@ -605,7 +656,7 @@ button:focus {
   position: relative !important;
   padding-top: 110px !important;
   padding-bottom: 30px !important;
-  background-image: var(--section-background-color) !important;
+  background-image: none !important;
   color: white !important;
 }
 
@@ -634,6 +685,7 @@ button:focus {
     padding-left: 15px !important;
   }
 }
+
 .resume .resume-title {
   font-size: 2em;
   font-weight: 700;
@@ -710,10 +762,12 @@ button:focus {
   animation-fill-mode: forwards;
   animation-duration: 0.85s;
 }
+
 @keyframes likeAnimation {
   0% {
     transform: scale(1.5);
   }
+
   100% {
     transform: scale(1);
   }
@@ -737,6 +791,120 @@ button:focus {
   background-color: #a24dd386 !important;
   border-color: #a24dd386 !important;
 }
+
 .fork-btn-inner::after {
   display: none !important;
+}
+
+/* --------- */
+/* Scroll Reveal Animation */
+/* --------- */
+.fade-up {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.8s ease-out;
+}
+
+.fade-up.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --------- */
+/* Certificate Card Hover Effect */
+/* --------- */
+.cert-card-wrapper {
+  position: relative;
+  font-size: 4.5em !important;
+  margin: 15px !important;
+  padding: 10px !important;
+  opacity: 0.93 !important;
+  border: 1.7px solid rgba(200, 137, 230, 0.637) !important;
+  vertical-align: middle !important;
+  text-align: center !important;
+  border-radius: 5px !important;
+  display: table !important;
+  box-shadow: 4px 5px 4px 3px rgba(89, 4, 168, 0.137) !important;
+  overflow: hidden !important;
+  transition: all 0.4s ease 0s !important;
+  cursor: pointer;
+  width: auto;
+  height: auto;
+  min-height: 120px;
+  background-color: transparent !important;
+}
+
+@media (max-width: 767px) {
+  .cert-card-wrapper {
+    margin: 10px !important;
+  }
+}
+
+.cert-card-wrapper:hover {
+  transform: scale(1.05) !important;
+  overflow: hidden !important;
+  border: 2.2px solid rgba(197, 115, 230, 0.883) !important;
+}
+
+/* The Cover with Initials (Default State) */
+.cert-card-cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.4s ease-in-out;
+  z-index: 2;
+  opacity: 1;
+}
+
+.cert-card-cover-icon {
+  font-size: 1em;
+  color: rgba(200, 137, 230, 0.9);
+  font-weight: 700;
+}
+
+/* The Details (Hidden by default, Revealed on Hover) */
+.cert-card-details {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  text-align: center;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
+}
+
+.cert-card-details h6 {
+  font-size: 0.25em !important;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.3em;
+}
+
+.cert-card-details p {
+  font-size: 0.2em !important;
+  color: #bda9e6;
+  margin: 0;
+}
+
+/* Hover Logic: Hide initials, show details */
+.cert-card-wrapper:hover .cert-card-cover {
+  opacity: 0;
+}
+
+.cert-card-wrapper:hover .cert-card-details {
+  opacity: 1;
 }

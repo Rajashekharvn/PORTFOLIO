@@ -1,0 +1,96 @@
+.about-section {
+    position: relative;
+    padding-top: 40px !important;
+    padding-bottom: 60px !important;
+    background-image: var(--section-background-color) !important;
+    color: white;
+    overflow: hidden;
+}
+
+.about-img {
+    padding-top: 120px;
+    padding-bottom: 50px;
+}
+
+.about-heading {
+    font-size: 2.1em;
+    padding-bottom: 20px;
+    text-align: center;
+}
+
+.purple {
+    color: #c084f5;
+}
+
+/* Glassmorphism for About Card */
+.about-card {
+    background: rgba(255, 255, 255, 0.07) !important;
+    border: 1px solid rgba(192, 132, 245, 0.25) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.25) !important;
+    backdrop-filter: blur(8px) !important;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    transition: all 0.4s ease;
+}
+
+.about-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(192, 132, 245, 0.45) !important;
+    box-shadow: 0 0 35px rgba(192, 132, 245, 0.25) !important;
+}
+
+.quote-card-view {
+    border: none !important;
+    color: white;
+    background-color: transparent !important;
+}
+
+/* Tech & Tool Stack Icons */
+.tech-icons {
+    font-size: 4.5em !important;
+    margin: 15px !important;
+    padding: 10px !important;
+    opacity: 0.93 !important;
+    border: 1.7px solid rgba(200, 137, 230, 0.637) !important;
+    vertical-align: middle !important;
+    text-align: center !important;
+    border-radius: 5px !important;
+    display: table !important;
+    box-shadow: 4px 5px 4px 3px rgba(89, 4, 168, 0.137) !important;
+    overflow: hidden !important;
+    transition: all 0.4s ease 0s !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    backdrop-filter: blur(4px) !important;
+}
+
+.tech-icons:hover {
+    transform: scale(1.05) !important;
+    overflow: hidden !important;
+    border: 2.2px solid rgba(197, 115, 230, 0.883) !important;
+    box-shadow: 0 0 15px rgba(192, 132, 245, 0.45) !important;
+}
+
+.tech-icon-images {
+    padding: 20px !important;
+    line-height: 0 !important;
+}
+
+/* Floating Animation for Image */
+.float-animation {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}

@@ -25,7 +25,7 @@ function Footer() {
             <li className="social-icons">
               <a
                 href={`mailto:${EMAIL}`}
-                style={{ color: "white" }}
+                className="footer-social-icons"
                 rel="noopener noreferrer"
               >
                 <AiOutlineMail />
@@ -34,8 +34,8 @@ function Footer() {
             <li className="social-icons">
               <a
                 href="https://github.com/Rajashekharvn"
-                style={{ color: "white" }}
-                target="_blank" 
+                className="footer-social-icons"
+                target="_blank"
                 rel="noopener noreferrer"
               >
                 <AiFillGithub />
@@ -44,8 +44,8 @@ function Footer() {
             <li className="social-icons">
               <a
                 href="https://www.linkedin.com/in/rajashekhar-naduvinahalli-476b15253/"
-                style={{ color: "white" }}
-                target="_blank" 
+                className="footer-social-icons"
+                target="_blank"
                 rel="noopener noreferrer"
               >
                 <FaLinkedinIn />
@@ -54,8 +54,8 @@ function Footer() {
             <li className="social-icons">
               <a
                 href="https://www.instagram.com/rajashekhar_v_n?igsh=MTM0bmJhZ2d4dWFnbg=="
-                style={{ color: "white" }}
-                target="_blank" 
+                className="footer-social-icons"
+                target="_blank"
                 rel="noopener noreferrer"
               >
                 <AiFillInstagram />

@@ -1,10 +1,10 @@
 import React from "react";
 import Particles from "react-tsparticles";
 
-function Particle() {
+function Particle({ id }) {
   return (
     <Particles
-      id="tsparticles"
+      id={id || "tsparticles"}
       params={{
         particles: {
           number: {

@@ -1,9 +1,9 @@
 // src/components/Certificates/Certificates.jsx
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
-import Particle from "../Particle";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
+import useScrollReveal from "../../hooks/useScrollReveal";
 
 import certificate1 from "../../Assets/Certificate-1.pdf";
 import certificate2 from "../../Assets/Certificate-2.pdf";
@@ -21,6 +21,8 @@ const certificatesData = [
 ];
 
 export default function Certificates() {
+  useScrollReveal();
+
   const [openTabs, setOpenTabs] = useState([]);
   const [activeTab, setActiveTab] = useState(null);
   const [pageCounts, setPageCounts] = useState({});
@@ -34,7 +36,19 @@ export default function Certificates() {
 
     const onResize = () => setWidth(window.innerWidth);
     window.addEventListener("resize", onResize);
+
     return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  // Open first certificate by default on mount
+  useEffect(() => {
+    if (certificatesData.length > 0) {
+      const firstCert = certificatesData[0];
+      const tabId = 'cert-0';
+      setOpenTabs([{ id: tabId, cert: firstCert }]);
+      setActiveTab(tabId);
+      setLoadedPages({ [tabId]: false });
+    }
   }, []);
 
   const openCertificate = (cert, index) => {
@@ -115,8 +129,7 @@ export default function Certificates() {
   const viewerHeight = 550;
 
   return (
-    <Container fluid className="about-section certificates-container" id="certificates">
-      <Particle />
+    <Container fluid className="about-section certificates-container fade-up" id="certificates">
 
       <Container>
         <h1 className="project-heading certificates-title">
@@ -126,23 +139,27 @@ export default function Certificates() {
         <Row style={{ justifyContent: "center", padding: "10px" }}>
           {/* Left column: smaller, clickable cards */}
           <Col xs={12} lg={3} className="mb-4">
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.9rem" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
               {certificatesData.map((cert, index) => (
                 <div
                   key={index}
-                  className="cert-card clickable-card"
+                  className="cert-card-wrapper"
                   role="button"
                   tabIndex={0}
                   onClick={() => openCertificate(cert, index)}
                   onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") openCertificate(cert, index); }}
-                  style={{ cursor: "pointer", width: "100%" }}
                 >
-                  <div className="thumb small-thumb" aria-hidden>
-                    {cert.name.split(" ").slice(0, 2).map((w) => w[0]).join("")}
+                  {/* Details revealed on hover */}
+                  <div className="cert-card-details">
+                    <h6>{cert.name}</h6>
+                    <p>{cert.issuer}</p>
                   </div>
-                  <div>
-                    <h6 className="mb-1 text-center" style={{ fontSize: "0.95rem" }}>{cert.name}</h6>
-                    <p className="cert-meta text-center" style={{ fontSize: "0.85rem" }}>{cert.issuer} • {cert.year}</p>
+
+                  {/* Purple Cover (Default) */}
+                  <div className="cert-card-cover">
+                    <div className="cert-card-cover-icon">
+                      {cert.name.split(" ").slice(0, 2).map((w) => w[0]).join("")}
+                    </div>
                   </div>
                 </div>
               ))}
