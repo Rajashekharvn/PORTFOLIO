@@ -1,0 +1,10 @@
+/* CSS Custom Properties / Variables */
+html {
+    --section-background-color: #000000;
+
+    --image-gradient: linear-gradient(to bottom left,
+            rgba(0, 0, 0, 0.678),
+            rgba(0, 0, 0, 0.863));
+
+    --imp-text-color: #c770f0;
+}

@@ -1,42 +1,27 @@
 import React from "react";
-import Card from "react-bootstrap/Card";
 import { ImPointRight } from "react-icons/im";
 
-function AboutCard() {
+function AboutCard({ content }) {
   return (
-    <Card className="quote-card-view about-card">
-      <Card.Body>
-        <blockquote className="blockquote mb-0">
-          <p style={{ textAlign: "justify" }}>
-            Hi Everyone, I am <span className="purple">Rajashekhar N </span>
-            from <span className="purple"> Karnataka, India.</span>
-            <br />
-            I am currently pursuing my engineering in Computer Science & engineering at SKSVMACET Laxmeshwar.
-            <br />
+    <div className="quote-card-view">
+      <blockquote className="blockquote mb-0">
+        <p className="about-text" style={{ whiteSpace: "pre-wrap" }}>
+          {content.description}
+        </p>
+        <ul>
+          {content.activities.map((activity, index) => (
+            <li className="about-activity" key={index}>
+              <ImPointRight /> {activity}
+            </li>
+          ))}
+        </ul>
 
-            <br />
-            <br />
-            Apart from coding, some other activities that I love to do!
-          </p>
-          <ul>
-            <li className="about-activity">
-              <ImPointRight /> Playing Chess
-            </li>
-            <li className="about-activity">
-              <ImPointRight /> Watching Movies and Series
-            </li>
-            <li className="about-activity">
-              <ImPointRight /> Travelling
-            </li>
-          </ul>
-
-          <p style={{ color: "rgb(155 126 172)" }}>
-            "Strive to build things that make a difference!"{" "}
-          </p>
-          <footer className="blockquote-footer">Rajashekhar</footer>
-        </blockquote>
-      </Card.Body>
-    </Card>
+        <p style={{ color: "rgba(255, 255, 255, 0.5)", fontStyle: "italic" }}>
+          "{content.quote}"{" "}
+        </p>
+        <footer className="blockquote-footer">{content.quoteAuthor}</footer>
+      </blockquote>
+    </div>
   );
 }
 

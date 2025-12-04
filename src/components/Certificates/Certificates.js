@@ -1,297 +1,264 @@
-// src/components/Certificates/Certificates.jsx
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Button } from "react-bootstrap";
+import { Container, Row, Col, Card, Modal, Button } from "react-bootstrap";
+import { FaDownload, FaExpand, FaTimes, FaSearchPlus, FaSearchMinus } from "react-icons/fa";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import useScrollReveal from "../../hooks/useScrollReveal";
+import { getCertificates } from "../../supabase/database";
+import "./Certificates.css";
 
-import certificate1 from "../../Assets/Certificate-1.pdf";
-import certificate2 from "../../Assets/Certificate-2.pdf";
-import certificate3 from "../../Assets/Certificate-3.pdf";
-import certificate4 from "../../Assets/Certificate-4.pdf";
-
-// configure pdf worker
+// Configure PDF worker
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
-
-const certificatesData = [
-  { name: "Professional Certificate", url: certificate1, issuer: "Certification Authority", year: "2024" },
-  { name: "Technical Certification", url: certificate2, issuer: "Tech Institute", year: "2024" },
-  { name: "Advanced Certification", url: certificate3, issuer: "Advanced Academy", year: "2023" },
-  { name: "Specialized Training", url: certificate4, issuer: "Training Institute", year: "2023" },
-];
 
 export default function Certificates() {
   useScrollReveal();
 
-  const [openTabs, setOpenTabs] = useState([]);
-  const [activeTab, setActiveTab] = useState(null);
-  const [pageCounts, setPageCounts] = useState({});
-  const [loadedPages, setLoadedPages] = useState({});
-  const [renderError, setRenderError] = useState({});
-  const [width, setWidth] = useState(typeof window !== "undefined" ? window.innerWidth : 1200);
+  const [certificatesData, setCertificatesData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedCert, setSelectedCert] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
+  // PDF Viewer State
+  const [numPages, setNumPages] = useState(null);
+  const [scale, setScale] = useState(1.0);
+
+  // Fetch certificates from Supabase
   useEffect(() => {
-    // ensure worker is set (helps with HMR too)
-    pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
-
-    const onResize = () => setWidth(window.innerWidth);
-    window.addEventListener("resize", onResize);
-
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
-
-  // Open first certificate by default on mount
-  useEffect(() => {
-    if (certificatesData.length > 0) {
-      const firstCert = certificatesData[0];
-      const tabId = 'cert-0';
-      setOpenTabs([{ id: tabId, cert: firstCert }]);
-      setActiveTab(tabId);
-      setLoadedPages({ [tabId]: false });
-    }
-  }, []);
-
-  const openCertificate = (cert, index) => {
-    console.log("openCertificate clicked:", cert.name, index);
-    const tabId = `cert-${index}`;
-    setRenderError((prev) => ({ ...prev, [tabId]: false }));
-    setOpenTabs((prev) => {
-      if (!prev.find((t) => t.id === tabId)) {
-        setLoadedPages((p) => ({ ...p, [tabId]: false }));
-        setActiveTab(tabId);
-        return [...prev, { id: tabId, cert }];
+    const fetchCertificates = async () => {
+      try {
+        const certs = await getCertificates();
+        if (certs && certs.length > 0) {
+          setCertificatesData(certs);
+        }
+      } catch (error) {
+        console.error('Error fetching certificates:', error);
+      } finally {
+        setLoading(false);
       }
-      setActiveTab(tabId);
-      return prev;
-    });
+    };
 
-    // keep preview visible
-    setTimeout(() => {
-      const preview = document.querySelector(".vscode-like-window");
-      if (preview) preview.scrollIntoView({ behavior: "smooth", block: "center" });
-    }, 80);
+    fetchCertificates();
+  }, []);
+
+  const handleViewCertificate = (cert) => {
+    setSelectedCert(cert);
+    setScale(1.0);
+    setShowModal(true);
   };
 
-  const closeTab = (tabId, e) => {
-    if (e && e.stopPropagation) e.stopPropagation();
-    setOpenTabs((prev) => {
-      const idx = prev.findIndex((t) => t.id === tabId);
-      if (idx === -1) return prev;
-      const newTabs = prev.filter((t) => t.id !== tabId);
-
-      // compute new active
-      setActiveTab((cur) => {
-        if (cur !== tabId) return cur;
-        if (newTabs.length === 0) return null;
-        const newIndex = idx - 1 >= 0 ? idx - 1 : 0;
-        return newTabs[newIndex].id;
-      });
-
-      // cleanup states
-      setLoadedPages((lp) => { const c = { ...lp }; delete c[tabId]; return c; });
-      setPageCounts((pc) => { const c = { ...pc }; delete c[tabId]; return c; });
-      setRenderError((re) => { const c = { ...re }; delete c[tabId]; return c; });
-
-      return newTabs;
-    });
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedCert(null);
+    setNumPages(null);
+    setScale(1.0);
   };
+
+  const onDocumentLoadSuccess = ({ numPages }) => {
+    setNumPages(numPages);
+  };
+
+  const zoomIn = () => setScale(prevScale => Math.min(prevScale + 0.2, 3.0));
+  const zoomOut = () => setScale(prevScale => Math.max(prevScale - 0.2, 0.5));
 
   const handleDownload = (cert) => {
-    const toDownload = cert || openTabs.find((t) => t.id === activeTab)?.cert;
-    if (!toDownload || !toDownload.url) {
-      alert("Certificate not available.");
-      return;
-    }
-    const a = document.createElement("a");
-    a.href = toDownload.url;
-    a.download = `${toDownload.name.replace(/\s+/g, "_")}_Certificate.pdf`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    const link = document.createElement('a');
+    link.href = cert.img_path;
+    link.download = `${cert.title.replace(/\s+/g, '_')}_Certificate`;
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
-  const onDocumentLoadSuccess = (tabId) => (doc) => {
-    setPageCounts((prev) => ({ ...prev, [tabId]: doc.numPages }));
+  const isPdf = (url) => {
+    return url && (url.toLowerCase().endsWith('.pdf') || url.includes('.pdf?'));
   };
-
-  const onDocumentLoadError = (tabId) => (err) => {
-    console.error("Document load error", tabId, err);
-    setRenderError((prev) => ({ ...prev, [tabId]: true }));
-  };
-
-  const onPageRenderSuccess = (tabId) => () => {
-    setLoadedPages((prev) => ({ ...prev, [tabId]: true }));
-    setRenderError((prev) => ({ ...prev, [tabId]: false }));
-  };
-
-  const activeCert = openTabs.find((t) => t.id === activeTab)?.cert || null;
-  const viewerWidth = Math.min(850, Math.round(width * 0.85));
-  const viewerHeight = 550;
 
   return (
-    <Container fluid className="about-section certificates-container fade-up" id="certificates">
-
+    <Container fluid className="certificates-section fade-up" id="certificates">
       <Container>
-        <h1 className="project-heading certificates-title">
-          My <strong className="purple violet-text">Certificates</strong>
+        <h1 className="project-heading">
+          My <strong className="purple">Certificates</strong>
         </h1>
+        <p className="certificates-subtitle">
+          Professional certifications and achievements
+        </p>
 
-        <Row style={{ justifyContent: "center", padding: "10px" }}>
-          {/* Left column: smaller, clickable cards */}
-          <Col xs={12} lg={3} className="mb-4">
-            <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-              {certificatesData.map((cert, index) => (
-                <div
-                  key={index}
-                  className="cert-card-wrapper"
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => openCertificate(cert, index)}
-                  onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") openCertificate(cert, index); }}
-                >
-                  {/* Details revealed on hover */}
-                  <div className="cert-card-details">
-                    <h6>{cert.name}</h6>
-                    <p>{cert.issuer}</p>
-                  </div>
-
-                  {/* Purple Cover (Default) */}
-                  <div className="cert-card-cover">
-                    <div className="cert-card-cover-icon">
-                      {cert.name.split(" ").slice(0, 2).map((w) => w[0]).join("")}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Col>
-
-          {/* Right column: large viewer */}
-          <Col xs={12} lg={9} className="mb-4">
-            <div className="vscode-like-window" style={{ borderRadius: 12, overflow: "hidden", minHeight: 460 }}>
-              {/* Tab bar */}
-              <div className="tab-bar" style={{ display: "flex", gap: 8, padding: 8, background: "rgba(255,255,255,0.02)", borderBottom: "1px solid rgba(255,255,255,0.04)", overflowX: "auto" }}>
-                {openTabs.length === 0 && <div style={{ color: "#bda9e6", padding: "8px 16px" }}>No open certificates — click any certificate to open</div>}
-                {openTabs.map((tab) => (
-                  <div
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`tab ${activeTab === tab.id ? "active" : ""}`}
-                    style={{
-                      padding: "8px 14px",
-                      borderRadius: 8,
-                      cursor: "pointer",
-                      background: activeTab === tab.id ? "rgba(192,132,245,0.12)" : "transparent",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 8,
-                      minWidth: 160,
-                    }}
-                  >
-                    <div style={{ flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontSize: "0.95rem" }}>
-                      {tab.cert.name}
-                    </div>
-                    <button
-                      type="button"
-                      onClick={(e) => closeTab(tab.id, e)}
-                      style={{ background: "transparent", border: "none", color: "#c8b5e9", cursor: "pointer", padding: "0 6px" }}
-                      aria-label={`Close ${tab.cert.name}`}
-                    >
-                      ✕
-                    </button>
-                  </div>
-                ))}
-              </div>
-
-              {/* Viewer */}
-              <div style={{ padding: 16, background: "transparent", minHeight: 400 }}>
-                {activeCert ? (
-                  <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-                      <div>
-                        <h4 style={{ margin: 0, color: "#fff" }}>{activeCert.name}</h4>
-                        <div style={{ color: "#bda9e6", fontSize: 14 }}>{activeCert.issuer} • {activeCert.year}</div>
+        {loading ? (
+          <div className="loading-container">
+            <div className="loading-spinner"></div>
+            <p>Loading certificates...</p>
+          </div>
+        ) : certificatesData.length === 0 ? (
+          <div className="empty-state">
+            <div className="empty-icon">📜</div>
+            <h4>No Certificates Yet</h4>
+            <p>Certificates will appear here once added</p>
+          </div>
+        ) : (
+          <Row className="certificate-grid">
+            {certificatesData.map((cert, index) => (
+              <Col md={6} lg={4} key={cert.id || index} className="certificate-col">
+                <Card className="certificate-card">
+                  <div className="certificate-image-wrapper">
+                    {isPdf(cert.img_path) ? (
+                      <div className="pdf-preview-container">
+                        <Document
+                          file={cert.img_path}
+                          loading={<div className="pdf-loading">Loading PDF...</div>}
+                          error={<div className="pdf-error">Failed to load PDF</div>}
+                          className="pdf-document"
+                        >
+                          <Page
+                            pageNumber={1}
+                            width={400}
+                            renderTextLayer={false}
+                            renderAnnotationLayer={false}
+                            className="pdf-page"
+                          />
+                        </Document>
                       </div>
-                      <Button variant="light" onClick={() => handleDownload(activeCert)}>Download</Button>
-                    </div>
-
-                    <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
-                      {!loadedPages[activeTab] && !renderError[activeTab] && (
-                        <div style={{ width: viewerWidth, height: viewerHeight, borderRadius: 12, background: "linear-gradient(90deg, rgba(255,255,255,0.03) 0%, rgba(192,132,245,0.06) 50%, rgba(255,255,255,0.03) 100%)", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid rgba(255,255,255,0.04)" }}>
-                          <div style={{ color: "#bda9e6" }}>Loading certificate…</div>
-                        </div>
-                      )}
-
-                      {!renderError[activeTab] && (
-                        <div style={{ width: viewerWidth, maxWidth: "100%", display: loadedPages[activeTab] ? "block" : "none" }}>
-                          <Document
-                            key={`${activeCert.url}-${activeTab}`}
-                            file={activeCert.url}
-                            onLoadSuccess={onDocumentLoadSuccess(activeTab)}
-                            onLoadError={onDocumentLoadError(activeTab)}
-                            loading={null}
-                          >
-                            <Page pageNumber={1} width={viewerWidth} onRenderSuccess={onPageRenderSuccess(activeTab)} />
-                          </Document>
-
-                          {pageCounts[activeTab] > 1 && (
-                            <div style={{ marginTop: 8, color: "#bda9e6", fontSize: 13 }}>Page 1 of {pageCounts[activeTab]}</div>
-                          )}
-                        </div>
-                      )}
-
-                      {renderError[activeTab] && (
-                        <iframe src={activeCert.url} title={activeCert.name} style={{ width: viewerWidth, height: viewerHeight, borderRadius: 12, border: "1px solid rgba(255,255,255,0.04)" }} />
-                      )}
+                    ) : (
+                      <Card.Img
+                        variant="top"
+                        src={cert.img_path}
+                        alt={cert.title}
+                        className="certificate-image"
+                        loading="lazy"
+                      />
+                    )}
+                    <div className="certificate-overlay">
+                      <Button
+                        variant="light"
+                        className="action-btn view-btn"
+                        onClick={() => handleViewCertificate(cert)}
+                      >
+                        <FaExpand /> View
+                      </Button>
+                      <Button
+                        variant="light"
+                        className="action-btn download-btn"
+                        onClick={() => handleDownload(cert)}
+                      >
+                        <FaDownload /> Download
+                      </Button>
                     </div>
                   </div>
-                ) : (
-                  <div style={{ textAlign: "center", color: "#bda9e6", paddingTop: 40 }}>
-                    <h4 style={{ color: "#fff" }}>Certificate Explorer</h4>
-                    <p>Select a certificate on the left to open it here for preview & download.</p>
-                  </div>
-                )}
-              </div>
-            </div>
-          </Col>
-        </Row>
+                  <Card.Body className="certificate-body">
+                    <Card.Title className="certificate-title">
+                      {cert.title}
+                    </Card.Title>
+                    <div className="certificate-meta">
+                      <span className="certificate-issuer">{cert.issuer}</span>
+                      <span className="meta-separator">•</span>
+                      <span className="certificate-date">
+                        {new Date(cert.date).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'short'
+                        })}
+                      </span>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        )}
       </Container>
 
-      {/* Important CSS overrides to ensure clicks reach cards */}
-      <style>{`
-        /* MAKE SURE particle canvas doesn't intercept clicks */
-        #tsparticles, canvas, .tsparticles-canvas-el {
-          pointer-events: none !important;
-        }
+      {/* Full Screen Modal */}
+      <Modal
+        show={showModal}
+        onHide={handleCloseModal}
+        size="xl"
+        centered
+        className="certificate-modal"
+        dialogClassName="modal-90w"
+      >
+        <Modal.Header className="modal-header-custom">
+          <div className="modal-title-section">
+            <Modal.Title>{selectedCert?.title}</Modal.Title>
+            <div className="modal-meta">
+              <span>{selectedCert?.issuer}</span>
+              <span className="meta-separator">•</span>
+              <span>
+                {selectedCert && new Date(selectedCert.date).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}
+              </span>
+            </div>
+          </div>
+          <div className="modal-actions">
+            <Button
+              variant="outline-light"
+              className="modal-download-btn"
+              onClick={() => selectedCert && handleDownload(selectedCert)}
+            >
+              <FaDownload /> Download
+            </Button>
+            <Button
+              variant="outline-light"
+              className="modal-close-btn"
+              onClick={handleCloseModal}
+            >
+              <FaTimes />
+            </Button>
+          </div>
+        </Modal.Header>
+        <Modal.Body className="modal-body-custom">
+          {selectedCert && (
+            isPdf(selectedCert.img_path) ? (
+              <div className="pdf-modal-wrapper">
+                <div className="pdf-controls">
+                  <div className="pdf-zoom-controls">
+                    <button onClick={zoomOut} disabled={scale <= 0.5} className="control-btn" title="Zoom Out">
+                      <FaSearchMinus />
+                    </button>
+                    <span className="zoom-level">{Math.round(scale * 100)}%</span>
+                    <button onClick={zoomIn} disabled={scale >= 3.0} className="control-btn" title="Zoom In">
+                      <FaSearchPlus />
+                    </button>
+                  </div>
 
-        /* Ensure cert cards accept pointer events */
-        .cert-card, .clickable-card {
-          pointer-events: auto;
-        }
+                  {numPages && (
+                    <div className="pdf-page-info" style={{ color: '#fff', fontSize: '0.9rem' }}>
+                      {numPages} Page{numPages > 1 ? 's' : ''}
+                    </div>
+                  )}
+                </div>
 
-        /* small card styling */
-        .cert-card {
-          padding: 1rem;
-          background: rgba(255,255,255,0.03);
-          border: 1px solid rgba(192,132,245,0.12);
-          border-radius: 10px;
-          text-align: center;
-          transition: all 0.3s ease;
-        }
-        .cert-card:hover { transform: translateY(-2px); }
-
-        .small-thumb {
-          height: 80px;
-          width: 100%;
-          border-radius: 8px;
-          background: linear-gradient(135deg, #7e22ce, #c084f5);
-          display:flex; align-items:center; justify-content:center;
-          color:#fff; font-weight:700; font-size:1rem; margin-bottom:0.7rem;
-        }
-
-        .tab-bar::-webkit-scrollbar { height: 6px; }
-        .tab-bar::-webkit-scrollbar-thumb { background: rgba(192,132,245,0.25); border-radius: 4px; }
-      `}</style>
+                <div className="pdf-modal-viewer">
+                  <Document
+                    file={selectedCert.img_path}
+                    onLoadSuccess={onDocumentLoadSuccess}
+                    loading={<div className="pdf-loading-spinner">Loading PDF...</div>}
+                    className="pdf-document-modal"
+                  >
+                    {Array.from(new Array(numPages), (el, index) => (
+                      <Page
+                        key={`page_${index + 1}`}
+                        pageNumber={index + 1}
+                        scale={scale}
+                        renderTextLayer={false}
+                        renderAnnotationLayer={false}
+                        className="pdf-page-modal mb-3"
+                      />
+                    ))}
+                  </Document>
+                </div>
+              </div>
+            ) : (
+              <img
+                src={selectedCert.img_path}
+                alt={selectedCert.title}
+                className="modal-certificate-image"
+              />
+            )
+          )}
+        </Modal.Body>
+      </Modal>
     </Container>
   );
 }

@@ -1,0 +1,13 @@
+/* Global Animations and Keyframes */
+
+/* Scroll Reveal Animation */
+.fade-up {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.8s ease-out;
+}
+
+.fade-up.show {
+    opacity: 1;
+    transform: translateY(0);
+}

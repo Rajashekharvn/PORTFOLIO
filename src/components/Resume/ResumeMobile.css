@@ -1,0 +1,40 @@
+/* Mobile Responsiveness for Resume Page */
+@media (max-width: 767px) {
+    .resume-section {
+        padding-top: 100px !important;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+
+    .resume {
+        padding-top: 30px;
+        padding-bottom: 30px;
+    }
+
+    .resume-left,
+    .resume-right {
+        padding-right: 15px !important;
+        padding-left: 15px !important;
+    }
+
+    /* PDF Page Responsiveness */
+    .react-pdf__Page {
+        max-width: 100% !important;
+    }
+
+    .react-pdf__Page__canvas {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+
+    /* Timeline Responsiveness */
+    .resume .d-flex {
+        padding: 0 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .resume-section {
+        padding-top: 90px !important;
+    }
+}

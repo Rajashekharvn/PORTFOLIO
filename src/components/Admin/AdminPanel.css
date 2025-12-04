@@ -1,0 +1,503 @@
+:root {
+    --admin-bg-gradient: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    --primary-color: #c770f0;
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --card-hover-transform: translateY(-5px);
+}
+
+/* Global Admin Styles */
+.admin-login-page,
+.admin-dashboard,
+.admin-management-page,
+.admin-section {
+    min-height: 100vh;
+    background: var(--admin-bg-gradient);
+    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+    padding-top: 100px;
+    padding-bottom: 50px;
+}
+
+/* Login Card */
+.admin-login-card {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: var(--glass-border) !important;
+    border-radius: 24px !important;
+    box-shadow: var(--glass-shadow);
+    padding: 2rem;
+    max-width: 450px;
+    width: 100%;
+    margin: 0 auto;
+    color: var(--text-primary) !important;
+}
+
+.admin-login-card h2 {
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(to right, #fff, #c770f0);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+}
+
+/* Admin Card (for forms in ManageHome/ManageAbout) */
+.admin-card {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: var(--glass-border) !important;
+    border-radius: 20px !important;
+    padding: 30px;
+    box-shadow: var(--glass-shadow);
+    color: var(--text-primary) !important;
+}
+
+.admin-card .card-body {
+    padding: 0;
+}
+
+/* Form Controls */
+.form-control,
+.form-select {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #fff !important;
+    border-radius: 12px !important;
+    padding: 12px 15px !important;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 4px rgba(199, 112, 240, 0.1) !important;
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.form-label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+/* Buttons */
+.btn-primary {
+    background: linear-gradient(135deg, #623686 0%, #c770f0 100%) !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 12px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease !important;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(199, 112, 240, 0.4) !important;
+}
+
+.btn-primary:disabled {
+    opacity: 0.7;
+    transform: none;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+    border: none !important;
+    border-radius: 12px !important;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+    border: none !important;
+    border-radius: 12px !important;
+}
+
+/* Dashboard Header */
+.admin-header {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 3rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    backdrop-filter: blur(5px);
+}
+
+.admin-header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 0;
+    background: linear-gradient(to right, #fff, #c770f0);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.admin-subtitle {
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+    font-size: 1rem;
+}
+
+.logout-btn {
+    border-radius: 50px !important;
+    padding: 10px 25px !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #fff !important;
+    transition: all 0.3s ease !important;
+    background: transparent !important;
+}
+
+.logout-btn:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: #fff !important;
+    transform: translateY(-2px);
+}
+
+/* Stats Cards */
+.stat-card {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-radius: 20px !important;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    color: var(--text-primary) !important;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.stat-card .card-body {
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.stat-icon {
+    font-size: 2.5rem;
+    opacity: 0.9;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+}
+
+.stat-content {
+    flex: 1;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    color: #fff;
+    line-height: 1.2;
+}
+
+.stat-title {
+    color: var(--text-secondary);
+    margin: 5px 0 0 0;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+/* Menu Cards */
+.section-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+}
+
+.section-title::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 30px;
+    background: var(--primary-color);
+    margin-right: 15px;
+    border-radius: 3px;
+}
+
+.admin-menu-card {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-radius: 20px !important;
+    height: 100%;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    color: var(--text-primary) !important;
+}
+
+.admin-menu-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.03), transparent);
+    transform: translateX(-100%);
+    transition: 0.5s;
+}
+
+.admin-menu-card:hover::before {
+    transform: translateX(100%);
+}
+
+.admin-menu-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.06) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.admin-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    height: 100%;
+}
+
+.admin-menu-card .card-body {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 100%;
+}
+
+.admin-card-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+.admin-menu-card:hover .admin-card-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.admin-menu-card .card-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: #fff;
+}
+
+.admin-menu-card .card-text {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.card-badge {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-top: auto;
+    display: inline-block;
+}
+
+/* Management Pages */
+.management-card {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(10px);
+    border: var(--glass-border) !important;
+    border-radius: 20px !important;
+    padding: 30px;
+    margin-bottom: 40px;
+    box-shadow: var(--glass-shadow);
+    color: var(--text-primary) !important;
+}
+
+.management-card h2 {
+    color: #fff;
+    margin-bottom: 30px;
+    font-weight: 700;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
+}
+
+.back-button {
+    margin-bottom: 30px;
+    border-radius: 30px !important;
+    padding: 10px 25px !important;
+    font-weight: 600 !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(5px);
+    color: #fff !important;
+    transition: all 0.3s ease !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.back-button:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: var(--primary-color) !important;
+    transform: translateX(-5px);
+}
+
+.item-list {
+    margin-top: 50px;
+}
+
+.item-card {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-radius: 15px !important;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    height: 100%;
+    color: var(--text-primary) !important;
+}
+
+.item-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.06) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.item-card .card-body {
+    padding: 1.5rem;
+}
+
+.item-card .card-title {
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+.stat-card .card-body {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.5rem;
+}
+
+.stat-icon {
+    margin-bottom: 0.5rem;
+}
+
+.nav-tabs .nav-link {
+    color: rgba(255, 255, 255, 0.6) !important;
+    border: none !important;
+    background: transparent !important;
+    padding: 12px 24px !important;
+    font-weight: 600 !important;
+}
+
+.nav-tabs .nav-link:hover {
+    color: #fff !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.nav-tabs .nav-link.active {
+    color: #c770f0 !important;
+    background: rgba(199, 112, 240, 0.1) !important;
+    border-bottom: 2px solid #c770f0 !important;
+}/* Tables */
+.table-dark {
+    background-color: rgba(255, 255, 255, 0.03) !important;
+    color: #fff !important;
+}
+
+.table-dark thead th {
+    background-color: rgba(199, 112, 240, 0.3) !important;
+    color: #fff !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    font-weight: 600 !important;
+}
+
+.table-dark tbody td {
+    color: #fff !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.table-dark tbody tr {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.table-dark tbody tr:hover {
+    background-color: rgba(199, 112, 240, 0.15) !important;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Tabs */
+.nav-tabs {
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.nav-tabs .nav-link {
+    color: rgba(255, 255, 255, 0.6) !important;
+    border: none !important;
+    background: transparent !important;
+    padding: 12px 24px !important;
+    font-weight: 600 !important;
+}
+
+.nav-tabs .nav-link:hover {
+    color: #fff !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.nav-tabs .nav-link.active {
+    color: #c770f0 !important;
+    background: rgba(199, 112, 240, 0.1) !important;
+    border-bottom: 2px solid #c770f0 !important;
+}
+
+/* Form Select Dropdown Options */
+.form-select option {
+    background-color: #1a1a2e !important;
+    color: #fff !important;
+    padding: 10px !important;
+}
+
+.form-select option:hover {
+    background-color: rgba(199, 112, 240, 0.2) !important;
+}
+
+.form-select option:checked {
+    background-color: rgba(199, 112, 240, 0.3) !important;
+}

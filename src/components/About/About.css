@@ -1,96 +1,195 @@
+/* About Section - Modern Minimalist Redesign */
 .about-section {
-    position: relative;
-    padding-top: 40px !important;
-    padding-bottom: 60px !important;
-    background-image: var(--section-background-color) !important;
-    color: white;
+    position: relative !important;
+    padding-top: 100px !important;
+    padding-bottom: 50px !important;
+    background-image: none !important;
+    color: white !important;
     overflow: hidden;
 }
 
-.about-img {
-    padding-top: 120px;
-    padding-bottom: 50px;
+/* Typography */
+.about-heading {
+    font-size: 3.5em !important;
+    font-weight: 700 !important;
+    padding-bottom: 30px !important;
+    line-height: 1.2 !important;
 }
 
-.about-heading {
-    font-size: 2.1em;
-    padding-bottom: 20px;
-    text-align: center;
+.about-text {
+    font-size: 1.2em !important;
+    font-weight: 300 !important;
+    line-height: 1.8 !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    text-align: left !important;
 }
 
 .purple {
-    color: #c084f5;
+    color: #c770f0 !important;
+    font-weight: 600;
 }
 
-/* Glassmorphism for About Card */
-.about-card {
-    background: rgba(255, 255, 255, 0.07) !important;
-    border: 1px solid rgba(192, 132, 245, 0.25) !important;
-    border-radius: 16px !important;
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.25) !important;
-    backdrop-filter: blur(8px) !important;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    transition: all 0.4s ease;
-}
-
-.about-card:hover {
-    transform: translateY(-5px);
-    border-color: rgba(192, 132, 245, 0.45) !important;
-    box-shadow: 0 0 35px rgba(192, 132, 245, 0.25) !important;
-}
-
+/* Remove Card Styles */
 .quote-card-view {
     border: none !important;
-    color: white;
     background-color: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
 }
 
-/* Tech & Tool Stack Icons */
+.about-card {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+/* List Styling */
+.about-activity {
+    list-style: none !important;
+    text-align: left !important;
+    padding-left: 0 !important;
+    font-size: 1.1em !important;
+    margin-bottom: 15px !important;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-weight: 400 !important;
+    color: rgba(255, 255, 255, 0.8) !important;
+    transition: all 0.3s ease;
+}
+
+.about-activity:hover {
+    transform: translateX(10px);
+    color: #c770f0 !important;
+}
+
+.about-activity svg {
+    color: #c770f0 !important;
+    font-size: 1.2em !important;
+}
+
+/* Image Styling */
+.about-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* Tech Icons - Enhanced Box Style (Restored) */
 .tech-icons {
     font-size: 4.5em !important;
     margin: 15px !important;
-    padding: 10px !important;
+    padding: 20px !important;
     opacity: 0.93 !important;
     border: 1.7px solid rgba(200, 137, 230, 0.637) !important;
     vertical-align: middle !important;
     text-align: center !important;
-    border-radius: 5px !important;
+    border-radius: 15px !important;
     display: table !important;
     box-shadow: 4px 5px 4px 3px rgba(89, 4, 168, 0.137) !important;
     overflow: hidden !important;
     transition: all 0.4s ease 0s !important;
     background: rgba(255, 255, 255, 0.03) !important;
-    backdrop-filter: blur(4px) !important;
+    backdrop-filter: blur(5px) !important;
 }
 
 .tech-icons:hover {
-    transform: scale(1.05) !important;
+    transform: translateY(-5px) scale(1.05) !important;
     overflow: hidden !important;
     border: 2.2px solid rgba(197, 115, 230, 0.883) !important;
-    box-shadow: 0 0 15px rgba(192, 132, 245, 0.45) !important;
+    box-shadow: 0 8px 25px rgba(197, 115, 230, 0.3) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
 }
 
 .tech-icon-images {
     padding: 20px !important;
-    line-height: 0 !important;
+    line-height: 1.6 !important;
 }
 
-/* Floating Animation for Image */
-.float-animation {
-    animation: float 3s ease-in-out infinite;
+/* Skillset Heading */
+.project-heading {
+    font-size: 2.8em !important;
+    font-weight: 700 !important;
+    margin-bottom: 40px !important;
+    padding-top: 100px !important;
 }
 
-@keyframes float {
-    0% {
-        transform: translateY(0px);
+/* Blockquote Footer */
+.blockquote-footer {
+    color: rgba(255, 255, 255, 0.5) !important;
+    font-size: 0.9em !important;
+    margin-top: 20px !important;
+    font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+    .about-heading {
+        font-size: 2.2em !important;
+        text-align: center;
     }
 
-    50% {
-        transform: translateY(-20px);
+    .about-text {
+        text-align: left;
+        font-size: 1.1em !important;
     }
 
-    100% {
-        transform: translateY(0px);
+    .about-img {
+        margin-top: 40px;
     }
+
+    .tech-icons {
+        margin: 10px !important;
+        font-size: 3em !important;
+    }
+
+    .project-heading {
+        font-size: 2em !important;
+    }
+}
+
+.skillset-heading {
+    padding-top: 50px !important;
+}
+
+/* Tech Icons Hover Animation */
+.tech-icons {
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.tech-icons svg {
+    transition: all 0.3s ease !important;
+}
+
+.tech-icons:hover svg {
+    opacity: 0 !important;
+    transform: scale(0.5) !important;
+}
+
+.tech-icons::after {
+    content: attr(data-name);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.5);
+    width: 100%;
+    padding: 0 10px;
+    font-size: 0.5em;
+    font-weight: 700;
+    color: #c770f0;
+    text-align: center;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    pointer-events: none;
+    white-space: normal;
+    line-height: 1.2;
+    word-wrap: break-word;
+}
+
+.tech-icons:hover::after {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
 }

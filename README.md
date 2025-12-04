@@ -3,7 +3,6 @@
   <a href="https://rajashekharvn.netlify.app/" target="_blank">Raju.tech</a>
 </h2>
 
-
 <br/>
 
 <center>
@@ -16,146 +15,139 @@
 
 </center>
 
-
 # Portfolio Website - v2.0 🚀
 
 ## Description
-A personal portfolio website built with React.js, showcasing projects, resume, and technical skills. This project uses React Bootstrap and custom CSS for styling, ensuring a responsive design.
-
-## Table of Contents
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Installation](#installation)
-- [Usage](#usage)
-- [How to use](#how-to-use)
-- [Project Structure](#project-structure)
-- [Contributing](#contributing)
-- [License](#license)
-- [Important Links](#important-links)
-- [Footer](#footer)
+A premium, personal portfolio website built with React.js, showcasing projects, resume, and technical skills. This project features a modern glassmorphism design, interactive animations, and a fully functional Admin Panel for managing content dynamically via Supabase.
 
 ## Features ✨
-- **Multi-Page Layout**: Includes Home, About, Projects, Resume, Certificates, and Contact pages.
-- **React-Bootstrap Styling**: Utilizes React-Bootstrap and custom CSS for consistent styling.
-- **Responsive Design**: Adapts to different screen sizes for optimal viewing on various devices.
-- **Interactive Components**: Includes a typewriter effect, particle background, and GitHub calendar.
-- **Resume Display**: Renders a local PDF resume with view and download options.
-- **Certificates**: Displays PDF certificates with view and download buttons.
-- **Contact Form**: Integrated contact form with Formspree support or mailto fallback.
+- **Modern UI/UX**: Glassmorphism design, particle backgrounds, and smooth page transitions.
+- **Dynamic Content**: Manage Projects, Certificates, and Resume directly from the Admin Panel.
+- **Admin Panel**: Secure login and dashboard to update portfolio content without code changes.
+- **Supabase Integration**: Real-time database and storage for dynamic content management.
+- **Responsive Design**: Fully optimized for desktop, tablet, and mobile devices.
+- **Interactive Components**: Typewriter effects, tilt animations, and GitHub contribution calendar.
+- **PDF Viewer**: Integrated PDF viewer for Certificates and Resume.
 
 ## Tech Stack 💻
-- [React.js](https://reactjs.org/)
-- [Node.js](https://nodejs.org/)
-- [Express.js](https://expressjs.com/)
-- [React Bootstrap](https://react-bootstrap.github.io/)
-- [CSS3](https://developer.mozilla.org/en-US/docs/Web/CSS)
-- [JavaScript](https://www.javascript.com/)
-- [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML)
-- [@react-pdf/renderer](https://react-pdf.org/)
-- [axios](https://axios-http.com/)
-- [react-github-calendar](https://github.com/PaulBalfe/react-github-calendar)
-- [react-icons](https://react-icons.github.io/react-icons)
-- [react-parallax-tilt](https://www.npmjs.com/package/react-parallax-tilt)
-- [react-pdf](https://react-pdf.org/)
-- [react-router-dom](https://reactrouter.com/)
-- [react-tsparticles](https://particles.js.org/)
-- [typewriter-effect](https://www.npmjs.com/package/typewriter-effect)
+- **Frontend**: React.js, React Bootstrap, CSS3
+- **Backend/Database**: Supabase (PostgreSQL, Storage, Auth)
+- **Libraries**: `react-pdf`, `react-icons`, `react-tsparticles`, `typewriter-effect`, `axios`
 
-## Installation ⚙️
+## Getting Started 🛠️
 
-Clone the repository and install the dependencies.
+### Prerequisites
+- Node.js (v14 or higher)
+- npm (v6 or higher)
+- A Supabase account
 
-```bash
-git clone https://github.com/Rajashekharvn/PORTFOLIO.git
-cd PORTFOLIO
-npm install
-```
+### Installation
 
-## Usage 🚀
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Rajashekharvn/PORTFOLIO.git
+   cd PORTFOLIO
+   ```
 
-Start the development server:
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-```bash
-npm start
-```
+3. **Configure Supabase**
+   - Create a file named `src/supabaseClient.js`.
+   - Add your Supabase credentials (see [Supabase Setup](#supabase-setup-database) below).
 
-Open [http://localhost:3000](http://localhost:3000) to view the portfolio in the browser.
-
-## How to use 🧑‍🏫
-
-To modify the content of the portfolio, navigate to the `src/components/` directory. Here, you can edit your information in the respective components.
-
-- **Home**: `src/components/Home/Home.js`, `src/components/Home/Home2.js`
-- **About**: `src/components/About/About.js`, `src/components/About/AboutCard.js`
-- **Projects**: `src/components/Projects/Projects.js`
-- **Resume**: `src/components/Resume/ResumeNew.js`
-- **Certificates**: `src/components/Certificates/Certificates.js`
-- **Contact**: `src/components/Contact/Contact.js`
-
+4. **Run the application**
+   ```bash
+   npm start
+   ```
+   The app will open at [http://localhost:3000](http://localhost:3000).
 
 ## Project Structure 📂
 
 ```
 PORTFOLIO
-├── public/
-│   ├── index.html
-│   └── manifest.json
+├── public/                 # Static assets (index.html, manifest, etc.)
 ├── src/
-│   ├── Assets/
-│   ├── components/
-│   │   ├── About/
-│   │   ├── Certificates/
-│   │   ├── Contact/
-│   │   ├── Footer.js
-│   │   ├── Home/
-│   │   ├── Navbar.js
-│   │   ├── Particle.js
-│   │   ├── Pre.js
-│   │   ├── Projects/
-│   │   ├── Resume/
-│   │   └── ScrollToTop.js
-│   ├── config/
-│   │   └── contact.js
-│   ├── App.js
-│   ├── App.css
-│   ├── index.js
-│   ├── index.css
-│   ├── reportWebVitals.js
-│   └── style.css
-├── package.json
-├── README.md
-└── WARP.md
+│   ├── Assets/             # Local images and static files
+│   ├── components/         # React Components
+│   │   ├── About/          # About page components (Techstack, Toolstack)
+│   │   ├── Admin/          # Admin Panel components (Login, Dashboard, Managers)
+│   │   ├── Certificates/   # Certificates page with PDF viewer
+│   │   ├── Contact/        # Contact form
+│   │   ├── Home/           # Landing page components
+│   │   ├── Projects/       # Projects page components
+│   │   ├── Resume/         # Resume page components
+│   │   ├── Navbar.js       # Main navigation bar
+│   │   └── Footer.js       # Application footer
+│   ├── styles/             # Global styles and animations
+│   ├── supabase/           # Supabase helper functions
+│   ├── App.js              # Main application component with Routes
+│   ├── index.js            # Entry point
+│   └── supabaseClient.js   # Supabase configuration (Gitignored)
+├── .gitignore              # Git ignore rules
+├── package.json            # Project dependencies
+└── README.md               # Project documentation
 ```
+
+## Admin Panel 🔐
+
+The Admin Panel allows you to manage the content of your portfolio dynamically.
+
+### How to Access
+1. Navigate to `/admin/login` (e.g., `http://localhost:3000/admin/login`).
+2. Log in with your Supabase authentication credentials.
+
+### Features
+- **Dashboard**: Overview of your portfolio stats.
+- **Manage Projects**: Add, edit, or delete projects. Upload project images directly.
+- **Manage Certificates**: Upload new certificates (PDF) and manage existing ones.
+- **Update Resume**: Upload the latest version of your resume.
+
+## Supabase Setup 🗄️
+
+To make the dynamic features work, you need to set up a Supabase project.
+
+1. **Create a Project**: Go to [Supabase](https://supabase.com/) and create a new project.
+
+2. **Database Schema**:
+   Create the following tables in your Supabase database:
+   - `projects`: `id`, `title`, `description`, `ghLink`, `demoLink`, `imgPath` (text)
+   - `certificates`: `id`, `title`, `issuer`, `date`, `pdfPath` (text)
+   - `resume`: `id`, `file_path` (text), `updated_at`
+
+3. **Storage Buckets**:
+   Create two public storage buckets:
+   - `project-images`
+   - `certificates`
+   - `resumes`
+
+4. **Connect to App**:
+   Create `src/supabaseClient.js` and add your keys:
+   ```javascript
+   import { createClient } from '@supabase/supabase-js';
+
+   const supabaseUrl = 'YOUR_SUPABASE_URL';
+   const supabaseAnonKey = 'YOUR_SUPABASE_ANON_KEY';
+
+   export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+   ```
 
 ## Contributing 🤝
 
 Contributions are welcome! Please follow these steps:
-
-1.  Fork the repository
-2.  Create a new branch (`git checkout -b feature/improvement`)
-3.  Make your changes
-4.  Commit your changes (`git commit -am 'Add some improvement'`)
-5.  Push to the branch (`git push origin feature/improvement`)
-6.  Create a new Pull Request
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/improvement`).
+3. Commit your changes.
+4. Push to the branch.
+5. Open a Pull Request.
 
 ## License 📜
+This project is open source and available under the [MIT License](LICENSE).
 
-This project has no license.
-
-## Important Links 🔗
-- **Live Demo**: [Raju.tech](https://rajashekharvn.netlify.app/)
-- **GitHub Repository**: [https://github.com/Rajashekharvn/PORTFOLIO](https://github.com/Rajashekharvn/PORTFOLIO)
-- **Author's LinkedIn**: [https://www.linkedin.com/in/rajashekhar-naduvinahalli-476b15253/](https://www.linkedin.com/in/rajashekhar-naduvinahalli-476b15253/)
-- **Author's Instagram**: [https://www.instagram.com/rajashekhar_v_n?igsh=MTM0bmJhZ2d4dWFnbg==](https://www.instagram.com/rajashekhar_v_n?igsh=MTM0bmJhZ2d4dWFnbg==)
-
-## Footer 📜
-
-- Repository: PORTFOLIO
-- URL: [https://github.com/Rajashekharvn/PORTFOLIO](https://github.com/Rajashekharvn/PORTFOLIO)
-- Author: Rajashekhar V N
-- Contact: raju.naduvinahalli@gmail.com
-
-⭐ Give a star if you like this website! Fork the repository to contribute and make it your own. Report bugs and request features to help improve the project. ⭐
-
-
-
+## Contact 📧
+**Rajashekhar V N**
+- [LinkedIn](https://www.linkedin.com/in/rajashekhar-naduvinahalli-476b15253/)
+- [Instagram](https://www.instagram.com/rajashekhar_v_n)
+- Email: raju.naduvinahalli@gmail.com

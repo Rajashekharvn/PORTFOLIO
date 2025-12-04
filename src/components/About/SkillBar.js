@@ -1,0 +1,143 @@
+import React, { useEffect, useRef, useState } from "react";
+import "./SkillBar.css";
+
+const SkillBar = ({ skill, percentage, category }) => {
+    const [isVisible, setIsVisible] = useState(false);
+    const [currentPercentage, setCurrentPercentage] = useState(0);
+    const barRef = useRef(null);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        setIsVisible(true);
+                    }
+                });
+            },
+            { threshold: 0.3 }
+        );
+
+        if (barRef.current) {
+            observer.observe(barRef.current);
+        }
+
+        return () => {
+            if (barRef.current) {
+                observer.unobserve(barRef.current);
+            }
+        };
+    }, []);
+
+    useEffect(() => {
+        if (isVisible) {
+            let start = 0;
+            const increment = percentage / 60; // 60 frames for smooth animation
+            const timer = setInterval(() => {
+                start += increment;
+                if (start >= percentage) {
+                    setCurrentPercentage(percentage);
+                    clearInterval(timer);
+                } else {
+                    setCurrentPercentage(Math.floor(start));
+                }
+            }, 16); // ~60fps
+
+            return () => clearInterval(timer);
+        }
+    }, [isVisible, percentage]);
+
+    return (
+        <div className="skill-bar-container" ref={barRef}>
+            <div className="skill-bar-header">
+                <span className="skill-name">{skill}</span>
+                <span className="skill-percentage">{currentPercentage}%</span>
+            </div>
+            <div className="skill-bar-background">
+                <div
+                    className={`skill-bar-fill ${category}`}
+                    style={{
+                        width: isVisible ? `${currentPercentage}%` : "0%",
+                    }}
+                >
+                    <div className="skill-bar-glow"></div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const SkillBars = () => {
+    const skills = {
+        frontend: [
+            { name: "React.js", level: 90 },
+            { name: "JavaScript", level: 88 },
+            { name: "HTML/CSS", level: 92 },
+            { name: "Bootstrap", level: 85 },
+        ],
+        backend: [
+            { name: "PHP", level: 80 },
+            { name: "MySQL", level: 82 },
+            { name: "Node.js", level: 75 },
+            { name: "REST APIs", level: 78 },
+        ],
+        tools: [
+            { name: "Git/GitHub", level: 85 },
+            { name: "VS Code", level: 90 },
+            { name: "Figma", level: 70 },
+            { name: "Postman", level: 75 },
+        ],
+    };
+
+    return (
+        <div className="skill-bars-section">
+            <h2 className="skill-category-title">
+                <span className="purple">Technical</span> Proficiency
+            </h2>
+
+            <div className="skill-category">
+                <h3 className="category-name">
+                    <i className="fas fa-laptop-code"></i> Frontend Development
+                </h3>
+                {skills.frontend.map((skill, index) => (
+                    <SkillBar
+                        key={index}
+                        skill={skill.name}
+                        percentage={skill.level}
+                        category="frontend"
+                    />
+                ))}
+            </div>
+
+            <div className="skill-category">
+                <h3 className="category-name">
+                    <i className="fas fa-server"></i> Backend Development
+                </h3>
+                {skills.backend.map((skill, index) => (
+                    <SkillBar
+                        key={index}
+                        skill={skill.name}
+                        percentage={skill.level}
+                        category="backend"
+                    />
+                ))}
+            </div>
+
+            <div className="skill-category">
+                <h3 className="category-name">
+                    <i className="fas fa-tools"></i> Tools & Technologies
+                </h3>
+                {skills.tools.map((skill, index) => (
+                    <SkillBar
+                        key={index}
+                        skill={skill.name}
+                        percentage={skill.level}
+                        category="tools"
+                    />
+                ))}
+            </div>
+        </div>
+    );
+};
+
+export default SkillBars;

@@ -1,13 +1,35 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import homeLogo from "../../Assets/home-main.svg";
 import Home2 from "./Home2";
 import Type from "./Type";
 import useScrollReveal from "../../hooks/useScrollReveal";
-import "./Home.css"; // 1. Import the CSS file
+import { getHomeData } from "../../supabase/database";
+import { defaultHomeContent } from "../../utils/content";
+import "./Home.css";
+import "./HomeFix.css";
 
 function Home() {
   useScrollReveal();
+  const [content, setContent] = useState(defaultHomeContent);
+
+  useEffect(() => {
+    const loadContent = async () => {
+      const data = await getHomeData();
+      if (data) {
+        setContent({
+          heading: data.heading,
+          name: data.name,
+          introTitle: data.intro_title,
+          introBody: data.intro_body,
+          githubLink: data.github_link,
+          linkedinLink: data.linkedin_link,
+          instagramLink: data.instagram_link,
+        });
+      }
+    };
+    loadContent();
+  }, []);
 
   return (
     <section>
@@ -16,7 +38,7 @@ function Home() {
           <Row className="align-items-center">
             <Col md={7} className="home-header">
               <h1 className="heading">
-                Hi There!{" "}
+                {content.heading}{" "}
                 <span className="wave" role="img" aria-labelledby="wave">
                   👋🏻
                 </span>
@@ -24,7 +46,7 @@ function Home() {
 
               <h1 className="heading-name">
                 I'M
-                <strong className="main-name"> RAJASHEKHAR V N</strong>
+                <strong className="main-name"> {content.name}</strong>
               </h1>
 
               <div className="type-wrapper">
@@ -36,15 +58,14 @@ function Home() {
               <img
                 src={homeLogo}
                 alt="home pic"
-                // 2. Add the "floating" class name
-                className="img-fluid floating"
+                className="img-fluid float-animation"
               />
             </Col>
           </Row>
         </Container>
       </Container>
       <div className="fade-up">
-        <Home2 />
+        <Home2 content={content} />
       </div>
     </section>
   );

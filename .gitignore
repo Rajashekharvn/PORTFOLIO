@@ -27,3 +27,6 @@ yarn-error.log*
 
 Server/node_modules
 Server/config.js
+
+# Supabase credentials (DO NOT COMMIT)
+src/supabaseClient.js
