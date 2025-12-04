@@ -2,7 +2,6 @@
   "name": "portfolio",
   "version": "0.1.0",
   "private": true,
-  "homepage": ".",
   "dependencies": {
     "@react-pdf/renderer": "^2.2.0",
     "@supabase/supabase-js": "^2.86.0",
