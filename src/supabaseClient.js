@@ -14,6 +14,7 @@ export const supabase = (supabaseUrl && supabaseAnonKey)
         auth: {
             getSession: () => Promise.resolve({ data: { session: null } }),
             onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => { } } } }),
+            signInWithPassword: () => Promise.resolve({ data: null, error: { message: "Supabase is not configured. Missing environment variables." } }),
         },
         from: () => ({
             select: () => Promise.resolve({ data: [], error: { message: "Supabase not configured" } }),

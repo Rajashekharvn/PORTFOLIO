@@ -11,6 +11,12 @@ function Login() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
+    React.useEffect(() => {
+        if (!supabase.auth) {
+            setError("Supabase client is not initialized.");
+        }
+    }, []);
+
     const handleLogin = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -29,7 +35,7 @@ function Login() {
             }
         } catch (error) {
             console.error('Login error:', error);
-            setError('Failed to log in. Please check your credentials.');
+            setError(error.message || 'Failed to log in. Please check your credentials.');
         } finally {
             setLoading(false);
         }
