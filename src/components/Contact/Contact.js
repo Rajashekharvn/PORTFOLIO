@@ -4,12 +4,15 @@ import { Container, Row, Col, Alert, Spinner } from "react-bootstrap";
 import { AiOutlineMail, AiFillGithub, AiFillInstagram } from "react-icons/ai";
 import { FaPhoneAlt, FaLinkedinIn } from "react-icons/fa";
 import { MdLocationOn } from "react-icons/md";
-import { EMAIL, PHONE, LOCATION, FORMSPREE_ENDPOINT } from "../../config/contact";
+import { EMAIL, PHONE, LOCATION } from "../../config/contact";
+import { submitMessage } from "../../supabase/database";
 import useScrollReveal from "../../hooks/useScrollReveal";
+import useHomeContent from "../../hooks/useHomeContent";
 import "./Contact.css";
 
 function Contact() {
   useScrollReveal();
+  const { content } = useHomeContent();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -35,29 +38,17 @@ function Contact() {
     setIsSubmitting(true);
 
     try {
-      if (FORMSPREE_ENDPOINT) {
-        const res = await fetch(FORMSPREE_ENDPOINT, {
-          method: "POST",
-          headers: { "Accept": "application/json", "Content-Type": "application/json" },
-          body: JSON.stringify({ name, email, message }),
-        });
-
-        if (res.ok) {
-          setStatus({ type: "success", message: "✅ Message sent successfully!" });
-          setName("");
-          setEmail("");
-          setMessage("");
-        } else {
-          setStatus({ type: "danger", message: "❌ Failed to send message. Try again later." });
-        }
-      } else {
-        const subject = encodeURIComponent(`Portfolio Contact: ${name} `);
-        const body = encodeURIComponent(`Name: ${name} \nEmail: ${email} \n\n${message} `);
-        window.open(`mailto:${EMAIL}?subject = ${subject}& body=${body} `, "_blank");
-        setStatus({
-          type: "success",
-          message: "✉️ Email client opened — send to complete.",
-        });
+      try {
+        await submitMessage({ name, email, message });
+        setStatus({ type: "success", message: "✅ Message sent successfully!" });
+        setName("");
+        setEmail("");
+        setMessage("");
+      } catch (err) {
+        console.error("Form error:", err);
+        setStatus({ type: "danger", message: "❌ Failed to send message. Please try again later." });
+      } finally {
+        setIsSubmitting(false);
       }
     } catch (err) {
       console.error("Form error:", err);
@@ -111,7 +102,7 @@ function Contact() {
               <ul className="contact-social-links">
                 <li className="social-icons">
                   <a
-                    href="https://github.com/Rajashekharvn"
+                    href={content.githubLink}
                     target="_blank"
                     rel="noreferrer"
                     className="icon-colour home-social-icons"
@@ -122,7 +113,7 @@ function Contact() {
                 </li>
                 <li className="social-icons">
                   <a
-                    href="https://www.linkedin.com/in/rajashekhar-naduvinahalli-476b15253"
+                    href={content.linkedinLink}
                     target="_blank"
                     rel="noreferrer"
                     className="icon-colour home-social-icons"
@@ -133,7 +124,7 @@ function Contact() {
                 </li>
                 <li className="social-icons">
                   <a
-                    href="https://www.instagram.com/rajashekhar_v_n?igsh=MTM0bmJhZ2d4dWFnbg=="
+                    href={content.instagramLink}
                     target="_blank"
                     rel="noreferrer"
                     className="icon-colour home-social-icons"

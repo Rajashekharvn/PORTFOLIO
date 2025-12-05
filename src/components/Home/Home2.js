@@ -27,7 +27,7 @@ function Home2({ content }) {
           </Col>
           <Col md={4} className="myAvtar">
             <Tilt>
-              <img src={myImg} className="img-fluid" alt="avatar" />
+              <img src={content.avatarUrl || myImg} className="img-fluid" alt="avatar" />
             </Tilt>
           </Col>
         </Row>

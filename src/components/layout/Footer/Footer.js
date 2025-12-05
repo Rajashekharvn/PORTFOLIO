@@ -8,11 +8,14 @@ import {
 } from "react-icons/ai";
 import { FaLinkedinIn } from "react-icons/fa";
 import { EMAIL } from "../../../config/contact";
+import useHomeContent from "../../../hooks/useHomeContent";
 import "./Footer.css";
 
 function Footer() {
   let date = new Date();
   let year = date.getFullYear();
+  const { content } = useHomeContent();
+
   return (
     <Container fluid className="footer">
       <Row>
@@ -35,7 +38,7 @@ function Footer() {
             </li>
             <li className="social-icons">
               <a
-                href="https://github.com/Rajashekharvn"
+                href={content.githubLink}
                 className="footer-social-icons"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -45,7 +48,7 @@ function Footer() {
             </li>
             <li className="social-icons">
               <a
-                href="https://www.linkedin.com/in/rajashekhar-naduvinahalli-476b15253/"
+                href={content.linkedinLink}
                 className="footer-social-icons"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -55,7 +58,7 @@ function Footer() {
             </li>
             <li className="social-icons">
               <a
-                href="https://www.instagram.com/rajashekhar_v_n?igsh=MTM0bmJhZ2d4dWFnbg=="
+                href={content.instagramLink}
                 className="footer-social-icons"
                 target="_blank"
                 rel="noopener noreferrer"

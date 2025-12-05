@@ -9,9 +9,10 @@ import {
     FaUser,
     FaHome,
     FaSignOutAlt,
-    FaChartLine
+    FaChartLine,
+    FaEnvelope
 } from 'react-icons/fa';
-import { getProjects, getCertificates } from '../../supabase/database';
+import { getProjects, getCertificates, getStats } from '../../supabase/database';
 import './AdminPanel.css';
 
 function AdminPanel() {
@@ -19,6 +20,7 @@ function AdminPanel() {
     const [stats, setStats] = useState({
         projects: 0,
         certificates: 0,
+        views: 0,
         loading: true
     });
 
@@ -28,14 +30,16 @@ function AdminPanel() {
 
     const loadStats = async () => {
         try {
-            const [projectsData, certificatesData] = await Promise.all([
+            const [projectsData, certificatesData, viewsCount] = await Promise.all([
                 getProjects(),
-                getCertificates()
+                getCertificates(),
+                getStats()
             ]);
 
             setStats({
                 projects: projectsData.length,
                 certificates: certificatesData.length,
+                views: viewsCount,
                 loading: false
             });
         } catch (error) {
@@ -97,6 +101,13 @@ function AdminPanel() {
             path: '/admin/skills',
             description: 'Manage tech stack and tools',
             color: '#00BCD4'
+        },
+        {
+            title: 'Messages',
+            icon: <FaEnvelope />,
+            path: '/admin/messages',
+            description: 'View contact form messages',
+            color: '#E91E63'
         }
     ];
 
@@ -115,7 +126,7 @@ function AdminPanel() {
         },
         {
             title: 'Portfolio Views',
-            value: '---',
+            value: stats.views,
             icon: <FaChartLine />,
             color: '#c770f0'
         }

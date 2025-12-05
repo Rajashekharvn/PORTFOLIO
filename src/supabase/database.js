@@ -162,6 +162,25 @@ export const deleteCertificate = async (certId) => {
 
 // ===== HOME CONTENT OPERATIONS =====
 
+export const uploadImage = async (file, bucket, path) => {
+    try {
+        const { error } = await supabase.storage
+            .from(bucket)
+            .upload(path, file, { upsert: true });
+
+        if (error) throw error;
+
+        const { data: { publicUrl } } = supabase.storage
+            .from(bucket)
+            .getPublicUrl(path);
+
+        return publicUrl;
+    } catch (error) {
+        console.error('Error uploading image:', error);
+        throw error;
+    }
+};
+
 export const getHomeData = async () => {
     try {
         const { data, error } = await supabase
@@ -190,6 +209,8 @@ export const updateHomeData = async (homeData) => {
             github_link: homeData.githubLink,
             linkedin_link: homeData.linkedinLink,
             instagram_link: homeData.instagramLink,
+            avatar_url: homeData.avatarUrl,
+            main_img_url: homeData.mainImgUrl,
             updated_at: new Date().toISOString()
         };
 
@@ -344,6 +365,102 @@ export const deleteSkill = async (id) => {
         if (error) throw error;
     } catch (error) {
         console.error('Error deleting skill:', error);
+        throw error;
+    }
+};
+
+// ===== STATS OPERATIONS =====
+
+export const getStats = async () => {
+    try {
+        const { data, error } = await supabase
+            .from('app_stats')
+            .select('views')
+            .eq('id', 'portfolio')
+            .single();
+
+        if (error) throw error;
+        return data ? data.views : 0;
+    } catch (error) {
+        console.error('Error fetching stats:', error);
+        return 0;
+    }
+};
+
+export const incrementViews = async () => {
+    try {
+        // 1. Get current views
+        const { data: currentData, error: fetchError } = await supabase
+            .from('app_stats')
+            .select('views')
+            .eq('id', 'portfolio')
+            .single();
+
+        if (fetchError) throw fetchError;
+
+        const newViews = (currentData?.views || 0) + 1;
+
+        // 2. Update views
+        const { error: updateError } = await supabase
+            .from('app_stats')
+            .update({ views: newViews })
+            .eq('id', 'portfolio');
+
+        if (updateError) throw updateError;
+
+        return newViews;
+    } catch (error) {
+        console.error('Error incrementing views:', error);
+        return null;
+    }
+};
+
+// ===== MESSAGE OPERATIONS =====
+
+export const submitMessage = async (messageData) => {
+    try {
+        const { error } = await supabase
+            .from('messages')
+            .insert([{
+                name: messageData.name,
+                email: messageData.email,
+                message: messageData.message,
+                created_at: new Date().toISOString()
+            }]);
+
+        if (error) throw error;
+        return true;
+    } catch (error) {
+        console.error('Error submitting message:', error);
+        throw error;
+    }
+};
+
+export const getMessages = async () => {
+    try {
+        const { data, error } = await supabase
+            .from('messages')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        return data || [];
+    } catch (error) {
+        console.error('Error fetching messages:', error);
+        return [];
+    }
+};
+
+export const deleteMessage = async (id) => {
+    try {
+        const { error } = await supabase
+            .from('messages')
+            .delete()
+            .eq('id', id);
+
+        if (error) throw error;
+    } catch (error) {
+        console.error('Error deleting message:', error);
         throw error;
     }
 };

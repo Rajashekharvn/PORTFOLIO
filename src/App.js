@@ -16,6 +16,7 @@ import ManageCertificates from "./components/Admin/ManageCertificates";
 import ManageHome from "./components/Admin/ManageHome";
 import ManageAbout from "./components/Admin/ManageAbout";
 import ManageSkills from "./components/Admin/ManageSkills";
+import ManageMessages from "./components/Admin/ManageMessages";
 import ProtectedRoute from "./components/ProtectedRoute";
 import {
   BrowserRouter as Router,
@@ -62,6 +63,21 @@ function App() {
     });
 
     return () => subscription.unsubscribe();
+  }, []);
+
+  // Track Views
+  useEffect(() => {
+    const trackView = async () => {
+      // Check if already visited in this session
+      const visited = sessionStorage.getItem('portfolio_visited');
+      if (!visited) {
+        const { incrementViews } = await import('./supabase/database');
+        await incrementViews();
+        sessionStorage.setItem('portfolio_visited', 'true');
+      }
+    };
+
+    trackView();
   }, []);
 
   return (
@@ -134,6 +150,14 @@ function App() {
             element={
               <ProtectedRoute user={user} loading={authLoading}>
                 <ManageSkills />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/messages"
+            element={
+              <ProtectedRoute user={user} loading={authLoading}>
+                <ManageMessages />
               </ProtectedRoute>
             }
           />

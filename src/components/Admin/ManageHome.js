@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Container, Form, Button, Alert, Card } from "react-bootstrap";
-import { getHomeData, updateHomeData } from "../../supabase/database";
+import { Container, Form, Button, Alert, Card, Row, Col, Image } from "react-bootstrap";
+import { getHomeData, updateHomeData, uploadImage } from "../../supabase/database";
 import { defaultHomeContent } from "../../utils/content";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft, FaSave } from "react-icons/fa";
@@ -11,6 +11,9 @@ function ManageHome() {
     const [saving, setSaving] = useState(false);
     const [message, setMessage] = useState(null);
     const [formData, setFormData] = useState(defaultHomeContent);
+    const [avatarFile, setAvatarFile] = useState(null);
+    const [mainImgFile, setMainImgFile] = useState(null);
+    const [previews, setPreviews] = useState({ avatar: null, main: null });
 
     useEffect(() => {
         fetchData();
@@ -27,7 +30,14 @@ function ManageHome() {
                     introBody: data.intro_body,
                     githubLink: data.github_link,
                     linkedinLink: data.linkedin_link,
+                    linkedinLink: data.linkedin_link,
                     instagramLink: data.instagram_link,
+                    avatarUrl: data.avatar_url,
+                    mainImgUrl: data.main_img_url,
+                });
+                setPreviews({
+                    avatar: data.avatar_url,
+                    main: data.main_img_url
                 });
             }
         } catch (error) {
@@ -46,13 +56,42 @@ function ManageHome() {
         }));
     };
 
+    const handleFileChange = (e) => {
+        const { name, files } = e.target;
+        const file = files[0];
+        if (name === "avatarFile") {
+            setAvatarFile(file);
+            setPreviews(prev => ({ ...prev, avatar: URL.createObjectURL(file) }));
+        } else if (name === "mainImgFile") {
+            setMainImgFile(file);
+            setPreviews(prev => ({ ...prev, main: URL.createObjectURL(file) }));
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setSaving(true);
         setMessage(null);
 
         try {
-            await updateHomeData(formData);
+            let updatedData = { ...formData };
+
+            if (avatarFile) {
+                const avatarPath = `avatar-${Date.now()}.${avatarFile.name.split('.').pop()}`;
+                const avatarUrl = await uploadImage(avatarFile, 'portfolio-images', avatarPath);
+                updatedData.avatarUrl = avatarUrl;
+            }
+
+            if (mainImgFile) {
+                const mainPath = `main-${Date.now()}.${mainImgFile.name.split('.').pop()}`;
+                const mainUrl = await uploadImage(mainImgFile, 'portfolio-images', mainPath);
+                updatedData.mainImgUrl = mainUrl;
+            }
+
+            await updateHomeData(updatedData);
+            setFormData(updatedData); // Update local state with new URLs
+            setAvatarFile(null);
+            setMainImgFile(null);
             setMessage({ type: "success", text: "Home content updated successfully!" });
         } catch (error) {
             console.error("Error updating home data:", error);
@@ -93,6 +132,25 @@ function ManageHome() {
                     <Card.Body>
                         <Form onSubmit={handleSubmit}>
                             <h4 className="mb-3 text-white">Main Banner</h4>
+                            <Row className="mb-4">
+                                <Col md={8}>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label className="text-white">Main Image</Form.Label>
+                                        <Form.Control
+                                            type="file"
+                                            name="mainImgFile"
+                                            onChange={handleFileChange}
+                                            accept="image/*"
+                                        />
+                                    </Form.Group>
+                                </Col>
+                                <Col md={4} className="text-center">
+                                    {previews.main && (
+                                        <Image src={previews.main} fluid thumbnail style={{ maxHeight: '150px' }} />
+                                    )}
+                                </Col>
+                            </Row>
+
                             <Form.Group className="mb-3">
                                 <Form.Label className="text-white">Heading (e.g., Hi There!)</Form.Label>
                                 <Form.Control
@@ -117,6 +175,36 @@ function ManageHome() {
 
                             <hr className="bg-white" />
                             <h4 className="mb-3 text-white">Introduction Section</h4>
+
+                            <Form.Group className="mb-3">
+                                <Form.Label className="text-white">Intro Title</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="introTitle"
+                                    value={formData.introTitle}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </Form.Group>
+
+                            <Row className="mb-4">
+                                <Col md={8}>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label className="text-white">Avatar Image</Form.Label>
+                                        <Form.Control
+                                            type="file"
+                                            name="avatarFile"
+                                            onChange={handleFileChange}
+                                            accept="image/*"
+                                        />
+                                    </Form.Group>
+                                </Col>
+                                <Col md={4} className="text-center">
+                                    {previews.avatar && (
+                                        <Image src={previews.avatar} fluid roundedCircle style={{ maxHeight: '150px' }} />
+                                    )}
+                                </Col>
+                            </Row>
 
                             <Form.Group className="mb-3">
                                 <Form.Label className="text-white">Intro Title</Form.Label>

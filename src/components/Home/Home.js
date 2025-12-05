@@ -1,35 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import homeLogo from "../../Assets/home-main.svg";
 import Home2 from "./Home2";
 import Type from "./Type";
 import useScrollReveal from "../../hooks/useScrollReveal";
-import { getHomeData } from "../../supabase/database";
-import { defaultHomeContent } from "../../utils/content";
+import "./Home.css";
+import "./HomeFix.css";
+
+import useHomeContent from "../../hooks/useHomeContent";
 import "./Home.css";
 import "./HomeFix.css";
 
 function Home() {
   useScrollReveal();
-  const [content, setContent] = useState(defaultHomeContent);
-
-  useEffect(() => {
-    const loadContent = async () => {
-      const data = await getHomeData();
-      if (data) {
-        setContent({
-          heading: data.heading,
-          name: data.name,
-          introTitle: data.intro_title,
-          introBody: data.intro_body,
-          githubLink: data.github_link,
-          linkedinLink: data.linkedin_link,
-          instagramLink: data.instagram_link,
-        });
-      }
-    };
-    loadContent();
-  }, []);
+  const { content } = useHomeContent();
 
   return (
     <section>
@@ -56,9 +40,10 @@ function Home() {
 
             <Col md={5} className="home-image-col">
               <img
-                src={homeLogo}
+                src={content.mainImgUrl || homeLogo}
                 alt="home pic"
                 className="img-fluid float-animation"
+                style={{ maxHeight: "450px" }}
               />
             </Col>
           </Row>
