@@ -1,5 +1,5 @@
 <h2 align="center">
-  Portfolio Website - v2.0<br/>
+  Portfolio Website - v3.0.0<br/>
   <a href="https://rajashekharvn.netlify.app/" target="_blank">Raju.tech</a>
 </h2>
 
@@ -15,7 +15,7 @@
 
 </center>
 
-# Portfolio Website - v2.0 🚀
+# Portfolio Website - v3.0.0 🚀
 
 ## Description
 A premium, personal portfolio website built with React.js, showcasing projects, resume, and technical skills. This project features a modern glassmorphism design, interactive animations, and a fully functional Admin Panel for managing content dynamically via Supabase.
@@ -54,9 +54,9 @@ A premium, personal portfolio website built with React.js, showcasing projects, 
    npm install
    ```
 
-3. **Configure Supabase**
-   - Create a file named `src/supabaseClient.js`.
-   - Add your Supabase credentials (see [Supabase Setup](#supabase-setup-database) below).
+3. **Configure Environment Variables**
+   - Create a `.env` file in the root directory.
+   - Add your Supabase keys (see [Configuration](#configuration-⚙️) below).
 
 4. **Run the application**
    ```bash
@@ -85,7 +85,8 @@ PORTFOLIO
 │   ├── supabase/           # Supabase helper functions
 │   ├── App.js              # Main application component with Routes
 │   ├── index.js            # Entry point
-│   └── supabaseClient.js   # Supabase configuration (Gitignored)
+│   └── supabaseClient.js   # Supabase client initialization
+├── .env                    # Environment variables (Gitignored)
 ├── .gitignore              # Git ignore rules
 ├── package.json            # Project dependencies
 └── README.md               # Project documentation
@@ -124,15 +125,23 @@ To make the dynamic features work, you need to set up a Supabase project.
    - `resumes`
 
 4. **Connect to App**:
-   Create `src/supabaseClient.js` and add your keys:
-   ```javascript
-   import { createClient } from '@supabase/supabase-js';
-
-   const supabaseUrl = 'YOUR_SUPABASE_URL';
-   const supabaseAnonKey = 'YOUR_SUPABASE_ANON_KEY';
-
-   export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+   The app uses environment variables for security. Create a `.env` file in the root directory:
+   ```env
+   REACT_APP_SUPABASE_URL=your_supabase_url
+   REACT_APP_SUPABASE_ANON_KEY=your_supabase_anon_key
    ```
+   **Do not commit `.env` to GitHub.**
+
+## Deployment 🚀
+
+### Vercel Deployment & Environment Variables
+1. **Import Project**: Connect your GitHub repository to Vercel.
+2. **Configure Environment Variables** (Critical Step):
+   - In the Vercel Dashboard, go to **Settings** > **Environment Variables**.
+   - Add the following keys (copy values from your local `.env` or Supabase):
+     - `REACT_APP_SUPABASE_URL`
+     - `REACT_APP_SUPABASE_ANON_KEY`
+3. **Deploy**: Click **Deploy**. If the project is already deployed, go to **Deployments** and click **Redeploy** on the latest commit to apply the new variables.
 
 ## Contributing 🤝
 
