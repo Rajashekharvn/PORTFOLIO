@@ -66,31 +66,86 @@ A premium, personal portfolio website built with React.js, showcasing projects, 
 
 ## Project Structure 📂
 
+
+## 📁 Project Structure
+
 ```
-PORTFOLIO
-├── public/                 # Static assets (index.html, manifest, etc.)
+Portfolio/
+├── public/
+│   ├── index.html
+│   ├── favicon.png
+│   └── Assets/
+│       ├── pre.svg
+│       ├── home-main.svg
+│       └── about.png
 ├── src/
-│   ├── Assets/             # Local images and static files
-│   ├── components/         # React Components
-│   │   ├── About/          # About page components (Techstack, Toolstack)
-│   │   ├── Admin/          # Admin Panel components (Login, Dashboard, Managers)
-│   │   ├── Certificates/   # Certificates page with PDF viewer
-│   │   ├── Contact/        # Contact form
-│   │   ├── Home/           # Landing page components
-│   │   ├── Projects/       # Projects page components
-│   │   ├── Resume/         # Resume page components
-│   │   ├── Navbar.js       # Main navigation bar
-│   │   └── Footer.js       # Application footer
-│   ├── styles/             # Global styles and animations
-│   ├── supabase/           # Supabase helper functions
-│   ├── App.js              # Main application component with Routes
-│   ├── index.js            # Entry point
-│   └── supabaseClient.js   # Supabase client initialization
-├── .env                    # Environment variables (Gitignored)
-├── .gitignore              # Git ignore rules
-├── package.json            # Project dependencies
-└── README.md               # Project documentation
+│   ├── components/
+│   │   ├── Common/
+│   │   │   ├── Particle.js
+│   │   │   ├── Preloader.js
+│   │   │   ├── ScrollToTop.js
+│   │   │   ├── BackToTop.js
+│   │   │   ├── PageTransition.js
+│   │   │   └── ErrorBoundary.js
+│   │   ├── Auth/
+│   │   │   └── ProtectedRoute.js
+│   │   ├── Navbar/
+│   │   │   ├── Navbar.js
+│   │   │   └── ThemeToggle.js
+│   │   ├── Home/
+│   │   │   ├── Home.js
+│   │   │   ├── Home2.js
+│   │   │   └── Type.js
+│   │   ├── About/
+│   │   │   ├── About.js
+│   │   │   ├── AboutCard.js
+│   │   │   ├── Techstack.js
+│   │   │   └── Toolstack.js
+│   │   ├── Projects/
+│   │   │   ├── Projects.js
+│   │   │   └── ProjectCards.js
+│   │   ├── Resume/
+│   │   │   ├── ResumeNew.js
+│   │   │   ├── Timeline.js
+│   │   │   └── Certificates.js
+│   │   ├── Contact/
+│   │   │   └── Contact.js
+│   │   ├── Admin/
+│   │   │   ├── Login.js
+│   │   │   ├── AdminPanel.js
+│   │   │   ├── ManageAbout.js
+│   │   │   ├── ManageProjects.js
+│   │   │   ├── ManageCertificates.js
+│   │   │   ├── ManageTimeline.js
+│   │   │   ├── ManageMessages.js
+│   │   │   └── ManageSkillset.js
+│   │   ├── NotFound/
+│   │   │   └── NotFound.js
+│   │   └── Footer/
+│   │       └── Footer.js
+│   ├── supabase/
+│   │   ├── supabaseClient.js
+│   │   └── database.js
+│   ├── context/
+│   │   └── ThemeContext.js
+│   ├── hooks/
+│   │   └── useScrollReveal.js
+│   ├── style.css
+│   ├── App.js
+│   └── index.js
+├── .github/
+│   └── workflows/
+│       ├── snake.yml
+│       ├── ci.yml
+│       └── deploy.yml
+├── .env.example
+├── .gitignore
+├── package.json
+└── README.md
 ```
+
+---
+
 
 ## Admin Panel 🔐
 
