@@ -24,7 +24,7 @@ function Github() {
       {/* Snake Animation */}
       <div style={{ textAlign: "center", marginTop: "20px" }}>
         <img
-          src="https://raw.githubusercontent.com/Rajashekharvn/Rajashekharvn/output/github-contribution-grid-snake.svg"
+          src="https://raw.githubusercontent.com/Rajashekharvn/Rajashekharvn/output/github-snake-dark.svg"
           alt="GitHub contribution snake animation"
           style={{
             maxWidth: "100%",
