@@ -72,14 +72,14 @@ const StatsCounter = () => {
                     />
                     <StatCard
                         icon={FaCertificate}
-                        count={10}
+                        count={5}
                         suffix="+"
                         label="Certifications"
                         duration={2}
                     />
                     <StatCard
                         icon={FaClock}
-                        count={2}
+                        count={1}
                         suffix="+"
                         label="Years Experience"
                         duration={1.5}

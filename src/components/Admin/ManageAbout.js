@@ -26,6 +26,11 @@ function ManageAbout() {
                     activities: data.activities || [],
                     quote: data.quote,
                     quoteAuthor: data.quote_author,
+                    skillBars: data.skill_bars || {
+                        frontend: [],
+                        backend: [],
+                        tools: []
+                    }
                 });
             }
         } catch (error) {
@@ -60,6 +65,44 @@ function ManageAbout() {
     const removeActivity = (index) => {
         const newActivities = formData.activities.filter((_, i) => i !== index);
         setFormData((prev) => ({ ...prev, activities: newActivities }));
+    };
+
+    // Skill Bars Management Functions
+    const handleSkillChange = (category, index, field, value) => {
+        const newSkills = [...(formData.skillBars?.[category] || [])];
+        newSkills[index] = {
+            ...newSkills[index],
+            [field]: field === 'level' ? parseInt(value) || 0 : value
+        };
+        setFormData((prev) => ({
+            ...prev,
+            skillBars: {
+                ...prev.skillBars,
+                [category]: newSkills
+            }
+        }));
+    };
+
+    const addSkill = (category) => {
+        const newSkills = [...(formData.skillBars?.[category] || []), { name: "", level: 50 }];
+        setFormData((prev) => ({
+            ...prev,
+            skillBars: {
+                ...prev.skillBars,
+                [category]: newSkills
+            }
+        }));
+    };
+
+    const removeSkill = (category, index) => {
+        const newSkills = (formData.skillBars?.[category] || []).filter((_, i) => i !== index);
+        setFormData((prev) => ({
+            ...prev,
+            skillBars: {
+                ...prev.skillBars,
+                [category]: newSkills
+            }
+        }));
     };
 
     const handleSubmit = async (e) => {
@@ -183,6 +226,162 @@ function ManageAbout() {
                                     required
                                 />
                             </Form.Group>
+
+                            <hr className="bg-white mt-4" />
+                            <h4 className="mb-3 text-white">Skill Bars Management</h4>
+                            <p className="text-white-50 mb-4">
+                                Manage technical proficiency levels for Frontend, Backend, and Tools categories.
+                            </p>
+
+                            {/* Frontend Skills */}
+                            <div className="mb-4">
+                                <div className="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 className="text-white mb-0">
+                                        <i className="fas fa-laptop-code"></i> Frontend Development
+                                    </h5>
+                                    <Button variant="success" size="sm" onClick={() => addSkill('frontend')}>
+                                        <FaPlus /> Add Skill
+                                    </Button>
+                                </div>
+                                {(formData.skillBars?.frontend || []).map((skill, index) => (
+                                    <Row key={index} className="mb-3 align-items-center">
+                                        <Col md={5}>
+                                            <Form.Control
+                                                type="text"
+                                                value={skill.name}
+                                                onChange={(e) => handleSkillChange('frontend', index, 'name', e.target.value)}
+                                                placeholder="Skill name (e.g., React.js)"
+                                                required
+                                            />
+                                        </Col>
+                                        <Col md={6}>
+                                            <div className="d-flex align-items-center">
+                                                <Form.Range
+                                                    value={skill.level}
+                                                    onChange={(e) => handleSkillChange('frontend', index, 'level', e.target.value)}
+                                                    min="0"
+                                                    max="100"
+                                                    className="me-3"
+                                                />
+                                                <Form.Control
+                                                    type="number"
+                                                    value={skill.level}
+                                                    onChange={(e) => handleSkillChange('frontend', index, 'level', e.target.value)}
+                                                    min="0"
+                                                    max="100"
+                                                    style={{ width: '70px' }}
+                                                />
+                                                <span className="text-white ms-2">%</span>
+                                            </div>
+                                        </Col>
+                                        <Col xs="auto">
+                                            <Button variant="danger" onClick={() => removeSkill('frontend', index)}>
+                                                <FaTrash />
+                                            </Button>
+                                        </Col>
+                                    </Row>
+                                ))}
+                            </div>
+
+                            {/* Backend Skills */}
+                            <div className="mb-4">
+                                <div className="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 className="text-white mb-0">
+                                        <i className="fas fa-server"></i> Backend Development
+                                    </h5>
+                                    <Button variant="success" size="sm" onClick={() => addSkill('backend')}>
+                                        <FaPlus /> Add Skill
+                                    </Button>
+                                </div>
+                                {(formData.skillBars?.backend || []).map((skill, index) => (
+                                    <Row key={index} className="mb-3 align-items-center">
+                                        <Col md={5}>
+                                            <Form.Control
+                                                type="text"
+                                                value={skill.name}
+                                                onChange={(e) => handleSkillChange('backend', index, 'name', e.target.value)}
+                                                placeholder="Skill name (e.g., Node.js)"
+                                                required
+                                            />
+                                        </Col>
+                                        <Col md={6}>
+                                            <div className="d-flex align-items-center">
+                                                <Form.Range
+                                                    value={skill.level}
+                                                    onChange={(e) => handleSkillChange('backend', index, 'level', e.target.value)}
+                                                    min="0"
+                                                    max="100"
+                                                    className="me-3"
+                                                />
+                                                <Form.Control
+                                                    type="number"
+                                                    value={skill.level}
+                                                    onChange={(e) => handleSkillChange('backend', index, 'level', e.target.value)}
+                                                    min="0"
+                                                    max="100"
+                                                    style={{ width: '70px' }}
+                                                />
+                                                <span className="text-white ms-2">%</span>
+                                            </div>
+                                        </Col>
+                                        <Col xs="auto">
+                                            <Button variant="danger" onClick={() => removeSkill('backend', index)}>
+                                                <FaTrash />
+                                            </Button>
+                                        </Col>
+                                    </Row>
+                                ))}
+                            </div>
+
+                            {/* Tools Skills */}
+                            <div className="mb-4">
+                                <div className="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 className="text-white mb-0">
+                                        <i className="fas fa-tools"></i> Tools & Technologies
+                                    </h5>
+                                    <Button variant="success" size="sm" onClick={() => addSkill('tools')}>
+                                        <FaPlus /> Add Skill
+                                    </Button>
+                                </div>
+                                {(formData.skillBars?.tools || []).map((skill, index) => (
+                                    <Row key={index} className="mb-3 align-items-center">
+                                        <Col md={5}>
+                                            <Form.Control
+                                                type="text"
+                                                value={skill.name}
+                                                onChange={(e) => handleSkillChange('tools', index, 'name', e.target.value)}
+                                                placeholder="Skill name (e.g., Git/GitHub)"
+                                                required
+                                            />
+                                        </Col>
+                                        <Col md={6}>
+                                            <div className="d-flex align-items-center">
+                                                <Form.Range
+                                                    value={skill.level}
+                                                    onChange={(e) => handleSkillChange('tools', index, 'level', e.target.value)}
+                                                    min="0"
+                                                    max="100"
+                                                    className="me-3"
+                                                />
+                                                <Form.Control
+                                                    type="number"
+                                                    value={skill.level}
+                                                    onChange={(e) => handleSkillChange('tools', index, 'level', e.target.value)}
+                                                    min="0"
+                                                    max="100"
+                                                    style={{ width: '70px' }}
+                                                />
+                                                <span className="text-white ms-2">%</span>
+                                            </div>
+                                        </Col>
+                                        <Col xs="auto">
+                                            <Button variant="danger" onClick={() => removeSkill('tools', index)}>
+                                                <FaTrash />
+                                            </Button>
+                                        </Col>
+                                    </Row>
+                                ))}
+                            </div>
 
                             <Button
                                 variant="primary"

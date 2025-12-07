@@ -10,7 +10,9 @@ import {
     FaHome,
     FaSignOutAlt,
     FaChartLine,
-    FaEnvelope
+    FaEnvelope,
+    FaAddressBook,
+    FaHistory
 } from 'react-icons/fa';
 import { getProjects, getCertificates, getStats } from '../../supabase/database';
 import './AdminPanel.css';
@@ -108,6 +110,20 @@ function AdminPanel() {
             path: '/admin/messages',
             description: 'View contact form messages',
             color: '#E91E63'
+        },
+        {
+            title: 'Contact Info & Social Links',
+            icon: <FaAddressBook />,
+            path: '/admin/contact',
+            description: 'Manage contact info and social links (Footer, Contact, Home)',
+            color: '#607D8B'
+        },
+        {
+            title: 'Manage Journey',
+            icon: <FaHistory />,
+            path: '/admin/timeline',
+            description: 'Edit your timeline',
+            color: '#9575CD'
         }
     ];
 

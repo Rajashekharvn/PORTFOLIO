@@ -108,6 +108,29 @@ export const deleteProject = async (projectId) => {
     }
 };
 
+export const updateProject = async (id, project) => {
+    try {
+        const { error } = await supabase
+            .from('projects')
+            .update({
+                title: project.title,
+                description: project.description,
+                technologies: project.technologies,
+                img_path: project.imgPath,
+                gh_link: project.ghLink,
+                demo_link: project.demoLink,
+                is_blog: project.isBlog,
+                updated_at: new Date().toISOString()
+            })
+            .eq('id', id);
+
+        if (error) throw error;
+    } catch (error) {
+        console.error('Error updating project:', error);
+        throw error;
+    }
+};
+
 // ===== CERTIFICATES OPERATIONS =====
 
 export const getCertificates = async () => {
@@ -238,6 +261,137 @@ export const updateHomeData = async (homeData) => {
     }
 };
 
+// ===== CONTACT CONTENT OPERATIONS =====
+
+export const getContactData = async () => {
+    try {
+        const { data, error } = await supabase
+            .from('contact_content')
+            .select('*')
+            .single();
+
+        if (error) {
+            if (error.code === 'PGRST116') return null; // No rows found
+            throw error;
+        }
+        return data;
+    } catch (error) {
+        console.error('Error fetching contact data:', error);
+        return null;
+    }
+};
+
+export const updateContactData = async (contactData) => {
+    try {
+        const dbData = {
+            email: contactData.email,
+            phone: contactData.phone,
+            location: contactData.location,
+            github: contactData.github,
+            linkedin: contactData.linkedin,
+            instagram: contactData.instagram,
+            updated_at: new Date().toISOString()
+        };
+
+        console.log('Attempting to update contact data:', dbData);
+
+        // Check if exists
+        const { data: existing, error: selectError } = await supabase
+            .from('contact_content')
+            .select('id')
+            .single();
+
+        // PGRST116 means no rows found, which is fine - we'll insert
+        if (selectError && selectError.code !== 'PGRST116') {
+            console.error('Error checking existing data:', selectError);
+            throw selectError;
+        }
+
+        console.log('Existing record:', existing);
+
+        if (existing) {
+            console.log('Updating existing record with id:', existing.id);
+            const { error } = await supabase
+                .from('contact_content')
+                .update(dbData)
+                .eq('id', existing.id);
+            if (error) {
+                console.error('Update error:', error);
+                throw error;
+            }
+            console.log('Update successful');
+        } else {
+            console.log('Inserting new record');
+            const { error } = await supabase
+                .from('contact_content')
+                .insert([dbData]);
+            if (error) {
+                console.error('Insert error:', error);
+                throw error;
+            }
+            console.log('Insert successful');
+        }
+    } catch (error) {
+        console.error('Error updating contact data:', error);
+        throw error;
+    }
+};
+
+// ===== TIMELINE CONTENT OPERATIONS =====
+
+export const getTimelineData = async () => {
+    try {
+        const { data, error } = await supabase
+            .from('timeline_content')
+            .select('*')
+            .order('created_at', { ascending: false }); // Or display_order if added
+
+        if (error) throw error;
+        return data || [];
+    } catch (error) {
+        console.error('Error fetching timeline data:', error);
+        return [];
+    }
+};
+
+export const addTimelineItem = async (itemData) => {
+    try {
+        const { error } = await supabase
+            .from('timeline_content')
+            .insert([itemData]);
+        if (error) throw error;
+    } catch (error) {
+        console.error('Error adding timeline item:', error);
+        throw error;
+    }
+};
+
+export const updateTimelineItem = async (id, itemData) => {
+    try {
+        const { error } = await supabase
+            .from('timeline_content')
+            .update(itemData)
+            .eq('id', id);
+        if (error) throw error;
+    } catch (error) {
+        console.error('Error updating timeline item:', error);
+        throw error;
+    }
+};
+
+export const deleteTimelineItem = async (id) => {
+    try {
+        const { error } = await supabase
+            .from('timeline_content')
+            .delete()
+            .eq('id', id);
+        if (error) throw error;
+    } catch (error) {
+        console.error('Error deleting timeline item:', error);
+        throw error;
+    }
+};
+
 // ===== ABOUT CONTENT OPERATIONS =====
 
 export const getAboutData = async () => {
@@ -266,14 +420,27 @@ export const updateAboutData = async (aboutData) => {
             activities: aboutData.activities,
             quote: aboutData.quote,
             quote_author: aboutData.quoteAuthor,
+            skill_bars: aboutData.skillBars || {
+                frontend: [],
+                backend: [],
+                tools: []
+            },
             updated_at: new Date().toISOString()
         };
 
+        console.log('Updating about data with skill_bars:', dbData);
+
         // Check if exists
-        const { data: existing } = await supabase
+        const { data: existing, error: selectError } = await supabase
             .from('about_content')
             .select('id')
             .single();
+
+        // PGRST116 means no rows found, which is fine - we'll insert
+        if (selectError && selectError.code !== 'PGRST116') {
+            console.error('Error checking existing data:', selectError);
+            throw selectError;
+        }
 
         if (existing) {
             const { error } = await supabase

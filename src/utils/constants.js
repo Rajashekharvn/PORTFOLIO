@@ -32,10 +32,10 @@ export const SITE_METADATA = {
 
 // Stats
 export const STATS = {
-    projectsCompleted: 15,
-    technologies: 20,
-    certifications: 10,
-    yearsExperience: 2,
+    projectsCompleted: 10,
+    technologies: 15,
+    certifications: 5,
+    yearsExperience: 1,
 };
 
 export default {

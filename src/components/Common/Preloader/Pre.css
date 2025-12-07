@@ -7,7 +7,7 @@
     height: 100%;
     z-index: 999999;
     background-color: #000000;
-    background-image: url(../Assets/pre.svg);
+    background-image: url(../../../Assets/pre.svg);
     background-repeat: no-repeat;
     background-position: center;
 }

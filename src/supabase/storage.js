@@ -14,6 +14,9 @@ export const uploadFile = async (file, path) => {
         } else if (path.startsWith('certificates/')) {
             bucket = 'certificates';
             filePath = path.replace('certificates/', '');
+        } else if (path.startsWith('portfolio-images/')) {
+            bucket = 'portfolio-images';
+            filePath = path.replace('portfolio-images/', '');
         } else {
             throw new Error('Unknown storage path');
         }
@@ -53,6 +56,9 @@ export const deleteFile = async (path) => {
         } else if (path.startsWith('certificates/')) {
             bucket = 'certificates';
             filePath = path.replace('certificates/', '');
+        } else if (path.startsWith('portfolio-images/')) {
+            bucket = 'portfolio-images';
+            filePath = path.replace('portfolio-images/', '');
         }
 
         const { error } = await supabase.storage

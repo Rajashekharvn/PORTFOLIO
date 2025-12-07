@@ -1,44 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import "./Timeline.css";
 
-const timelineData = [
-    {
-        id: 1,
-        type: "education",
-        title: "Bachelor's in Computer Science",
-        organization: "University Name",
-        period: "2020 - 2024",
-        description: "Focused on software development, algorithms, and web technologies. Graduated with honors.",
-        icon: "fas fa-graduation-cap",
-    },
-    {
-        id: 2,
-        type: "experience",
-        title: "Full Stack Developer Intern",
-        organization: "Tech Company",
-        period: "2023 - 2024",
-        description: "Developed web applications using React.js and Node.js. Collaborated with cross-functional teams.",
-        icon: "fas fa-briefcase",
-    },
-    {
-        id: 3,
-        type: "achievement",
-        title: "National Hackathon Winner",
-        organization: "Hackathon Event",
-        period: "2023",
-        description: "Built a secure data-sharing platform and won first place among 100+ teams.",
-        icon: "fas fa-trophy",
-    },
-    {
-        id: 4,
-        type: "certification",
-        title: "React Developer Certification",
-        organization: "Online Platform",
-        period: "2023",
-        description: "Completed comprehensive React.js course covering advanced concepts and best practices.",
-        icon: "fas fa-certificate",
-    },
-];
+import { getTimelineData } from "../../supabase/database";
+import "./Timeline.css";
+
+// const timelineData = [ ... ]; // Removed static data
+
 
 const TimelineItem = ({ item, index }) => {
     const itemRef = useRef(null);
@@ -87,6 +54,16 @@ const TimelineItem = ({ item, index }) => {
 };
 
 const Timeline = () => {
+    const [items, setItems] = React.useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const data = await getTimelineData();
+            if (data) setItems(data);
+        };
+        fetchData();
+    }, []);
+
     return (
         <div className="timeline-section">
             <h2 className="timeline-heading">
@@ -97,7 +74,7 @@ const Timeline = () => {
             </p>
             <div className="timeline-container">
                 <div className="timeline-line"></div>
-                {timelineData.map((item, index) => (
+                {items.map((item, index) => (
                     <TimelineItem key={item.id} item={item} index={index} />
                 ))}
             </div>

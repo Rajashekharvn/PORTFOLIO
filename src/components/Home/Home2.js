@@ -10,9 +10,31 @@ import { FaLinkedinIn } from "react-icons/fa";
 import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
 import StatsCounter from "../StatsCounter/StatsCounter";
+import { getContactData } from "../../supabase/database";
+import { useState, useEffect } from "react";
 
 
 function Home2({ content }) {
+  const [socials, setSocials] = useState({
+    github: "",
+    linkedin: "",
+    instagram: ""
+  });
+
+  useEffect(() => {
+    const fetchSocials = async () => {
+      const data = await getContactData();
+      if (data) {
+        setSocials({
+          github: data.github,
+          linkedin: data.linkedin,
+          instagram: data.instagram
+        });
+      }
+    };
+    fetchSocials();
+  }, []);
+
   return (
     <Container fluid className="home-about-section" id="about">
       <Container>
@@ -46,7 +68,7 @@ function Home2({ content }) {
             <ul className="home-about-social-links">
               <li className="social-icons">
                 <a
-                  href={content.githubLink}
+                  href={socials.github}
                   target="_blank"
                   rel="noreferrer"
                   className="icon-colour  home-social-icons"
@@ -56,7 +78,7 @@ function Home2({ content }) {
               </li>
               <li className="social-icons">
                 <a
-                  href={content.linkedinLink}
+                  href={socials.linkedin}
                   target="_blank"
                   rel="noreferrer"
                   className="icon-colour  home-social-icons"
@@ -66,7 +88,7 @@ function Home2({ content }) {
               </li>
               <li className="social-icons">
                 <a
-                  href={content.instagramLink}
+                  href={socials.instagram}
                   target="_blank"
                   rel="noreferrer"
                   className="icon-colour home-social-icons"

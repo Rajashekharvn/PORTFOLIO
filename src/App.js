@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Preloader from "./components/Pre";
+import Preloader from "./components/Common/Preloader/Preloader";
 import Navbar from "./components/layout/Navbar/Navbar";
 import Home from "./components/Home/Home";
 import About from "./components/About/About";
@@ -17,17 +17,19 @@ import ManageHome from "./components/Admin/ManageHome";
 import ManageAbout from "./components/Admin/ManageAbout";
 import ManageSkills from "./components/Admin/ManageSkills";
 import ManageMessages from "./components/Admin/ManageMessages";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ManageContact from "./components/Admin/ManageContact";
+import ManageTimeline from "./components/Admin/ManageTimeline";
+import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import {
   BrowserRouter as Router,
   Route,
   Routes,
   Navigate
 } from "react-router-dom";
-import ScrollToTop from "./components/ScrollToTop";
-import Particle from "./components/Particle";
-import PageTransition from "./components/PageTransition";
-import BackToTop from "./components/BackToTop/BackToTop";
+import ScrollToTop from "./components/Common/ScrollToTop";
+import Particle from "./components/Common/Particle/Particle";
+import PageTransition from "./components/Common/PageTransition/PageTransition";
+import BackToTop from "./components/Common/BackToTop/BackToTop";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles/variables.css";
 import { supabase } from "./supabaseClient";
@@ -158,6 +160,22 @@ function App() {
             element={
               <ProtectedRoute user={user} loading={authLoading}>
                 <ManageMessages />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/contact"
+            element={
+              <ProtectedRoute user={user} loading={authLoading}>
+                <ManageContact />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/timeline"
+            element={
+              <ProtectedRoute user={user} loading={authLoading}>
+                <ManageTimeline />
               </ProtectedRoute>
             }
           />

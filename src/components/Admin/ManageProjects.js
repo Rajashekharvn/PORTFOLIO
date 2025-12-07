@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Form, Button, Alert, Card, Row, Col } from 'react-bootstrap';
-import { FaArrowLeft, FaPlus, FaTrash } from 'react-icons/fa';
+import { FaArrowLeft, FaPlus, FaTrash, FaEdit, FaTimes } from 'react-icons/fa';
 import { uploadFile } from '../../supabase/storage';
-import { getProjects, addProject, deleteProject } from '../../supabase/database';
+import { getProjects, addProject, deleteProject, updateProject } from '../../supabase/database';
 import './AdminPanel.css';
 
 function ManageProjects() {
@@ -22,6 +22,7 @@ function ManageProjects() {
         manualImgUrl: ''
     });
     const [imageFile, setImageFile] = useState(null);
+    const [editingProject, setEditingProject] = useState(null);
 
     useEffect(() => {
         loadProjects();
@@ -56,6 +57,37 @@ function ManageProjects() {
         }
     };
 
+    const handleEdit = (project) => {
+        setEditingProject(project);
+        setFormData({
+            title: project.title,
+            description: project.description,
+            technologies: Array.isArray(project.technologies) ? project.technologies.join(', ') : project.technologies,
+            ghLink: project.gh_link || '',
+            demoLink: project.demo_link || '',
+            isBlog: project.is_blog || false,
+            manualImgUrl: project.img_path || ''
+        });
+        setImageFile(null);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const cancelEdit = () => {
+        setEditingProject(null);
+        setFormData({
+            title: '',
+            description: '',
+            technologies: '',
+            ghLink: '',
+            demoLink: '',
+            isBlog: false,
+            manualImgUrl: ''
+        });
+        setImageFile(null);
+        setError('');
+        setSuccess('');
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -85,24 +117,24 @@ function ManageProjects() {
             // Remove manualImgUrl from saved data
             delete projectData.manualImgUrl;
 
-            await addProject(projectData);
+            if (editingProject) {
+                // If editing, keep existing image if no new one provided
+                if (!imgPath && !imageFile && editingProject.img_path) {
+                    projectData.imgPath = editingProject.img_path;
+                }
 
-            setSuccess('Project added successfully!');
-            setFormData({
-                title: '',
-                description: '',
-                technologies: '',
-                ghLink: '',
-                demoLink: '',
-                isBlog: false,
-                manualImgUrl: ''
-            });
-            setImageFile(null);
-            e.target.reset();
+                await updateProject(editingProject.id, projectData);
+                setSuccess('Project updated successfully!');
+            } else {
+                await addProject(projectData);
+                setSuccess('Project added successfully!');
+            }
+
+            cancelEdit(); // Resets form and clears edit mode
             loadProjects();
         } catch (error) {
-            setError(`Failed to add project: ${error.message}`);
-            console.error('Add project error:', error);
+            setError(`Failed to save project: ${error.message}`);
+            console.error('Save project error:', error);
         } finally {
             setLoading(false);
         }
@@ -129,7 +161,14 @@ function ManageProjects() {
                 </Link>
 
                 <div className="management-card">
-                    <h2>Add New Project</h2>
+                    <div className="d-flex justify-content-between align-items-center mb-4">
+                        <h2>{editingProject ? 'Edit Project' : 'Add New Project'}</h2>
+                        {editingProject && (
+                            <Button variant="outline-light" size="sm" onClick={cancelEdit}>
+                                <FaTimes /> Cancel Edit
+                            </Button>
+                        )}
+                    </div>
 
                     {success && <Alert variant="success">{success}</Alert>}
                     {error && <Alert variant="danger">{error}</Alert>}
@@ -234,7 +273,9 @@ function ManageProjects() {
                         </Form.Group>
 
                         <Button variant="primary" type="submit" disabled={loading}>
-                            {loading ? 'Adding...' : <><FaPlus /> Add Project</>}
+                            {loading ? 'Saving...' : (
+                                <>{editingProject ? <FaEdit /> : <FaPlus />} {editingProject ? 'Update Project' : 'Add Project'}</>
+                            )}
                         </Button>
                     </Form>
                 </div>
@@ -258,21 +299,31 @@ function ManageProjects() {
                                                 <span key={idx} className="badge bg-secondary me-1">{tech}</span>
                                             ))}
                                         </div>
-                                        <Button
-                                            variant="danger"
-                                            size="sm"
-                                            onClick={() => handleDelete(project.id)}
-                                        >
-                                            <FaTrash /> Delete
-                                        </Button>
+
+                                        <div className="d-flex gap-2">
+                                            <Button
+                                                variant="outline-info"
+                                                size="sm"
+                                                onClick={() => handleEdit(project)}
+                                            >
+                                                <FaEdit /> Edit
+                                            </Button>
+                                            <Button
+                                                variant="outline-danger"
+                                                size="sm"
+                                                onClick={() => handleDelete(project.id)}
+                                            >
+                                                <FaTrash /> Delete
+                                            </Button>
+                                        </div>
                                     </Card.Body>
                                 </Card>
                             </Col>
                         ))}
                     </Row>
                 </div>
-            </Container>
-        </div>
+            </Container >
+        </div >
     );
 }
 

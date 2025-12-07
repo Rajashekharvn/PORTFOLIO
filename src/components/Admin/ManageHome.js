@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Form, Button, Alert, Card, Row, Col, Image } from "react-bootstrap";
-import { getHomeData, updateHomeData, uploadImage } from "../../supabase/database";
+import { getHomeData, updateHomeData } from "../../supabase/database";
+import { uploadFile } from "../../supabase/storage";
 import { defaultHomeContent } from "../../utils/content";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft, FaSave } from "react-icons/fa";
@@ -78,13 +79,13 @@ function ManageHome() {
 
             if (avatarFile) {
                 const avatarPath = `avatar-${Date.now()}.${avatarFile.name.split('.').pop()}`;
-                const avatarUrl = await uploadImage(avatarFile, 'portfolio-images', avatarPath);
+                const avatarUrl = await uploadFile(avatarFile, `portfolio-images/${avatarPath}`);
                 updatedData.avatarUrl = avatarUrl;
             }
 
             if (mainImgFile) {
                 const mainPath = `main-${Date.now()}.${mainImgFile.name.split('.').pop()}`;
-                const mainUrl = await uploadImage(mainImgFile, 'portfolio-images', mainPath);
+                const mainUrl = await uploadFile(mainImgFile, `portfolio-images/${mainPath}`);
                 updatedData.mainImgUrl = mainUrl;
             }
 
@@ -95,7 +96,7 @@ function ManageHome() {
             setMessage({ type: "success", text: "Home content updated successfully!" });
         } catch (error) {
             console.error("Error updating home data:", error);
-            setMessage({ type: "danger", text: "Failed to update content" });
+            setMessage({ type: "danger", text: `Failed to update content: ${error.message || error}` });
         } finally {
             setSaving(false);
         }
@@ -226,39 +227,6 @@ function ManageHome() {
                                     value={formData.introBody}
                                     onChange={handleChange}
                                     required
-                                />
-                            </Form.Group>
-
-                            <hr className="bg-white" />
-                            <h4 className="mb-3 text-white">Social Links</h4>
-
-                            <Form.Group className="mb-3">
-                                <Form.Label className="text-white">GitHub Link</Form.Label>
-                                <Form.Control
-                                    type="url"
-                                    name="githubLink"
-                                    value={formData.githubLink}
-                                    onChange={handleChange}
-                                />
-                            </Form.Group>
-
-                            <Form.Group className="mb-3">
-                                <Form.Label className="text-white">LinkedIn Link</Form.Label>
-                                <Form.Control
-                                    type="url"
-                                    name="linkedinLink"
-                                    value={formData.linkedinLink}
-                                    onChange={handleChange}
-                                />
-                            </Form.Group>
-
-                            <Form.Group className="mb-4">
-                                <Form.Label className="text-white">Instagram Link</Form.Label>
-                                <Form.Control
-                                    type="url"
-                                    name="instagramLink"
-                                    value={formData.instagramLink}
-                                    onChange={handleChange}
                                 />
                             </Form.Group>
 

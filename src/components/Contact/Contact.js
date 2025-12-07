@@ -1,18 +1,44 @@
 // src/components/Contact/Contact.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Alert, Spinner } from "react-bootstrap";
 import { AiOutlineMail, AiFillGithub, AiFillInstagram } from "react-icons/ai";
 import { FaPhoneAlt, FaLinkedinIn } from "react-icons/fa";
 import { MdLocationOn } from "react-icons/md";
-import { EMAIL, PHONE, LOCATION } from "../../config/contact";
-import { submitMessage } from "../../supabase/database";
+// import { EMAIL, PHONE, LOCATION } from "../../config/contact"; // Removed
+import { submitMessage, getContactData } from "../../supabase/database";
 import useScrollReveal from "../../hooks/useScrollReveal";
-import useHomeContent from "../../hooks/useHomeContent";
+
 import "./Contact.css";
 
 function Contact() {
   useScrollReveal();
-  const { content } = useHomeContent();
+  // const { content } = useHomeContent(); // Removed as we fetch socials from contact info now
+
+  const [contactInfo, setContactInfo] = useState({
+    email: "", // EMAIL
+    phone: "", // PHONE
+    location: "", // LOCATION
+    github: "",
+    linkedin: "",
+    instagram: ""
+  });
+
+  useEffect(() => {
+    const fetchContactInfo = async () => {
+      const data = await getContactData();
+      if (data) {
+        setContactInfo({
+          email: data.email,
+          phone: data.phone,
+          location: data.location,
+          github: data.github,
+          linkedin: data.linkedin,
+          instagram: data.instagram
+        });
+      }
+    };
+    fetchContactInfo();
+  }, []);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -77,19 +103,19 @@ function Contact() {
             <div className="contact-info-items">
               <div className="contact-info-item">
                 <AiOutlineMail className="contact-icon" />
-                <a href={`mailto:${EMAIL} `} className="contact-link">
-                  {EMAIL}
+                <a href={`mailto:${contactInfo.email} `} className="contact-link">
+                  {contactInfo.email}
                 </a>
               </div>
               <div className="contact-info-item">
                 <FaPhoneAlt className="contact-icon" />
-                <a href={`tel:${PHONE} `} className="contact-link">
-                  {PHONE}
+                <a href={`tel:${contactInfo.phone} `} className="contact-link">
+                  {contactInfo.phone}
                 </a>
               </div>
               <div className="contact-info-item">
                 <MdLocationOn className="contact-icon" />
-                <span className="contact-text">{LOCATION}</span>
+                <span className="contact-text">{contactInfo.location}</span>
               </div>
             </div>
 
@@ -102,7 +128,7 @@ function Contact() {
               <ul className="contact-social-links">
                 <li className="social-icons">
                   <a
-                    href={content.githubLink}
+                    href={contactInfo.github}
                     target="_blank"
                     rel="noreferrer"
                     className="icon-colour home-social-icons"
@@ -113,7 +139,7 @@ function Contact() {
                 </li>
                 <li className="social-icons">
                   <a
-                    href={content.linkedinLink}
+                    href={contactInfo.linkedin}
                     target="_blank"
                     rel="noreferrer"
                     className="icon-colour home-social-icons"
@@ -124,7 +150,7 @@ function Contact() {
                 </li>
                 <li className="social-icons">
                   <a
-                    href={content.instagramLink}
+                    href={contactInfo.instagram}
                     target="_blank"
                     rel="noreferrer"
                     className="icon-colour home-social-icons"

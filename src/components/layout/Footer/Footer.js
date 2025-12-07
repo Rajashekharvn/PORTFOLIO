@@ -7,14 +7,46 @@ import {
   AiOutlineMail,
 } from "react-icons/ai";
 import { FaLinkedinIn } from "react-icons/fa";
-import { EMAIL } from "../../../config/contact";
-import useHomeContent from "../../../hooks/useHomeContent";
+// import { EMAIL } from "../../../config/contact"; // Removed
+import { getContactData } from "../../../supabase/database";
+// import useHomeContent from "../../../hooks/useHomeContent"; // Removed
 import "./Footer.css";
 
 function Footer() {
   let date = new Date();
   let year = date.getFullYear();
-  const { content } = useHomeContent();
+  // const { content } = useHomeContent();
+  const [socials, setSocials] = React.useState({
+    email: "",
+    github: "",
+    linkedin: "",
+    instagram: ""
+  });
+
+  React.useEffect(() => {
+    const fetchSocials = async () => {
+      console.log('Footer: Fetching contact data...');
+      const data = await getContactData();
+      console.log('Footer: Received contact data:', data);
+      if (data) {
+        setSocials({
+          email: data.email,
+          github: data.github,
+          linkedin: data.linkedin,
+          instagram: data.instagram
+        });
+        console.log('Footer: Updated socials state:', {
+          email: data.email,
+          github: data.github,
+          linkedin: data.linkedin,
+          instagram: data.instagram
+        });
+      } else {
+        console.log('Footer: No contact data received');
+      }
+    };
+    fetchSocials();
+  }, []);
 
   return (
     <Container fluid className="footer">
@@ -29,7 +61,7 @@ function Footer() {
           <ul className="footer-icons">
             <li className="social-icons">
               <a
-                href={`mailto:${EMAIL}`}
+                href={`mailto:${socials.email}`}
                 className="footer-social-icons"
                 rel="noopener noreferrer"
               >
@@ -38,7 +70,7 @@ function Footer() {
             </li>
             <li className="social-icons">
               <a
-                href={content.githubLink}
+                href={socials.github}
                 className="footer-social-icons"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -48,7 +80,7 @@ function Footer() {
             </li>
             <li className="social-icons">
               <a
-                href={content.linkedinLink}
+                href={socials.linkedin}
                 className="footer-social-icons"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -58,7 +90,7 @@ function Footer() {
             </li>
             <li className="social-icons">
               <a
-                href={content.instagramLink}
+                href={socials.instagram}
                 className="footer-social-icons"
                 target="_blank"
                 rel="noopener noreferrer"

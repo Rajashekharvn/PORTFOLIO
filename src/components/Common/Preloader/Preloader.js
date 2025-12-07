@@ -1,5 +1,5 @@
 import React from "react";
-import Particle from "./Particle";
+import Particle from "../Particle/Particle";
 import "./PreloaderParticles.css";
 import "./Pre.css";
 
