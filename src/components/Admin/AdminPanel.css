@@ -15,7 +15,7 @@
 .admin-management-page,
 .admin-section {
     min-height: 100vh;
-    background: var(--admin-bg) !important;
+    background: transparent !important;
     background-image: none !important;
     font-family: 'Raleway', serif;
     color: var(--text-primary);
