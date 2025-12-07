@@ -220,3 +220,17 @@ This project is open source and available under the [MIT License](LICENSE).
 - [LinkedIn](https://www.linkedin.com/in/rajashekhar-naduvinahalli-476b15253/)
 - [Instagram](https://www.instagram.com/rajashekhar_v_n)
 - Email: raju.naduvinahalli@gmail.com
+
+
+
+<div align="center">
+
+### 💡 *"The only way to do great work is to love what you do"*
+
+**Thanks for visiting! Feel free to explore my repositories and connect!** ⭐
+
+**If you like this project, please give it a ⭐ star!**
+
+<!--LAST_UPDATED-->Last updated: 2025-12-07<!--END_LAST_UPDATED-->
+
+</div>
