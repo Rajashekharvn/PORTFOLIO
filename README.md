@@ -5,7 +5,7 @@
 
 
 <h2 align="center">
-  Customizable Portfolio<br/>
+  Customizable Portfolio With Admin Panel<br/>
   <a href="https://rajashekharvn.vercel.app/" target="_blank"></a>
 </h2>
 <br/>
