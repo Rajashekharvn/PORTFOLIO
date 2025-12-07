@@ -34,7 +34,6 @@ function ManageAbout() {
                 });
             }
         } catch (error) {
-            console.error("Error fetching about data:", error);
             setMessage({ type: "danger", text: "Failed to load data" });
         } finally {
             setLoading(false);
@@ -114,7 +113,6 @@ function ManageAbout() {
             await updateAboutData(formData);
             setMessage({ type: "success", text: "About content updated successfully!" });
         } catch (error) {
-            console.error("Error updating about data:", error);
             setMessage({ type: "danger", text: "Failed to update content" });
         } finally {
             setSaving(false);

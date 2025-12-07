@@ -6,6 +6,12 @@ import { uploadFile } from '../../supabase/storage';
 import { getResume, updateResume } from '../../supabase/database';
 import './AdminPanel.css';
 
+/**
+ * UploadResume component for managing resume uploads in the admin panel
+ * Allows uploading PDF files or providing external resume URLs
+ * @returns {JSX.Element} Resume upload management interface
+ */
+
 function UploadResume() {
     const [file, setFile] = useState(null);
     const [currentResume, setCurrentResume] = useState(null);
@@ -23,7 +29,7 @@ function UploadResume() {
             const resume = await getResume();
             setCurrentResume(resume);
         } catch (error) {
-            console.error('Error loading resume:', error);
+            setError('Failed to load current resume');
         }
     };
 
@@ -80,7 +86,6 @@ function UploadResume() {
             e.target.reset();
         } catch (error) {
             setError(`Failed to update resume: ${error.message}`);
-            console.error('Update error:', error);
         } finally {
             setLoading(false);
         }

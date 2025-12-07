@@ -4,6 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../supabaseClient';
 import './AdminPanel.css';
 
+/**
+ * Login component for admin authentication
+ * Handles user login using Supabase authentication
+ * @returns {JSX.Element} Login form interface
+ */
+
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -34,7 +40,6 @@ function Login() {
                 navigate('/admin/dashboard');
             }
         } catch (error) {
-            console.error('Login error:', error);
             setError(error.message || 'Failed to log in. Please check your credentials.');
         } finally {
             setLoading(false);

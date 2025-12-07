@@ -7,15 +7,18 @@ import {
   AiOutlineMail,
 } from "react-icons/ai";
 import { FaLinkedinIn } from "react-icons/fa";
-// import { EMAIL } from "../../../config/contact"; // Removed
 import { getContactData } from "../../../supabase/database";
-// import useHomeContent from "../../../hooks/useHomeContent"; // Removed
 import "./Footer.css";
 
+/**
+ * Footer component displaying copyright information and social media links
+ * Fetches social links dynamically from the contact_content table
+ * @returns {JSX.Element} Footer component
+ */
 function Footer() {
   let date = new Date();
   let year = date.getFullYear();
-  // const { content } = useHomeContent();
+
   const [socials, setSocials] = React.useState({
     email: "",
     github: "",
@@ -25,9 +28,7 @@ function Footer() {
 
   React.useEffect(() => {
     const fetchSocials = async () => {
-      console.log('Footer: Fetching contact data...');
       const data = await getContactData();
-      console.log('Footer: Received contact data:', data);
       if (data) {
         setSocials({
           email: data.email,
@@ -35,14 +36,6 @@ function Footer() {
           linkedin: data.linkedin,
           instagram: data.instagram
         });
-        console.log('Footer: Updated socials state:', {
-          email: data.email,
-          github: data.github,
-          linkedin: data.linkedin,
-          instagram: data.instagram
-        });
-      } else {
-        console.log('Footer: No contact data received');
       }
     };
     fetchSocials();

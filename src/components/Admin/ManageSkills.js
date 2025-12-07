@@ -241,7 +241,6 @@ function ManageSkills() {
             setTechSkills(techData.length > 0 ? techData : defaultTechStack.map((s, i) => ({ ...s, id: `default-${i}`, category: "tech", display_order: i })));
             setToolSkills(toolData.length > 0 ? toolData : defaultToolStack.map((s, i) => ({ ...s, id: `default-${i}`, category: "tool", display_order: i })));
         } catch (error) {
-            console.error("Error loading skills:", error);
             setMessage({ type: "danger", text: "Failed to load skills" });
         } finally {
             setLoading(false);
@@ -280,7 +279,6 @@ function ManageSkills() {
             setEditingId(null);
             loadSkills();
         } catch (error) {
-            console.error("Error saving skill:", error);
             setMessage({ type: "danger", text: "Failed to save skill" });
         }
     };
@@ -303,7 +301,6 @@ function ManageSkills() {
             setMessage({ type: "success", text: "Skill deleted successfully!" });
             loadSkills();
         } catch (error) {
-            console.error("Error deleting skill:", error);
             setMessage({ type: "danger", text: "Failed to delete skill" });
         }
     };

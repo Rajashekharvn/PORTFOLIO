@@ -42,7 +42,6 @@ function ManageHome() {
                 });
             }
         } catch (error) {
-            console.error("Error fetching home data:", error);
             setMessage({ type: "danger", text: "Failed to load data" });
         } finally {
             setLoading(false);
@@ -95,7 +94,6 @@ function ManageHome() {
             setMainImgFile(null);
             setMessage({ type: "success", text: "Home content updated successfully!" });
         } catch (error) {
-            console.error("Error updating home data:", error);
             setMessage({ type: "danger", text: `Failed to update content: ${error.message || error}` });
         } finally {
             setSaving(false);

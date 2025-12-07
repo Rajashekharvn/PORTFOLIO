@@ -36,7 +36,6 @@ function ManageContact() {
                 });
             }
         } catch (error) {
-            console.error("Error fetching contact data:", error);
             setMessage({ type: "danger", text: "Failed to load data" });
         } finally {
             setLoading(false);
@@ -63,7 +62,6 @@ function ManageContact() {
                 text: "✅ Contact info updated successfully! Refresh the page (F5) to see changes in Footer, Contact, and Home pages."
             });
         } catch (error) {
-            console.error("Error updating contact data:", error);
             setMessage({ type: "danger", text: "Failed to update content" });
         } finally {
             setSaving(false);

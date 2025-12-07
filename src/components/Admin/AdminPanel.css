@@ -1,8 +1,8 @@
 :root {
-    --admin-bg-gradient: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
-    --glass-bg: rgba(255, 255, 255, 0.05);
+    --admin-bg: #000000;
+    --glass-bg: rgba(255, 255, 255, 0.03);
     --glass-border: 1px solid rgba(255, 255, 255, 0.1);
-    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
     --primary-color: #c770f0;
     --text-primary: #ffffff;
     --text-secondary: rgba(255, 255, 255, 0.7);
@@ -15,8 +15,9 @@
 .admin-management-page,
 .admin-section {
     min-height: 100vh;
-    background: var(--admin-bg-gradient);
-    font-family: 'Inter', sans-serif;
+    background: var(--admin-bg) !important;
+    background-image: none !important;
+    font-family: 'Raleway', serif;
     color: var(--text-primary);
     padding-top: 100px;
     padding-bottom: 50px;
@@ -432,7 +433,9 @@
     color: #c770f0 !important;
     background: rgba(199, 112, 240, 0.1) !important;
     border-bottom: 2px solid #c770f0 !important;
-}/* Tables */
+}
+
+/* Tables */
 .table-dark {
     background-color: rgba(255, 255, 255, 0.03) !important;
     color: #fff !important;

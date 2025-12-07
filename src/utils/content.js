@@ -14,6 +14,11 @@ Whenever possible, I also apply my passion for developing products with Node.js 
     instagramLink: "https://www.instagram.com/rajashekhar_v_n?igsh=MTM0bmJhZ2d4dWFnbg=="
 };
 
+/**
+ * Default about page content configuration
+ * Used as fallback when database content is not available
+ * @type {Object}
+ */
 export const defaultAboutContent = {
     heading: "Know Who I'M",
     description: `Hi Everyone, I am Rajashekhar N from Karnataka, India.
@@ -29,6 +34,10 @@ Apart from coding, some other activities that I love to do!`,
     quoteAuthor: "Rajashekhar"
 };
 
+/**
+ * Default technology stack - array of skills with icon names
+ * @type {Array<{name: string, iconName: string}>}
+ */
 export const defaultTechStack = [
     { name: "Java", iconName: "DiJava" },
     { name: "JavaScript", iconName: "DiJavascript1" },
@@ -40,6 +49,10 @@ export const defaultTechStack = [
     { name: "AWS", iconName: "FaAws" }
 ];
 
+/**
+ * Default tool stack - array of development tools with icon names
+ * @type {Array<{name: string, iconName: string}>}
+ */
 export const defaultToolStack = [
     { name: "Windows", iconName: "SiWindows" },
     { name: "VS Code", iconName: "SiVisualstudiocode" },

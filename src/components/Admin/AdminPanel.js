@@ -17,6 +17,12 @@ import {
 import { getProjects, getCertificates, getStats } from '../../supabase/database';
 import './AdminPanel.css';
 
+/**
+ * AdminPanel component - Main dashboard for portfolio administration
+ * Displays statistics and provides navigation to all management sections
+ * @returns {JSX.Element} Admin dashboard interface
+ */
+
 function AdminPanel() {
     const navigate = useNavigate();
     const [stats, setStats] = useState({
@@ -45,7 +51,6 @@ function AdminPanel() {
                 loading: false
             });
         } catch (error) {
-            console.error('Error loading stats:', error);
             setStats(prev => ({ ...prev, loading: false }));
         }
     };
@@ -55,7 +60,7 @@ function AdminPanel() {
             await supabase.auth.signOut();
             navigate('/admin/login');
         } catch (error) {
-            console.error('Error logging out:', error);
+            // Silent fail - user will be redirected anyway
         }
     };
 

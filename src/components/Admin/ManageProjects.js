@@ -33,8 +33,7 @@ function ManageProjects() {
             const data = await getProjects();
             setProjects(data);
         } catch (error) {
-            console.error('Error loading projects:', error);
-        }
+            }
     };
 
     const handleInputChange = (e) => {
@@ -134,8 +133,7 @@ function ManageProjects() {
             loadProjects();
         } catch (error) {
             setError(`Failed to save project: ${error.message}`);
-            console.error('Save project error:', error);
-        } finally {
+            } finally {
             setLoading(false);
         }
     };
@@ -148,8 +146,7 @@ function ManageProjects() {
                 loadProjects();
             } catch (error) {
                 setError('Failed to delete project.');
-                console.error('Delete error:', error);
-            }
+                }
         }
     };
 

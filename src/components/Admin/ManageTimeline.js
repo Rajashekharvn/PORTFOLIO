@@ -34,7 +34,6 @@ function ManageTimeline() {
             const data = await getTimelineData();
             setItems(data);
         } catch (error) {
-            console.error("Error fetching timeline data:", error);
             setMessage({ type: "danger", text: "Failed to load timeline data" });
         } finally {
             setLoading(false);
@@ -61,7 +60,6 @@ function ManageTimeline() {
                 setMessage({ type: "success", text: "Item deleted successfully!" });
                 fetchData();
             } catch (error) {
-                console.error("Error deleting item:", error);
                 setMessage({ type: "danger", text: "Failed to delete item" });
             }
         }
@@ -101,7 +99,6 @@ function ManageTimeline() {
             handleClose();
             fetchData();
         } catch (error) {
-            console.error("Error saving item:", error);
             setMessage({ type: "danger", text: "Failed to save item" });
         }
     };

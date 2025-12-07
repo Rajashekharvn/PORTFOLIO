@@ -31,8 +31,7 @@ function ManageCertificates() {
             const data = await getCertificates();
             setCertificates(data);
         } catch (error) {
-            console.error('Error loading certificates:', error);
-        }
+            }
     };
 
     const handleInputChange = (e) => {
@@ -100,7 +99,6 @@ function ManageCertificates() {
             setTimeout(() => setSuccess(''), 5000);
         } catch (error) {
             setError(`Failed to add certificate: ${error.message}`);
-            console.error('Add certificate error:', error);
             setTimeout(() => setError(''), 5000);
         } finally {
             setLoading(false);
@@ -121,7 +119,6 @@ function ManageCertificates() {
                 setTimeout(() => setSuccess(''), 5000);
             } catch (error) {
                 setError('Failed to delete certificate.');
-                console.error('Delete error:', error);
                 setTimeout(() => setError(''), 5000);
             }
         }

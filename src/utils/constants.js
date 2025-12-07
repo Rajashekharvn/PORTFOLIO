@@ -1,4 +1,7 @@
-// Personal Information
+/**
+ * Personal information constants
+ * @type {Object}
+ */
 export const PERSONAL_INFO = {
     name: "Rajashekhar V N",
     title: "Full Stack Developer",
@@ -7,14 +10,20 @@ export const PERSONAL_INFO = {
     bio: "Passionate Full Stack Developer specializing in modern web technologies",
 };
 
-// Social Links
+/**
+ * Social media profile links
+ * @type {Object}
+ */
 export const SOCIAL_LINKS = {
     github: "https://github.com/Rajashekharvn",
     linkedin: "https://www.linkedin.com/in/rajashekhar-naduvinahalli/",
     instagram: "https://www.instagram.com/rajashekhar_v_n?igsh=MTM0bmJhZ2d4dWFnbg==",
 };
 
-// Site Metadata
+/**
+ * Site metadata for SEO and social sharing
+ * @type {Object}
+ */
 export const SITE_METADATA = {
     title: "Rajashekhar V N - Portfolio",
     description: "Full Stack Developer Portfolio showcasing projects and skills",
@@ -30,7 +39,10 @@ export const SITE_METADATA = {
     ],
 };
 
-// Stats
+/**
+ * Portfolio statistics
+ * @type {Object}
+ */
 export const STATS = {
     projectsCompleted: 10,
     technologies: 15,

@@ -2,6 +2,10 @@ import { supabase } from '../supabaseClient';
 
 // ===== RESUME OPERATIONS =====
 
+/**
+ * Fetches the resume data from the database
+ * @returns {Promise<Object|null>} Resume object containing url, file_name, and uploaded_at, or null if not found
+ */
 export const getResume = async () => {
     try {
         const { data, error } = await supabase
@@ -20,6 +24,14 @@ export const getResume = async () => {
     }
 };
 
+/**
+ * Updates or inserts resume data in the database
+ * @param {Object} resumeData - Resume data object
+ * @param {string} resumeData.url - URL of the resume file
+ * @param {string} resumeData.fileName - Name of the resume file
+ * @param {string} resumeData.uploadedAt - ISO timestamp of upload
+ * @throws {Error} If database operation fails
+ */
 export const updateResume = async (resumeData) => {
     try {
         // Convert camelCase to snake_case for database
@@ -55,6 +67,10 @@ export const updateResume = async (resumeData) => {
 
 // ===== PROJECTS OPERATIONS =====
 
+/**
+ * Fetches all projects from the database, ordered by creation date (newest first)
+ * @returns {Promise<Array>} Array of project objects
+ */
 export const getProjects = async () => {
     try {
         const { data, error } = await supabase
@@ -70,6 +86,19 @@ export const getProjects = async () => {
     }
 };
 
+/**
+ * Adds a new project to the database
+ * @param {Object} project - Project data object
+ * @param {string} project.title - Project title
+ * @param {string} project.description - Project description
+ * @param {Array<string>} project.technologies - Array of technology names
+ * @param {string} project.imgPath - Path to project image
+ * @param {string} project.ghLink - GitHub repository link
+ * @param {string} project.demoLink - Live demo link
+ * @param {boolean} project.isBlog - Whether this is a blog post
+ * @returns {Promise<Object>} The created project object
+ * @throws {Error} If database operation fails
+ */
 export const addProject = async (project) => {
     try {
         const { data, error } = await supabase
@@ -77,7 +106,7 @@ export const addProject = async (project) => {
             .insert([{
                 title: project.title,
                 description: project.description,
-                technologies: project.technologies, // Array is auto-handled
+                technologies: project.technologies,
                 img_path: project.imgPath,
                 gh_link: project.ghLink,
                 demo_link: project.demoLink,
@@ -94,6 +123,11 @@ export const addProject = async (project) => {
     }
 };
 
+/**
+ * Deletes a project from the database
+ * @param {number} projectId - ID of the project to delete
+ * @throws {Error} If database operation fails
+ */
 export const deleteProject = async (projectId) => {
     try {
         const { error } = await supabase
@@ -108,6 +142,12 @@ export const deleteProject = async (projectId) => {
     }
 };
 
+/**
+ * Updates an existing project in the database
+ * @param {number} id - Project ID to update
+ * @param {Object} project - Updated project data (same structure as addProject)
+ * @throws {Error} If database operation fails
+ */
 export const updateProject = async (id, project) => {
     try {
         const { error } = await supabase
@@ -133,6 +173,10 @@ export const updateProject = async (id, project) => {
 
 // ===== CERTIFICATES OPERATIONS =====
 
+/**
+ * Fetches all certificates from the database, ordered by creation date (newest first)
+ * @returns {Promise<Array>} Array of certificate objects
+ */
 export const getCertificates = async () => {
     try {
         const { data, error } = await supabase
@@ -148,6 +192,16 @@ export const getCertificates = async () => {
     }
 };
 
+/**
+ * Adds a new certificate to the database
+ * @param {Object} certificate - Certificate data object
+ * @param {string} certificate.title - Certificate title
+ * @param {string} certificate.issuer - Issuing organization
+ * @param {string} certificate.date - Date of issuance
+ * @param {string} certificate.imgPath - Path to certificate image
+ * @returns {Promise<Object>} The created certificate object
+ * @throws {Error} If database operation fails
+ */
 export const addCertificate = async (certificate) => {
     try {
         const { data, error } = await supabase
@@ -169,6 +223,11 @@ export const addCertificate = async (certificate) => {
     }
 };
 
+/**
+ * Deletes a certificate from the database
+ * @param {number} certId - ID of the certificate to delete
+ * @throws {Error} If database operation fails
+ */
 export const deleteCertificate = async (certId) => {
     try {
         const { error } = await supabase
@@ -185,6 +244,14 @@ export const deleteCertificate = async (certId) => {
 
 // ===== HOME CONTENT OPERATIONS =====
 
+/**
+ * Uploads an image file to Supabase storage
+ * @param {File} file - File object to upload
+ * @param {string} bucket - Storage bucket name
+ * @param {string} path - Path within the bucket
+ * @returns {Promise<string>} Public URL of the uploaded image
+ * @throws {Error} If upload fails
+ */
 export const uploadImage = async (file, bucket, path) => {
     try {
         const { error } = await supabase.storage
@@ -204,6 +271,10 @@ export const uploadImage = async (file, bucket, path) => {
     }
 };
 
+/**
+ * Fetches home page content from the database
+ * @returns {Promise<Object|null>} Home content object or null if not found
+ */
 export const getHomeData = async () => {
     try {
         const { data, error } = await supabase
@@ -222,6 +293,20 @@ export const getHomeData = async () => {
     }
 };
 
+/**
+ * Updates or inserts home page content in the database
+ * @param {Object} homeData - Home page data object
+ * @param {string} homeData.heading - Main heading text
+ * @param {string} homeData.name - Name to display
+ * @param {string} homeData.introTitle - Introduction section title
+ * @param {string} homeData.introBody - Introduction section body text
+ * @param {string} homeData.githubLink - GitHub profile URL
+ * @param {string} homeData.linkedinLink - LinkedIn profile URL
+ * @param {string} homeData.instagramLink - Instagram profile URL
+ * @param {string} homeData.avatarUrl - Avatar image URL
+ * @param {string} homeData.mainImgUrl - Main image URL
+ * @throws {Error} If database operation fails
+ */
 export const updateHomeData = async (homeData) => {
     try {
         const dbData = {
@@ -263,6 +348,10 @@ export const updateHomeData = async (homeData) => {
 
 // ===== CONTACT CONTENT OPERATIONS =====
 
+/**
+ * Fetches contact page content from the database
+ * @returns {Promise<Object|null>} Contact content object or null if not found
+ */
 export const getContactData = async () => {
     try {
         const { data, error } = await supabase
@@ -281,6 +370,17 @@ export const getContactData = async () => {
     }
 };
 
+/**
+ * Updates or inserts contact content data in the database
+ * @param {Object} contactData - Contact data object
+ * @param {string} contactData.email - Email address
+ * @param {string} contactData.phone - Phone number
+ * @param {string} contactData.location - Location/address
+ * @param {string} contactData.github - GitHub profile URL
+ * @param {string} contactData.linkedin - LinkedIn profile URL
+ * @param {string} contactData.instagram - Instagram profile URL
+ * @throws {Error} If database operation fails
+ */
 export const updateContactData = async (contactData) => {
     try {
         const dbData = {
@@ -293,8 +393,6 @@ export const updateContactData = async (contactData) => {
             updated_at: new Date().toISOString()
         };
 
-        console.log('Attempting to update contact data:', dbData);
-
         // Check if exists
         const { data: existing, error: selectError } = await supabase
             .from('contact_content')
@@ -303,33 +401,20 @@ export const updateContactData = async (contactData) => {
 
         // PGRST116 means no rows found, which is fine - we'll insert
         if (selectError && selectError.code !== 'PGRST116') {
-            console.error('Error checking existing data:', selectError);
             throw selectError;
         }
 
-        console.log('Existing record:', existing);
-
         if (existing) {
-            console.log('Updating existing record with id:', existing.id);
             const { error } = await supabase
                 .from('contact_content')
                 .update(dbData)
                 .eq('id', existing.id);
-            if (error) {
-                console.error('Update error:', error);
-                throw error;
-            }
-            console.log('Update successful');
+            if (error) throw error;
         } else {
-            console.log('Inserting new record');
             const { error } = await supabase
                 .from('contact_content')
                 .insert([dbData]);
-            if (error) {
-                console.error('Insert error:', error);
-                throw error;
-            }
-            console.log('Insert successful');
+            if (error) throw error;
         }
     } catch (error) {
         console.error('Error updating contact data:', error);
@@ -339,12 +424,16 @@ export const updateContactData = async (contactData) => {
 
 // ===== TIMELINE CONTENT OPERATIONS =====
 
+/**
+ * Fetches all timeline items from the database, ordered by creation date (newest first)
+ * @returns {Promise<Array>} Array of timeline item objects
+ */
 export const getTimelineData = async () => {
     try {
         const { data, error } = await supabase
             .from('timeline_content')
             .select('*')
-            .order('created_at', { ascending: false }); // Or display_order if added
+            .order('created_at', { ascending: false });
 
         if (error) throw error;
         return data || [];
@@ -354,6 +443,11 @@ export const getTimelineData = async () => {
     }
 };
 
+/**
+ * Adds a new timeline item to the database
+ * @param {Object} itemData - Timeline item data object
+ * @throws {Error} If database operation fails
+ */
 export const addTimelineItem = async (itemData) => {
     try {
         const { error } = await supabase
@@ -366,6 +460,12 @@ export const addTimelineItem = async (itemData) => {
     }
 };
 
+/**
+ * Updates an existing timeline item in the database
+ * @param {number} id - Timeline item ID to update
+ * @param {Object} itemData - Updated timeline item data
+ * @throws {Error} If database operation fails
+ */
 export const updateTimelineItem = async (id, itemData) => {
     try {
         const { error } = await supabase
@@ -379,6 +479,11 @@ export const updateTimelineItem = async (id, itemData) => {
     }
 };
 
+/**
+ * Deletes a timeline item from the database
+ * @param {number} id - Timeline item ID to delete
+ * @throws {Error} If database operation fails
+ */
 export const deleteTimelineItem = async (id) => {
     try {
         const { error } = await supabase
@@ -394,6 +499,10 @@ export const deleteTimelineItem = async (id) => {
 
 // ===== ABOUT CONTENT OPERATIONS =====
 
+/**
+ * Fetches about page content from the database
+ * @returns {Promise<Object|null>} About content object or null if not found
+ */
 export const getAboutData = async () => {
     try {
         const { data, error } = await supabase
@@ -412,6 +521,17 @@ export const getAboutData = async () => {
     }
 };
 
+/**
+ * Updates or inserts about page content in the database
+ * @param {Object} aboutData - About page data object
+ * @param {string} aboutData.heading - Page heading
+ * @param {string} aboutData.description - About description text
+ * @param {Array<string>} aboutData.activities - List of activities/hobbies
+ * @param {string} aboutData.quote - Inspirational quote
+ * @param {string} aboutData.quoteAuthor - Quote author name
+ * @param {Object} aboutData.skillBars - Skill bars data organized by category
+ * @throws {Error} If database operation fails
+ */
 export const updateAboutData = async (aboutData) => {
     try {
         const dbData = {
@@ -428,8 +548,6 @@ export const updateAboutData = async (aboutData) => {
             updated_at: new Date().toISOString()
         };
 
-        console.log('Updating about data with skill_bars:', dbData);
-
         // Check if exists
         const { data: existing, error: selectError } = await supabase
             .from('about_content')
@@ -438,7 +556,6 @@ export const updateAboutData = async (aboutData) => {
 
         // PGRST116 means no rows found, which is fine - we'll insert
         if (selectError && selectError.code !== 'PGRST116') {
-            console.error('Error checking existing data:', selectError);
             throw selectError;
         }
 
@@ -462,6 +579,11 @@ export const updateAboutData = async (aboutData) => {
 
 // ===== SKILLS OPERATIONS =====
 
+/**
+ * Fetches skills from the database, optionally filtered by category
+ * @param {string} [category] - Optional category filter (e.g., 'frontend', 'backend', 'tools')
+ * @returns {Promise<Array>} Array of skill objects ordered by display_order
+ */
 export const getSkills = async (category) => {
     try {
         let query = supabase
@@ -483,6 +605,16 @@ export const getSkills = async (category) => {
     }
 };
 
+/**
+ * Adds a new skill to the database
+ * @param {Object} skill - Skill data object
+ * @param {string} skill.name - Skill name
+ * @param {string} skill.iconName - Icon component name (e.g., 'DiJava', 'SiReact')
+ * @param {string} skill.category - Skill category
+ * @param {number} [skill.displayOrder=999] - Display order (lower numbers appear first)
+ * @returns {Promise<Object>} The created skill object
+ * @throws {Error} If database operation fails
+ */
 export const addSkill = async (skill) => {
     try {
         const { data, error } = await supabase
@@ -504,6 +636,15 @@ export const addSkill = async (skill) => {
     }
 };
 
+/**
+ * Updates an existing skill in the database
+ * @param {number} id - Skill ID to update
+ * @param {Object} skill - Updated skill data
+ * @param {string} skill.name - Skill name
+ * @param {string} skill.iconName - Icon component name
+ * @param {number} skill.displayOrder - Display order
+ * @throws {Error} If database operation fails
+ */
 export const updateSkill = async (id, skill) => {
     try {
         const { error } = await supabase
@@ -522,6 +663,11 @@ export const updateSkill = async (id, skill) => {
     }
 };
 
+/**
+ * Deletes a skill from the database
+ * @param {number} id - Skill ID to delete
+ * @throws {Error} If database operation fails
+ */
 export const deleteSkill = async (id) => {
     try {
         const { error } = await supabase
@@ -538,6 +684,10 @@ export const deleteSkill = async (id) => {
 
 // ===== STATS OPERATIONS =====
 
+/**
+ * Fetches the current view count from the database
+ * @returns {Promise<number>} Current view count, or 0 if not found
+ */
 export const getStats = async () => {
     try {
         const { data, error } = await supabase
@@ -554,9 +704,13 @@ export const getStats = async () => {
     }
 };
 
+/**
+ * Increments the portfolio view count by 1
+ * @returns {Promise<number|null>} New view count, or null if operation fails
+ */
 export const incrementViews = async () => {
     try {
-        // 1. Get current views
+        // Get current views
         const { data: currentData, error: fetchError } = await supabase
             .from('app_stats')
             .select('views')
@@ -567,7 +721,7 @@ export const incrementViews = async () => {
 
         const newViews = (currentData?.views || 0) + 1;
 
-        // 2. Update views
+        // Update views
         const { error: updateError } = await supabase
             .from('app_stats')
             .update({ views: newViews })
@@ -584,6 +738,15 @@ export const incrementViews = async () => {
 
 // ===== MESSAGE OPERATIONS =====
 
+/**
+ * Submits a new contact message to the database
+ * @param {Object} messageData - Message data object
+ * @param {string} messageData.name - Sender's name
+ * @param {string} messageData.email - Sender's email
+ * @param {string} messageData.message - Message content
+ * @returns {Promise<boolean>} True if submission successful
+ * @throws {Error} If database operation fails
+ */
 export const submitMessage = async (messageData) => {
     try {
         const { error } = await supabase
@@ -603,6 +766,10 @@ export const submitMessage = async (messageData) => {
     }
 };
 
+/**
+ * Fetches all messages from the database, ordered by creation date (newest first)
+ * @returns {Promise<Array>} Array of message objects
+ */
 export const getMessages = async () => {
     try {
         const { data, error } = await supabase
@@ -618,6 +785,11 @@ export const getMessages = async () => {
     }
 };
 
+/**
+ * Deletes a message from the database
+ * @param {number} id - Message ID to delete
+ * @throws {Error} If database operation fails
+ */
 export const deleteMessage = async (id) => {
     try {
         const { error } = await supabase
