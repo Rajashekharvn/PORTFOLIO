@@ -1,0 +1,27 @@
+<svg
+  width="463"
+  height="299"
+  viewBox="0 0 363 299"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <defs>
+    <linearGradient id="rnGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#a855f7" />
+      <stop offset="100%" stop-color="#7c3aed" />
+    </linearGradient>
+  </defs>
+
+  <text
+    x="50%"
+    y="56%"
+    text-anchor="middle"
+    dominant-baseline="middle"
+    font-family="Poppins, Inter, sans-serif"
+    font-size="300"
+    font-weight="800"
+    fill="url(#rnGradient)"
+    letter-spacing="-10"
+  >
+    Rn.
+  </text>
+</svg>
