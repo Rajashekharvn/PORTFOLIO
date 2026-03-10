@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, memo } from "react";
 import { Container, Row, Col, Form, InputGroup } from "react-bootstrap";
 import ProjectCard from "./ProjectCards";
 import editor from "../../Assets/Projects/codeEditor.png";
 import chatify from "../../Assets/Projects/chatify.png";
 import bitsOfCode from "../../Assets/Projects/blog.png";
 import useScrollReveal from "../../hooks/useScrollReveal";
+import useIntersectionObserver from "../../hooks/useIntersectionObserver";
 import { getProjects } from "../../supabase/database";
 import "./Projects.css";
 
@@ -77,34 +78,30 @@ function Projects() {
     fetchProjects();
   }, []);
 
-  // Get all unique technologies
-  const allTechnologies = ["All", ...new Set(projectsData.flatMap(p => p.technologies || []))];
+  // Get all unique technologies - optimized with useMemo
+  const allTechnologies = useMemo(() => {
+    return ["All", ...new Set(projectsData.flatMap(p => p.technologies || []))];
+  }, [projectsData]);
 
-  // Filter projects based on selected filter and search term
-  const filteredProjects = projectsData.filter(project => {
-    const matchesFilter = selectedFilter === "All" || (project.technologies && project.technologies.includes(selectedFilter));
-    const matchesSearch = project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      project.description.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesFilter && matchesSearch;
-  });
+  // Filter projects based on selected filter and search term - optimized with useMemo
+  const filteredProjects = useMemo(() => {
+    return projectsData.filter(project => {
+      const matchesFilter = selectedFilter === "All" || (project.technologies && project.technologies.includes(selectedFilter));
+      const matchesSearch = project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        project.description.toLowerCase().includes(searchTerm.toLowerCase());
+      return matchesFilter && matchesSearch;
+    });
+  }, [projectsData, selectedFilter, searchTerm]);
 
-  // Keep custom card animation logic
-  useEffect(() => {
-    const cards = document.querySelectorAll(".project-card-view");
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry, i) => {
-          if (entry.isIntersecting && entry.target.classList.contains("project-card-view")) {
-            setTimeout(() => entry.target.classList.add("show"), i * 120);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    cards.forEach((card) => observer.observe(card));
-    return () => cards.forEach((card) => observer.unobserve(card));
-  }, [filteredProjects]);
+  // Use the new hook for staggered card animations
+  useIntersectionObserver(
+    ".project-card-view",
+    { threshold: 0.1 },
+    (entry) => {
+      entry.target.classList.add("show");
+    },
+    true // Enable staggered delay
+  );
 
   return (
     <Container fluid className="project-section fade-up">
@@ -176,4 +173,4 @@ function Projects() {
   );
 }
 
-export default Projects;
+export default memo(Projects);

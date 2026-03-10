@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import useIntersectionObserver from './useIntersectionObserver';
 
 /**
  * Custom hook for scroll reveal animations using IntersectionObserver
@@ -6,23 +6,7 @@ import { useEffect } from 'react';
  * @param {number} threshold - Intersection threshold (default: 0.1)
  */
 const useScrollReveal = (selector = '.fade-up', threshold = 0.1) => {
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('show');
-                    }
-                });
-            },
-            { threshold }
-        );
-
-        const elements = document.querySelectorAll(selector);
-        elements.forEach((el) => observer.observe(el));
-
-        return () => elements.forEach((el) => observer.unobserve(el));
-    }, [selector, threshold]);
+    useIntersectionObserver(selector, { threshold });
 };
 
 export default useScrollReveal;

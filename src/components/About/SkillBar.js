@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, memo } from "react";
 import "./SkillBar.css";
 
-const SkillBar = ({ skill, percentage, category }) => {
+const SkillBar = memo(({ skill, percentage, category }) => {
     const [isVisible, setIsVisible] = useState(false);
     const [currentPercentage, setCurrentPercentage] = useState(0);
     const barRef = useRef(null);
@@ -66,7 +66,7 @@ const SkillBar = ({ skill, percentage, category }) => {
             </div>
         </div>
     );
-};
+});
 
 // Default fallback skills
 const defaultSkills = {
@@ -90,7 +90,7 @@ const defaultSkills = {
     ],
 };
 
-const SkillBars = () => {
+const SkillBars = memo(() => {
     const [skills, setSkills] = React.useState({
         frontend: [],
         backend: [],
@@ -188,6 +188,6 @@ const SkillBars = () => {
             )}
         </div>
     );
-};
+});
 
-export default SkillBars;
+export default memo(SkillBars);

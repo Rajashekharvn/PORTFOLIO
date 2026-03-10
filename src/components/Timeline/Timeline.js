@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useMemo, memo } from "react";
 import "./Timeline.css";
 
 import { getTimelineData } from "../../supabase/database";
@@ -7,7 +7,7 @@ import "./Timeline.css";
 // const timelineData = [ ... ]; // Removed static data
 
 
-const TimelineItem = ({ item, index }) => {
+const TimelineItem = memo(({ item, index }) => {
     const itemRef = useRef(null);
 
     useEffect(() => {
@@ -52,31 +52,33 @@ const TimelineItem = ({ item, index }) => {
             </div>
         </div>
     );
-};
+});
 
 const Timeline = () => {
     const [items, setItems] = React.useState([]);
 
+    // Memoize the sorted items
+    const sortedItems = useMemo(() => {
+        if (!items) return [];
+        return [...items].sort((a, b) => {
+            const getLatestYear = (period) => {
+                if (!period) return 0;
+                const p = period.toLowerCase();
+                if (p.includes("present") || p.includes("current")) {
+                    return new Date().getFullYear();
+                }
+                const years = period.match(/\d{4}/g);
+                if (!years) return 0;
+                return Math.max(...years.map(Number));
+            };
+            return getLatestYear(b.period) - getLatestYear(a.period);
+        });
+    }, [items]);
+
     useEffect(() => {
         const fetchData = async () => {
             const data = await getTimelineData();
-            if (data) {
-                // Sort by year, latest first
-                const sortedData = [...data].sort((a, b) => {
-                    const getLatestYear = (period) => {
-                        if (!period) return 0;
-                        const p = period.toLowerCase();
-                        if (p.includes("present") || p.includes("current")) {
-                            return new Date().getFullYear();
-                        }
-                        const years = period.match(/\d{4}/g);
-                        if (!years) return 0;
-                        return Math.max(...years.map(Number));
-                    };
-                    return getLatestYear(b.period) - getLatestYear(a.period);
-                });
-                setItems(sortedData);
-            }
+            if (data) setItems(data);
         };
         fetchData();
     }, []);
@@ -91,7 +93,7 @@ const Timeline = () => {
             </p>
             <div className="timeline-container">
                 <div className="timeline-line"></div>
-                {items.map((item, index) => (
+                {sortedItems.map((item, index) => (
                     <TimelineItem key={item.id} item={item} index={index} />
                 ))}
             </div>
@@ -99,4 +101,4 @@ const Timeline = () => {
     );
 };
 
-export default Timeline;
+export default memo(Timeline);
