@@ -10,6 +10,7 @@ import SkillBar from "./SkillBar";
 import useScrollReveal from "../../hooks/useScrollReveal";
 import { getAboutData } from "../../supabase/database";
 import { defaultAboutContent } from "../../utils/content";
+import SEO from "../Common/SEO/SEO";
 import "./About.css";
 
 function About() {
@@ -34,6 +35,11 @@ function About() {
 
   return (
     <Container fluid className="about-section fade-up">
+      <SEO
+        title="About"
+        description="Learn more about Rajashekhar, a Full Stack Developer passionate about building robust and scalable web applications."
+        url="about"
+      />
       <Container>
         <Row style={{ justifyContent: "center", padding: "10px", minHeight: "100vh" }}>
           <Col
@@ -57,20 +63,20 @@ function About() {
           >
             <img
               src={laptopImg}
-              alt="about"
+              alt="Rajashekhar working on laptop"
               className="img-fluid"
             />
           </Col>
         </Row>
-        <h1 className="project-heading skillset-heading">
+        <h2 className="project-heading skillset-heading">
           Professional <strong className="purple">Skillset </strong>
-        </h1>
+        </h2>
 
         <Techstack />
 
-        <h1 className="project-heading">
+        <h2 className="project-heading">
           <strong className="purple">Tools</strong> I use
-        </h1>
+        </h2>
         <Toolstack />
         <SkillBar />
         <Github />

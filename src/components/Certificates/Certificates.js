@@ -11,6 +11,7 @@ import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import useScrollReveal from "../../hooks/useScrollReveal";
 import { getCertificates } from "../../supabase/database";
+import SEO from "../Common/SEO/SEO";
 import "./Certificates.css";
 
 // Configure PDF worker
@@ -84,6 +85,11 @@ export default function Certificates() {
 
   return (
     <Container fluid className="certificates-section fade-up" id="certificates">
+      <SEO
+        title="Certificates"
+        description="View professional certifications and achievements earned by Rajashekhar in various technologies."
+        url="Certificates"
+      />
       <Container>
         <h1 className="project-heading">
           My <strong className="purple">Certificates</strong>
@@ -136,7 +142,7 @@ export default function Certificates() {
                       <Card.Img
                         variant="top"
                         src={cert.img_path}
-                        alt={cert.title}
+                        alt={`Certificate for ${cert.title} issued by ${cert.issuer}`}
                         className="certificate-image"
                         loading="lazy"
                       />

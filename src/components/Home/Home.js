@@ -8,6 +8,7 @@ import "./Home.css";
 import "./HomeFix.css";
 
 import useHomeContent from "../../hooks/useHomeContent";
+import SEO from "../Common/SEO/SEO";
 import "./Home.css";
 import "./HomeFix.css";
 
@@ -17,16 +18,20 @@ function Home() {
 
   return (
     <section>
+      <SEO
+        title="Home"
+        description="Rajashekhar's Professional Portfolio. Full Stack Developer specializing in React, Node.js, and Java."
+      />
       <Container fluid className="home-section fade-up" id="home">
         <Container className="home-content">
           <Row className="align-items-center">
             <Col md={7} xs={12} className="home-header">
-              <h1 className="heading">
+              <h2 className="heading">
                 {content.heading}{" "}
                 <span className="wave" role="img" aria-labelledby="wave">
                   👋🏻
                 </span>
-              </h1>
+              </h2>
 
               <h1 className="heading-name">
                 I'M
@@ -41,7 +46,7 @@ function Home() {
             <Col md={5} xs={12} className="home-image-col">
               <img
                 src={content.mainImgUrl || homeLogo}
-                alt="home pic"
+                alt="Rajashekhar - Full Stack Developer Illustration"
                 className="img-fluid float-animation"
                 style={{ maxHeight: "450px" }}
               />

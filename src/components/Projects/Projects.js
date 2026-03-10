@@ -7,6 +7,7 @@ import bitsOfCode from "../../Assets/Projects/blog.png";
 import useScrollReveal from "../../hooks/useScrollReveal";
 import useIntersectionObserver from "../../hooks/useIntersectionObserver";
 import { getProjects } from "../../supabase/database";
+import SEO from "../Common/SEO/SEO";
 import "./Projects.css";
 
 // Fallback hardcoded projects
@@ -105,6 +106,11 @@ function Projects() {
 
   return (
     <Container fluid className="project-section fade-up">
+      <SEO
+        title="Projects"
+        description="Explore my latest projects, ranging from web applications and bots to centralized certificate systems."
+        url="project"
+      />
       <Container>
         <h1 className="project-heading">
           My Recent <strong className="purple">Works </strong>

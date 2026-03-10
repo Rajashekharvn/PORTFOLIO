@@ -9,6 +9,7 @@ import "./Resume.css";
 import "./ResumeMobile.css";
 import useScrollReveal from "../../hooks/useScrollReveal";
 import Timeline from "../Timeline/Timeline";
+import SEO from "../Common/SEO/SEO";
 
 import { getResume } from "../../supabase/database";
 
@@ -56,6 +57,11 @@ function ResumeNew() {
 
   return (
     <div>
+      <SEO
+        title="Resume"
+        description="View Rajashekhar's professional resume, featuring skills in React, Node.js, Java, and his educational background."
+        url="resume"
+      />
       <Container fluid className="resume-section fade-up">
         <Row style={{ justifyContent: "center", position: "relative" }}>
           <Button

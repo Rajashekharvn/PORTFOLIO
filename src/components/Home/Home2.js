@@ -40,23 +40,23 @@ function Home2({ content }) {
       <Container>
         <Row>
           <Col md={8} xs={12} className="home-about-description">
-            <h1 style={{ fontSize: "2.6em" }}>
+            <h2 style={{ fontSize: "2.6em" }}>
               {content.introTitle}
-            </h1>
+            </h2>
             <p className="home-about-body" style={{ whiteSpace: "pre-wrap" }}>
               {content.introBody}
             </p>
           </Col>
           <Col md={4} xs={12} className="myAvtar">
             <Tilt>
-              <img src={content.avatarUrl || myImg} className="img-fluid" alt="avatar" />
+              <img src={content.avatarUrl || myImg} className="img-fluid" alt="Rajashekhar Profile Avatar" />
             </Tilt>
           </Col>
         </Row>
         <StatsCounter />
         <Row>
           <Col md={12} className="home-about-social">
-            <h1>FIND ME ON</h1>
+            <h2>FIND ME ON</h2>
             <p>
               Feel free to <span className="purple">connect </span>with me
             </p>

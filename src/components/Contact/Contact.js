@@ -8,6 +8,7 @@ import { MdLocationOn } from "react-icons/md";
 import { submitMessage, getContactData } from "../../supabase/database";
 import useScrollReveal from "../../hooks/useScrollReveal";
 
+import SEO from "../Common/SEO/SEO";
 import "./Contact.css";
 
 function Contact() {
@@ -86,6 +87,11 @@ function Contact() {
 
   return (
     <Container fluid className="about-section contact-section fade-up" id="contact">
+      <SEO
+        title="Contact"
+        description="Get in touch with Rajashekhar for collaborations, queries, or professional opportunities."
+        url="contact"
+      />
       <Container>
         <h1 className="project-heading">
           <strong className="purple">Get In Touch</strong>
