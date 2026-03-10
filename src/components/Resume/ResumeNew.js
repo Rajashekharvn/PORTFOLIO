@@ -58,9 +58,9 @@ function ResumeNew() {
   return (
     <div>
       <SEO
-        title="Resume"
-        description="View Rajashekhar's professional resume, featuring skills in React, Node.js, Java, and his educational background."
-        url="resume"
+        title="Professional Resume"
+        description="Review Rajashekhar V N's professional experience, technical skills, and educational background. Download my latest CV for your records."
+        url="/resume"
       />
       <Container fluid className="resume-section fade-up">
         <Row style={{ justifyContent: "center", position: "relative" }}>

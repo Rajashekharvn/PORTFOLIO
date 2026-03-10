@@ -36,9 +36,9 @@ function About() {
   return (
     <Container fluid className="about-section fade-up">
       <SEO
-        title="About"
-        description="Learn more about Rajashekhar, a Full Stack Developer passionate about building robust and scalable web applications."
-        url="about"
+        title="About Me"
+        description="Learn about Rajashekhar V N's journey, skills, and passion for Full Stack Development. Discover the tools and technologies I use to build scalable web solutions."
+        url="/about"
       />
       <Container>
         <Row style={{ justifyContent: "center", padding: "10px", minHeight: "100vh" }}>

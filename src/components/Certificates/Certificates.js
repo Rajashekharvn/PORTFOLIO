@@ -86,9 +86,9 @@ export default function Certificates() {
   return (
     <Container fluid className="certificates-section fade-up" id="certificates">
       <SEO
-        title="Certificates"
-        description="View professional certifications and achievements earned by Rajashekhar in various technologies."
-        url="Certificates"
+        title="Certifications & Achievements"
+        description="View professional certifications and academic achievements earned by Rajashekhar V N. A collection of credentials in React, PHP, and other modern technologies."
+        url="/Certificates"
       />
       <Container>
         <h1 className="project-heading">

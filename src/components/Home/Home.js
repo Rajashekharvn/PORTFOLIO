@@ -9,8 +9,6 @@ import "./HomeFix.css";
 
 import useHomeContent from "../../hooks/useHomeContent";
 import SEO from "../Common/SEO/SEO";
-import "./Home.css";
-import "./HomeFix.css";
 
 function Home() {
   useScrollReveal();
@@ -19,24 +17,25 @@ function Home() {
   return (
     <section>
       <SEO
-        title="Home"
-        description="Rajashekhar's Professional Portfolio. Full Stack Developer specializing in React, Node.js, and Java."
+        title="Full Stack Developer Portfolio"
+        description="Explore the portfolio of Rajashekhar V N, a Full Stack Developer specializing in React.js, PHP, and modern web development. Discover innovative projects and technical expertise."
+        keywords="Rajashekhar V N, Portfolio, Full Stack Developer, React.js, Node.js, Springboot, RestAPI, Web Development, Software Engineer"
       />
       <Container fluid className="home-section fade-up" id="home">
         <Container className="home-content">
           <Row className="align-items-center">
             <Col md={7} xs={12} className="home-header">
-              <h2 className="heading">
+              <h1 className="heading">
                 {content.heading}{" "}
                 <span className="wave" role="img" aria-labelledby="wave">
                   👋🏻
                 </span>
-              </h2>
+              </h1>
 
-              <h1 className="heading-name">
+              <h2 className="heading-name">
                 I'M
                 <strong className="main-name"> {content.name}</strong>
-              </h1>
+              </h2>
 
               <div className="type-wrapper">
                 <Type />

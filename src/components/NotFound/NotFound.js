@@ -1,16 +1,17 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import sticker from "../../Assets/404_developer_avatar.png";
+import SEO from "../Common/SEO/SEO";
 
 function NotFound() {
-  // Set a descriptive document title for the 404 page
-  useEffect(() => {
-    document.title = "404 Not Found | Portfolio";
-  }, []);
-
   return (
     <Container fluid className="project-section" style={{ minHeight: "60vh", paddingTop: "120px" }}>
+      <SEO
+        title="404 - Page Not Found"
+        description="The page you are looking for does not exist. Return to Rajashekhar V N's portfolio home page."
+        type="website"
+      />
       <Container>
         <Row className="justify-content-center text-center">
           <Col md={8}>

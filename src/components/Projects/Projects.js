@@ -107,9 +107,9 @@ function Projects() {
   return (
     <Container fluid className="project-section fade-up">
       <SEO
-        title="Projects"
-        description="Explore my latest projects, ranging from web applications and bots to centralized certificate systems."
-        url="project"
+        title="My Projects"
+        description="Explore a showcase of my latest web development projects, ranging from full-stack applications and bots to specialized certificate systems. See the technologies and code behind each work."
+        url="/project"
       />
       <Container>
         <h1 className="project-heading">

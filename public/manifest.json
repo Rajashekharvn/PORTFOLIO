@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Rajashekhar Portfolio",
+  "name": "Rajashekhar V N - Full Stack Developer Portfolio",
   "icons": [
     {
       "src": "favicon.png",
@@ -10,6 +10,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#c95bf5",
+  "background_color": "#0a0416"
 }

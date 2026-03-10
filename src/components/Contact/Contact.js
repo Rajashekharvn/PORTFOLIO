@@ -88,9 +88,9 @@ function Contact() {
   return (
     <Container fluid className="about-section contact-section fade-up" id="contact">
       <SEO
-        title="Contact"
-        description="Get in touch with Rajashekhar for collaborations, queries, or professional opportunities."
-        url="contact"
+        title="Contact Me"
+        description="Interested in collaborating? Get in touch with Rajashekhar V N for project inquiries, job opportunities, or just to say hello."
+        url="/contact"
       />
       <Container>
         <h1 className="project-heading">
