@@ -42,14 +42,14 @@
 }
 
 .back-to-top-icon {
-    font-size: 1.3em;
-    color: #c770f0;
+    font-size: 1.2em;
+    color: #b508f9;
     z-index: 2;
     transition: color 0.3s ease;
 }
 
 .back-to-top-button:hover .back-to-top-icon {
-    color: #ffffff;
+    color: #b508f9;
 }
 
 .progress-ring {

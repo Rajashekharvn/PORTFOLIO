@@ -38,6 +38,7 @@ function About() {
         <Row style={{ justifyContent: "center", padding: "10px", minHeight: "100vh" }}>
           <Col
             md={7}
+            xs={12}
             style={{
               justifyContent: "center",
               paddingTop: "30px",
@@ -51,6 +52,7 @@ function About() {
           </Col>
           <Col
             md={5}
+            xs={12}
             className="about-img"
           >
             <img

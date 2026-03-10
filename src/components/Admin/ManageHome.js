@@ -132,7 +132,7 @@ function ManageHome() {
                         <Form onSubmit={handleSubmit}>
                             <h4 className="mb-3 text-white">Main Banner</h4>
                             <Row className="mb-4">
-                                <Col md={8}>
+                                <Col md={8} xs={12}>
                                     <Form.Group className="mb-3">
                                         <Form.Label className="text-white">Main Image</Form.Label>
                                         <Form.Control
@@ -143,7 +143,7 @@ function ManageHome() {
                                         />
                                     </Form.Group>
                                 </Col>
-                                <Col md={4} className="text-center">
+                                <Col md={4} xs={12} className="text-center">
                                     {previews.main && (
                                         <Image src={previews.main} fluid thumbnail style={{ maxHeight: '150px' }} />
                                     )}
@@ -187,7 +187,7 @@ function ManageHome() {
                             </Form.Group>
 
                             <Row className="mb-4">
-                                <Col md={8}>
+                                <Col md={8} xs={12}>
                                     <Form.Group className="mb-3">
                                         <Form.Label className="text-white">Avatar Image</Form.Label>
                                         <Form.Control
@@ -198,7 +198,7 @@ function ManageHome() {
                                         />
                                     </Form.Group>
                                 </Col>
-                                <Col md={4} className="text-center">
+                                <Col md={4} xs={12} className="text-center">
                                     {previews.avatar && (
                                         <Image src={previews.avatar} fluid roundedCircle style={{ maxHeight: '150px' }} />
                                     )}

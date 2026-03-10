@@ -20,6 +20,7 @@ import ManageMessages from "./components/Admin/ManageMessages";
 import ManageContact from "./components/Admin/ManageContact";
 import ManageTimeline from "./components/Admin/ManageTimeline";
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
+import NotFound from "./components/NotFound/NotFound";
 import {
   BrowserRouter as Router,
   Route,
@@ -179,7 +180,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
         </Routes>
         <Footer />
         <BackToTop />

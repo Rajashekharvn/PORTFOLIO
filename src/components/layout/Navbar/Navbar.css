@@ -74,6 +74,13 @@
     .navbar-nav .nav-item a::after {
         display: none !important;
     }
+
+    .navbar-collapse {
+        background-color: #181a27;
+        padding: 10px;
+        border-radius: 5px;
+        text-align: center;
+    }
 }
 
 .navbar-brand {
@@ -120,7 +127,7 @@
     height: 5px;
     width: 0;
     border-radius: 16px;
-    background: #c95bf5;
+    background: #b508f9;
     bottom: 1px;
     left: 0;
     z-index: -1;

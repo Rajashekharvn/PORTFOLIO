@@ -96,7 +96,7 @@ function Contact() {
 
         <Row style={{ justifyContent: "center", paddingBottom: "50px" }}>
           {/* Contact Information */}
-          <Col md={5} className="contact-info-section">
+          <Col md={5} xs={12} className="contact-info-section">
             <h2 className="contact-section-title">
               Contact <span className="purple">Information</span>
             </h2>
@@ -164,7 +164,7 @@ function Contact() {
           </Col>
 
           {/* Contact Form */}
-          <Col md={7} className="contact-form-section">
+          <Col md={7} xs={12} className="contact-form-section">
             <h2 className="contact-section-title">
               Send Me a <span className="purple">Message</span>
             </h2>

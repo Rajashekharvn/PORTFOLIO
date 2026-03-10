@@ -104,7 +104,7 @@ function Techstack() {
       {skills.map((skill, index) => {
         const IconComponent = ICON_MAP[skill.iconName];
         return (
-          <Col key={index} xs={4} md={2} className="tech-icons" data-name={skill.name}>
+          <Col key={index} xs={4} sm={3} md={2} className="tech-icons" data-name={skill.name}>
             {IconComponent ? <IconComponent /> : <FaCode />}
           </Col>
         );

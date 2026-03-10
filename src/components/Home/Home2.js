@@ -39,7 +39,7 @@ function Home2({ content }) {
     <Container fluid className="home-about-section" id="about">
       <Container>
         <Row>
-          <Col md={8} className="home-about-description">
+          <Col md={8} xs={12} className="home-about-description">
             <h1 style={{ fontSize: "2.6em" }}>
               {content.introTitle}
             </h1>
@@ -47,7 +47,7 @@ function Home2({ content }) {
               {content.introBody}
             </p>
           </Col>
-          <Col md={4} className="myAvtar">
+          <Col md={4} xs={12} className="myAvtar">
             <Tilt>
               <img src={content.avatarUrl || myImg} className="img-fluid" alt="avatar" />
             </Tilt>

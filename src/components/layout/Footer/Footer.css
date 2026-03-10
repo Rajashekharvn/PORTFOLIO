@@ -18,12 +18,18 @@
 }
 
 @media (max-width: 767px) {
+    .footer {
+        padding-bottom: 20px !important;
+    }
+
     .footer-copywright {
         text-align: center !important;
+        padding: 5px 0;
     }
 
     .footer-body {
         text-align: center !important;
+        padding: 5px 0;
     }
 }
 

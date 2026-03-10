@@ -20,7 +20,7 @@ function Home() {
       <Container fluid className="home-section fade-up" id="home">
         <Container className="home-content">
           <Row className="align-items-center">
-            <Col md={7} className="home-header">
+            <Col md={7} xs={12} className="home-header">
               <h1 className="heading">
                 {content.heading}{" "}
                 <span className="wave" role="img" aria-labelledby="wave">
@@ -38,7 +38,7 @@ function Home() {
               </div>
             </Col>
 
-            <Col md={5} className="home-image-col">
+            <Col md={5} xs={12} className="home-image-col">
               <img
                 src={content.mainImgUrl || homeLogo}
                 alt="home pic"

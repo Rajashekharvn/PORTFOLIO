@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Card, Modal, Button } from "react-bootstrap";
-import { FaDownload, FaExpand, FaTimes, FaSearchPlus, FaSearchMinus } from "react-icons/fa";
+import {
+  FaDownload,
+  FaExpand,
+  FaTimes,
+  FaSearchPlus,
+  FaSearchMinus
+} from "react-icons/fa";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import useScrollReveal from "../../hooks/useScrollReveal";
@@ -22,16 +28,19 @@ export default function Certificates() {
   const [numPages, setNumPages] = useState(null);
   const [scale, setScale] = useState(1.0);
 
-  // Fetch certificates from Supabase
+  // ✅ Fetch & SORT certificates (Latest First)
   useEffect(() => {
     const fetchCertificates = async () => {
       try {
         const certs = await getCertificates();
         if (certs && certs.length > 0) {
-          setCertificatesData(certs);
+          const sortedCerts = [...certs].sort(
+            (a, b) => new Date(b.date) - new Date(a.date)
+          );
+          setCertificatesData(sortedCerts);
         }
       } catch (error) {
-        console.error('Error fetching certificates:', error);
+        console.error("Error fetching certificates:", error);
       } finally {
         setLoading(false);
       }
@@ -57,22 +66,21 @@ export default function Certificates() {
     setNumPages(numPages);
   };
 
-  const zoomIn = () => setScale(prevScale => Math.min(prevScale + 0.2, 3.0));
-  const zoomOut = () => setScale(prevScale => Math.max(prevScale - 0.2, 0.5));
+  const zoomIn = () => setScale((prev) => Math.min(prev + 0.2, 3.0));
+  const zoomOut = () => setScale((prev) => Math.max(prev - 0.2, 0.5));
 
   const handleDownload = (cert) => {
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = cert.img_path;
-    link.download = `${cert.title.replace(/\s+/g, '_')}_Certificate`;
-    link.target = '_blank';
+    link.download = `${cert.title.replace(/\s+/g, "_")}_Certificate`;
+    link.target = "_blank";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
 
-  const isPdf = (url) => {
-    return url && (url.toLowerCase().endsWith('.pdf') || url.includes('.pdf?'));
-  };
+  const isPdf = (url) =>
+    url && (url.toLowerCase().endsWith(".pdf") || url.includes(".pdf?"));
 
   return (
     <Container fluid className="certificates-section fade-up" id="certificates">
@@ -98,7 +106,13 @@ export default function Certificates() {
         ) : (
           <Row className="certificate-grid">
             {certificatesData.map((cert, index) => (
-              <Col md={6} lg={4} key={cert.id || index} className="certificate-col">
+              <Col
+                md={6}
+                lg={4}
+                xs={12}
+                key={cert.id || index}
+                className="certificate-col"
+              >
                 <Card className="certificate-card">
                   <div className="certificate-image-wrapper">
                     {isPdf(cert.img_path) ? (
@@ -127,6 +141,7 @@ export default function Certificates() {
                         loading="lazy"
                       />
                     )}
+
                     <div className="certificate-overlay">
                       <Button
                         variant="light"
@@ -144,6 +159,7 @@ export default function Certificates() {
                       </Button>
                     </div>
                   </div>
+
                   <Card.Body className="certificate-body">
                     <Card.Title className="certificate-title">
                       {cert.title}
@@ -152,9 +168,9 @@ export default function Certificates() {
                       <span className="certificate-issuer">{cert.issuer}</span>
                       <span className="meta-separator">•</span>
                       <span className="certificate-date">
-                        {new Date(cert.date).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'short'
+                        {new Date(cert.date).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "short"
                         })}
                       </span>
                     </div>
@@ -166,7 +182,7 @@ export default function Certificates() {
         )}
       </Container>
 
-      {/* Full Screen Modal */}
+      {/* ✅ Full-Screen Modal */}
       <Modal
         show={showModal}
         onHide={handleCloseModal}
@@ -182,19 +198,23 @@ export default function Certificates() {
               <span>{selectedCert?.issuer}</span>
               <span className="meta-separator">•</span>
               <span>
-                {selectedCert && new Date(selectedCert.date).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}
+                {selectedCert &&
+                  new Date(selectedCert.date).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric"
+                  })}
               </span>
             </div>
           </div>
+
           <div className="modal-actions">
             <Button
               variant="outline-light"
               className="modal-download-btn"
-              onClick={() => selectedCert && handleDownload(selectedCert)}
+              onClick={() =>
+                selectedCert && handleDownload(selectedCert)
+              }
             >
               <FaDownload /> Download
             </Button>
@@ -207,24 +227,35 @@ export default function Certificates() {
             </Button>
           </div>
         </Modal.Header>
+
         <Modal.Body className="modal-body-custom">
-          {selectedCert && (
-            isPdf(selectedCert.img_path) ? (
+          {selectedCert &&
+            (isPdf(selectedCert.img_path) ? (
               <div className="pdf-modal-wrapper">
                 <div className="pdf-controls">
                   <div className="pdf-zoom-controls">
-                    <button onClick={zoomOut} disabled={scale <= 0.5} className="control-btn" title="Zoom Out">
+                    <button
+                      onClick={zoomOut}
+                      disabled={scale <= 0.5}
+                      className="control-btn"
+                    >
                       <FaSearchMinus />
                     </button>
-                    <span className="zoom-level">{Math.round(scale * 100)}%</span>
-                    <button onClick={zoomIn} disabled={scale >= 3.0} className="control-btn" title="Zoom In">
+                    <span className="zoom-level">
+                      {Math.round(scale * 100)}%
+                    </span>
+                    <button
+                      onClick={zoomIn}
+                      disabled={scale >= 3}
+                      className="control-btn"
+                    >
                       <FaSearchPlus />
                     </button>
                   </div>
 
                   {numPages && (
-                    <div className="pdf-page-info" style={{ color: '#fff', fontSize: '0.9rem' }}>
-                      {numPages} Page{numPages > 1 ? 's' : ''}
+                    <div className="pdf-page-info">
+                      {numPages} Page{numPages > 1 ? "s" : ""}
                     </div>
                   )}
                 </div>
@@ -233,19 +264,25 @@ export default function Certificates() {
                   <Document
                     file={selectedCert.img_path}
                     onLoadSuccess={onDocumentLoadSuccess}
-                    loading={<div className="pdf-loading-spinner">Loading PDF...</div>}
-                    className="pdf-document-modal"
+                    loading={
+                      <div className="pdf-loading-spinner">
+                        Loading PDF...
+                      </div>
+                    }
                   >
-                    {Array.from(new Array(numPages), (el, index) => (
-                      <Page
-                        key={`page_${index + 1}`}
-                        pageNumber={index + 1}
-                        scale={scale}
-                        renderTextLayer={false}
-                        renderAnnotationLayer={false}
-                        className="pdf-page-modal mb-3"
-                      />
-                    ))}
+                    {Array.from(
+                      new Array(numPages),
+                      (_, index) => (
+                        <Page
+                          key={index}
+                          pageNumber={index + 1}
+                          scale={scale}
+                          renderTextLayer={false}
+                          renderAnnotationLayer={false}
+                          className="mb-3"
+                        />
+                      )
+                    )}
                   </Document>
                 </div>
               </div>
@@ -255,8 +292,7 @@ export default function Certificates() {
                 alt={selectedCert.title}
                 className="modal-certificate-image"
               />
-            )
-          )}
+            ))}
         </Modal.Body>
       </Modal>
     </Container>

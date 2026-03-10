@@ -243,16 +243,17 @@ function ManageAbout() {
                                 </div>
                                 {(formData.skillBars?.frontend || []).map((skill, index) => (
                                     <Row key={index} className="mb-3 align-items-center">
-                                        <Col md={5}>
+                                        <Col md={5} xs={12}>
                                             <Form.Control
                                                 type="text"
                                                 value={skill.name}
                                                 onChange={(e) => handleSkillChange('frontend', index, 'name', e.target.value)}
                                                 placeholder="Skill name (e.g., React.js)"
                                                 required
+                                                className="mb-2 mb-md-0"
                                             />
                                         </Col>
-                                        <Col md={6}>
+                                        <Col md={6} xs={10}>
                                             <div className="d-flex align-items-center">
                                                 <Form.Range
                                                     value={skill.level}
@@ -293,16 +294,17 @@ function ManageAbout() {
                                 </div>
                                 {(formData.skillBars?.backend || []).map((skill, index) => (
                                     <Row key={index} className="mb-3 align-items-center">
-                                        <Col md={5}>
+                                        <Col md={5} xs={12}>
                                             <Form.Control
                                                 type="text"
                                                 value={skill.name}
                                                 onChange={(e) => handleSkillChange('backend', index, 'name', e.target.value)}
                                                 placeholder="Skill name (e.g., Node.js)"
                                                 required
+                                                className="mb-2 mb-md-0"
                                             />
                                         </Col>
-                                        <Col md={6}>
+                                        <Col md={6} xs={10}>
                                             <div className="d-flex align-items-center">
                                                 <Form.Range
                                                     value={skill.level}
@@ -343,16 +345,17 @@ function ManageAbout() {
                                 </div>
                                 {(formData.skillBars?.tools || []).map((skill, index) => (
                                     <Row key={index} className="mb-3 align-items-center">
-                                        <Col md={5}>
+                                        <Col md={5} xs={12}>
                                             <Form.Control
                                                 type="text"
                                                 value={skill.name}
                                                 onChange={(e) => handleSkillChange('tools', index, 'name', e.target.value)}
                                                 placeholder="Skill name (e.g., Git/GitHub)"
                                                 required
+                                                className="mb-2 mb-md-0"
                                             />
                                         </Col>
-                                        <Col md={6}>
+                                        <Col md={6} xs={10}>
                                             <div className="d-flex align-items-center">
                                                 <Form.Range
                                                     value={skill.level}

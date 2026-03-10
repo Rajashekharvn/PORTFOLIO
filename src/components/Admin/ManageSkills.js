@@ -355,7 +355,7 @@ function ManageSkills() {
                                 <h4 className="text-white mb-3">{editingId ? "Edit" : "Add"} Tech Skill</h4>
                                 <Form onSubmit={handleSubmit}>
                                     <Row>
-                                        <Col md={5}>
+                                        <Col md={5} xs={12}>
                                             <Form.Group className="mb-3">
                                                 <Form.Label className="text-white">Skill Name</Form.Label>
                                                 <Form.Control
@@ -368,7 +368,7 @@ function ManageSkills() {
                                                 />
                                             </Form.Group>
                                         </Col>
-                                        <Col md={5}>
+                                        <Col md={5} xs={12}>
                                             <Form.Group className="mb-3">
                                                 <Form.Label className="text-white">Icon</Form.Label>
                                                 <Form.Select
@@ -384,7 +384,7 @@ function ManageSkills() {
                                                 </Form.Select>
                                             </Form.Group>
                                         </Col>
-                                        <Col md={2} className="d-flex align-items-end">
+                                        <Col md={2} xs={12} className="d-flex align-items-end">
                                             <Button
                                                 variant="primary"
                                                 type="submit"
@@ -452,7 +452,7 @@ function ManageSkills() {
                                 <h4 className="text-white mb-3">{editingId ? "Edit" : "Add"} Tool</h4>
                                 <Form onSubmit={handleSubmit}>
                                     <Row>
-                                        <Col md={5}>
+                                        <Col md={5} xs={12}>
                                             <Form.Group className="mb-3">
                                                 <Form.Label className="text-white">Tool Name</Form.Label>
                                                 <Form.Control
@@ -465,7 +465,7 @@ function ManageSkills() {
                                                 />
                                             </Form.Group>
                                         </Col>
-                                        <Col md={5}>
+                                        <Col md={5} xs={12}>
                                             <Form.Group className="mb-3">
                                                 <Form.Label className="text-white">Icon</Form.Label>
                                                 <Form.Select
@@ -481,7 +481,7 @@ function ManageSkills() {
                                                 </Form.Select>
                                             </Form.Group>
                                         </Col>
-                                        <Col md={2} className="d-flex align-items-end">
+                                        <Col md={2} xs={12} className="d-flex align-items-end">
                                             <Button
                                                 variant="primary"
                                                 type="submit"

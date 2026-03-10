@@ -52,7 +52,7 @@
 
 .contact-info-item .contact-icon {
   font-size: 20px;
-  color: #c084f5;
+  color: #b508f9;
   min-width: 20px;
   flex-shrink: 0;
 }
@@ -70,7 +70,7 @@
 }
 
 .contact-link:hover {
-  color: #c084f5;
+  color: #b508f9;
 }
 
 .contact-text {
@@ -142,7 +142,7 @@
 
 .contact-input:focus {
   outline: none;
-  border-color: #c084f5;
+  border-color: #b508f9;
   background: rgba(255, 255, 255, 0.08);
   box-shadow: 0 0 10px rgba(192, 132, 245, 0.2);
 }
@@ -162,14 +162,14 @@
   font-size: 1.1rem;
   font-weight: 600;
   border-radius: 8px;
-  background: linear-gradient(90deg, #c95bf5, #a43cd4);
+  background: linear-gradient(90deg, #b508f9, #a43cd4);
   border: none;
   color: #fff;
   transition: all 0.3s ease;
 }
 
 .contact-submit-btn:hover {
-  background: linear-gradient(90deg, #d16ff7, #b54ee0);
+  background: linear-gradient(90deg, #d16ff7, #b508f9);
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(192, 132, 245, 0.3);
 }

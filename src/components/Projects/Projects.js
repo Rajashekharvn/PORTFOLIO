@@ -158,7 +158,7 @@ function Projects() {
           <Row className="project-grid">
             {filteredProjects.length > 0 ? (
               filteredProjects.map((project, index) => (
-                <Col key={index} md={6} lg={4} className="d-flex justify-content-center">
+                <Col key={index} md={6} lg={4} xs={12} className="d-flex justify-content-center">
                   <ProjectCard {...project} />
                 </Col>
               ))

@@ -1,5 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap");
 
+:root {
+  --breakpoint-xs: 0;
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+}
+
 body {
   margin: 0;
   font-family: "Raleway", serif !important;

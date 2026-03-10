@@ -504,3 +504,53 @@
 .form-select option:checked {
     background-color: rgba(199, 112, 240, 0.3) !important;
 }
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .admin-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+        padding: 1.5rem;
+        text-align: left;
+    }
+
+    .admin-header h1 {
+        font-size: 2rem;
+    }
+
+    .logout-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .stat-card .card-body {
+        align-items: flex-start;
+        text-align: left;
+        padding: 1.2rem;
+    }
+
+    .stat-card .card-body {
+        flex-direction: row;
+        align-items: center;
+        text-align: left;
+    }
+
+    .admin-menu-card {
+        min-height: auto;
+    }
+
+    .admin-menu-card .card-body {
+        padding: 1.5rem;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+    }
+
+    /* Table adjustments */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}

@@ -31,7 +31,7 @@ function ManageCertificates() {
             const data = await getCertificates();
             setCertificates(data);
         } catch (error) {
-            }
+        }
     };
 
     const handleInputChange = (e) => {
@@ -150,7 +150,7 @@ function ManageCertificates() {
 
                     <Form onSubmit={handleSubmit}>
                         <Row>
-                            <Col md={6}>
+                            <Col md={6} xs={12}>
                                 <Form.Group className="mb-3">
                                     <Form.Label>Certificate Title *</Form.Label>
                                     <Form.Control
@@ -164,7 +164,7 @@ function ManageCertificates() {
                                 </Form.Group>
                             </Col>
 
-                            <Col md={6}>
+                            <Col md={6} xs={12}>
                                 <Form.Group className="mb-3">
                                     <Form.Label>Issuing Organization *</Form.Label>
                                     <Form.Control
@@ -180,7 +180,7 @@ function ManageCertificates() {
                         </Row>
 
                         <Row>
-                            <Col md={6}>
+                            <Col md={6} xs={12}>
                                 <Form.Group className="mb-3">
                                     <Form.Label>Issue Date *</Form.Label>
                                     <Form.Control
@@ -193,7 +193,7 @@ function ManageCertificates() {
                                 </Form.Group>
                             </Col>
 
-                            <Col md={6}>
+                            <Col md={6} xs={12}>
                                 <Form.Group className="mb-3">
                                     <Form.Label>Certificate File (Image or PDF) *</Form.Label>
                                     <Form.Control
@@ -226,7 +226,7 @@ function ManageCertificates() {
                     <h3 style={{ color: '#fff', marginBottom: '20px' }}>Existing Certificates ({certificates.length})</h3>
                     <Row>
                         {certificates.map((cert) => (
-                            <Col md={6} lg={4} key={cert.id} className="mb-3">
+                            <Col md={6} lg={4} xs={12} key={cert.id} className="mb-3">
                                 <Card className="item-card">
                                     {cert.img_path && (
                                         <div style={{ height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.05)' }}>

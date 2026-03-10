@@ -33,7 +33,7 @@ function ManageProjects() {
             const data = await getProjects();
             setProjects(data);
         } catch (error) {
-            }
+        }
     };
 
     const handleInputChange = (e) => {
@@ -133,7 +133,7 @@ function ManageProjects() {
             loadProjects();
         } catch (error) {
             setError(`Failed to save project: ${error.message}`);
-            } finally {
+        } finally {
             setLoading(false);
         }
     };
@@ -146,7 +146,7 @@ function ManageProjects() {
                 loadProjects();
             } catch (error) {
                 setError('Failed to delete project.');
-                }
+            }
         }
     };
 
@@ -172,7 +172,7 @@ function ManageProjects() {
 
                     <Form onSubmit={handleSubmit}>
                         <Row>
-                            <Col md={6}>
+                            <Col md={6} xs={12}>
                                 <Form.Group className="mb-3">
                                     <Form.Label>Project Title *</Form.Label>
                                     <Form.Control
@@ -185,7 +185,7 @@ function ManageProjects() {
                                 </Form.Group>
                             </Col>
 
-                            <Col md={6}>
+                            <Col md={6} xs={12}>
                                 <Form.Group className="mb-3">
                                     <Form.Label>Project Image (Upload or URL)</Form.Label>
                                     <Form.Control
@@ -233,7 +233,7 @@ function ManageProjects() {
                         </Form.Group>
 
                         <Row>
-                            <Col md={6}>
+                            <Col md={6} xs={12}>
                                 <Form.Group className="mb-3">
                                     <Form.Label>GitHub Link *</Form.Label>
                                     <Form.Control
@@ -246,7 +246,7 @@ function ManageProjects() {
                                 </Form.Group>
                             </Col>
 
-                            <Col md={6}>
+                            <Col md={6} xs={12}>
                                 <Form.Group className="mb-3">
                                     <Form.Label>Demo Link (optional)</Form.Label>
                                     <Form.Control
@@ -281,7 +281,7 @@ function ManageProjects() {
                     <h3 style={{ color: '#fff', marginBottom: '20px' }}>Existing Projects ({projects.length})</h3>
                     <Row>
                         {projects.map((project) => (
-                            <Col md={6} lg={4} key={project.id} className="mb-3">
+                            <Col md={6} lg={4} xs={12} key={project.id} className="mb-3">
                                 <Card className="item-card">
                                     {project.imgPath && (
                                         <Card.Img variant="top" src={project.imgPath} style={{ height: '150px', objectFit: 'cover' }} />

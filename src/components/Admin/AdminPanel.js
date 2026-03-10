@@ -170,7 +170,7 @@ function AdminPanel() {
                     {/* Statistics Cards */}
                     <Row className="stats-row mb-5">
                         {statsCards.map((stat, index) => (
-                            <Col md={4} key={index} className="mb-4">
+                            <Col md={4} xs={12} key={index} className="mb-4">
                                 <Card className="stat-card">
                                     <Card.Body>
                                         <div className="stat-icon" style={{ color: stat.color }}>{stat.icon}</div>
@@ -190,7 +190,7 @@ function AdminPanel() {
                     <h2 className="section-title">Content Management</h2>
                     <Row>
                         {menuItems.map((item, index) => (
-                            <Col md={6} lg={4} key={index} className="mb-4">
+                            <Col md={6} lg={4} xs={12} key={index} className="mb-4">
                                 <Link to={item.path} className="admin-card-link">
                                     <Card className="admin-menu-card">
                                         <Card.Body>

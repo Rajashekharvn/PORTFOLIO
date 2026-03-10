@@ -141,12 +141,18 @@
     }
 
     .tech-icons {
-        margin: 10px !important;
-        font-size: 3em !important;
+        margin: 5px !important;
+        font-size: 2.5em !important;
+        padding: 10px !important;
     }
 
     .project-heading {
         font-size: 2em !important;
+    }
+
+    .about-activity {
+        font-size: 1em !important;
+        justify-content: flex-start;
     }
 }
 
