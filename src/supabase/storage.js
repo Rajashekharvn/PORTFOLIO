@@ -21,7 +21,7 @@ export const uploadFile = async (file, path) => {
             throw new Error('Unknown storage path');
         }
 
-        const { data, error } = await supabase.storage
+        const { error } = await supabase.storage
             .from(bucket)
             .upload(filePath, file, {
                 cacheControl: '3600',

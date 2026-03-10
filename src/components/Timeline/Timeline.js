@@ -26,9 +26,10 @@ const TimelineItem = ({ item, index }) => {
             observer.observe(itemRef.current);
         }
 
+        const currentItemRef = itemRef.current;
         return () => {
-            if (itemRef.current) {
-                observer.unobserve(itemRef.current);
+            if (currentItemRef) {
+                observer.unobserve(currentItemRef);
             }
         };
     }, []);
