@@ -60,7 +60,23 @@ const Timeline = () => {
     useEffect(() => {
         const fetchData = async () => {
             const data = await getTimelineData();
-            if (data) setItems(data);
+            if (data) {
+                // Sort by year, latest first
+                const sortedData = [...data].sort((a, b) => {
+                    const getLatestYear = (period) => {
+                        if (!period) return 0;
+                        const p = period.toLowerCase();
+                        if (p.includes("present") || p.includes("current")) {
+                            return new Date().getFullYear();
+                        }
+                        const years = period.match(/\d{4}/g);
+                        if (!years) return 0;
+                        return Math.max(...years.map(Number));
+                    };
+                    return getLatestYear(b.period) - getLatestYear(a.period);
+                });
+                setItems(sortedData);
+            }
         };
         fetchData();
     }, []);
