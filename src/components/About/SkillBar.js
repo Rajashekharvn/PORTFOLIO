@@ -22,9 +22,10 @@ const SkillBar = ({ skill, percentage, category }) => {
             observer.observe(barRef.current);
         }
 
+        const currentBarRef = barRef.current;
         return () => {
-            if (barRef.current) {
-                observer.unobserve(barRef.current);
+            if (currentBarRef) {
+                observer.unobserve(currentBarRef);
             }
         };
     }, []);
@@ -67,6 +68,28 @@ const SkillBar = ({ skill, percentage, category }) => {
     );
 };
 
+// Default fallback skills
+const defaultSkills = {
+    frontend: [
+        { name: "React.js", level: 90 },
+        { name: "JavaScript", level: 88 },
+        { name: "HTML/CSS", level: 92 },
+        { name: "Bootstrap", level: 85 },
+    ],
+    backend: [
+        { name: "Java", level: 80 },
+        { name: "MySQL", level: 82 },
+        { name: "Node.js", level: 75 },
+        { name: "REST APIs", level: 78 },
+    ],
+    tools: [
+        { name: "Git/GitHub", level: 85 },
+        { name: "VS Code", level: 90 },
+        { name: "IntelliJ", level: 70 },
+        { name: "Postman", level: 75 },
+    ],
+};
+
 const SkillBars = () => {
     const [skills, setSkills] = React.useState({
         frontend: [],
@@ -74,28 +97,6 @@ const SkillBars = () => {
         tools: []
     });
     const [loading, setLoading] = React.useState(true);
-
-    // Default fallback skills
-    const defaultSkills = {
-        frontend: [
-            { name: "React.js", level: 90 },
-            { name: "JavaScript", level: 88 },
-            { name: "HTML/CSS", level: 92 },
-            { name: "Bootstrap", level: 85 },
-        ],
-        backend: [
-            { name: "Java", level: 80 },
-            { name: "MySQL", level: 82 },
-            { name: "Node.js", level: 75 },
-            { name: "REST APIs", level: 78 },
-        ],
-        tools: [
-            { name: "Git/GitHub", level: 85 },
-            { name: "VS Code", level: 90 },
-            { name: "IntelliJ", level: 70 },
-            { name: "Postman", level: 75 },
-        ],
-    };
 
     React.useEffect(() => {
         const fetchSkills = async () => {

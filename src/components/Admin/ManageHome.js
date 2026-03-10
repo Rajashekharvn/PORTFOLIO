@@ -31,7 +31,6 @@ function ManageHome() {
                     introBody: data.intro_body,
                     githubLink: data.github_link,
                     linkedinLink: data.linkedin_link,
-                    linkedinLink: data.linkedin_link,
                     instagramLink: data.instagram_link,
                     avatarUrl: data.avatar_url,
                     mainImgUrl: data.main_img_url,
