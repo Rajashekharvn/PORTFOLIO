@@ -92,7 +92,7 @@ export default function Certificates() {
       />
       <Container>
         <h1 className="project-heading">
-          My <strong className="purple">Certificates</strong>
+          <strong className="purple">My Certificates</strong>
         </h1>
         <p className="certificates-subtitle">
           Professional certifications and achievements
