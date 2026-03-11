@@ -571,7 +571,8 @@
     opacity: 1;
     transform: translateY(0);
     font-size: 0.85rem !important;
-    padding: 10px 16px !important;
+    padding: 12px 10px !important;
+    margin: 0 5px;
   }
 
   .modal-header-custom {

@@ -154,7 +154,7 @@
   }
 
   .heading-name {
-    font-size: 2em !important;
+    font-size: 1.8em !important;
     padding-left: 0 !important;
     text-align: center !important;
     margin-bottom: 20px !important;
@@ -170,8 +170,10 @@
   }
 
   .Typewriter__wrapper {
-    font-size: 1.6em !important;
+    font-size: 1.4em !important;
     font-weight: 500 !important;
+    white-space: nowrap !important;
+    display: inline-block !important;
   }
 
   .Typewriter__cursor {
@@ -183,7 +185,14 @@
   }
 
   .home-image-col {
-    margin-top: 30px;
+    margin-top: 50px;
+    padding-bottom: 30px;
+  }
+
+  /* Hide mouse scroll indicator on mobile if it exists */
+  .scroll-indicator,
+  .mouse-scroll {
+    display: none !important;
   }
 }
 

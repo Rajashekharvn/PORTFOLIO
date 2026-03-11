@@ -108,14 +108,14 @@ function ResumeNew() {
               <div style={{ marginBottom: "20px", width: "100%", display: "flex", justifyContent: "center" }}>
                 <Page
                   pageNumber={1}
-                  scale={width > 786 ? 1.7 : width > 480 ? 0.8 : 0.6}
+                  scale={width > 786 ? 1.7 : width > 480 ? 0.8 : width > 375 ? 0.6 : 0.5}
                 />
               </div>
               {/* Page 2 */}
               <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
                 <Page
                   pageNumber={2}
-                  scale={width > 786 ? 1.7 : width > 480 ? 0.8 : 0.6}
+                  scale={width > 786 ? 1.7 : width > 480 ? 0.8 : width > 375 ? 0.6 : 0.5}
                 />
               </div>
             </Document>

@@ -1,12 +1,32 @@
--- Enable the storage schema if not already managed (usually enabled by default in Supabase)
--- create extension if not exists "storage";
+-- PROTOTYPE SUPABASE SETUP SCRIPT
+-- This script sets up all necessary tables, storage, and RLS policies for the Portfolio project.
 
--- 1. SETUP STORAGE BUCKET
+-- ==========================================
+-- 0. HELPER FUNCTIONS
+-- ==========================================
+
+-- Function to automatically update 'updated_at' timestamps
+create or replace function public.handle_updated_at()
+returns trigger as $$
+begin
+  new.updated_at = now();
+  return new;
+end;
+$$ language plpgsql;
+
+-- ==========================================
+-- 1. SETUP STORAGE BUCKETS
+-- ==========================================
+
+-- Create storage bucket for images if it doesn't exist
 insert into storage.buckets (id, name, public)
 values ('portfolio-images', 'portfolio-images', true)
 on conflict (id) do nothing;
 
+-- ==========================================
 -- 2. SETUP STORAGE POLICIES
+-- ==========================================
+
 -- Allow public access to view files in the 'portfolio-images' bucket
 create policy "Public Access"
 on storage.objects for select
@@ -30,8 +50,11 @@ on storage.objects for delete
 to authenticated
 using ( bucket_id = 'portfolio-images' );
 
+-- ==========================================
+-- 3. TABLES DEFINITIONS
+-- ==========================================
 
--- 3. SETUP HOME_CONTENT TABLE
+-- HOME_CONTENT TABLE
 create table if not exists public.home_content (
   id uuid default gen_random_uuid() primary key,
   heading text,
@@ -47,39 +70,7 @@ create table if not exists public.home_content (
   updated_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 
--- Enable RLS
-alter table public.home_content enable row level security;
-
--- 4. SETUP HOME_CONTENT POLICIES
-
--- Allow public read access
-create policy "Allow Public Read"
-on public.home_content
-for select
-to anon, authenticated
-using (true);
-
--- Allow authenticated update access
-create policy "Allow Authenticated Update"
-on public.home_content
-for update
-to authenticated
-using (true)
-with check (true);
-
--- Allow authenticated insert access (needed if the row doesn't exist yet)
-create policy "Allow Authenticated Insert"
-on public.home_content
-for insert
-to authenticated
-with check (true);
-
--- Optional: Insert a default row if table is empty
-insert into public.home_content (heading, name, intro_title, intro_body)
-select 'Hi There!', 'My Name', 'Welcome', 'This is my portfolio.'
-where not exists (select 1 from public.home_content);
-
--- 5. SETUP CONTACT_CONTENT TABLE
+-- CONTACT_CONTENT TABLE
 create table if not exists public.contact_content (
   id uuid default gen_random_uuid() primary key,
   email text,
@@ -91,85 +82,196 @@ create table if not exists public.contact_content (
   updated_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 
--- Enable RLS
-alter table public.contact_content enable row level security;
-
--- 6. SETUP CONTACT_CONTENT POLICIES
-
--- Allow public read access
-create policy "Allow Public Read Contact"
-on public.contact_content
-for select
-to anon, authenticated
-using (true);
-
--- Allow authenticated update access
-create policy "Allow Authenticated Update Contact"
-on public.contact_content
-for update
-to authenticated
-using (true)
-with check (true);
-
--- Allow authenticated insert access
-create policy "Allow Authenticated Insert Contact"
-on public.contact_content
-for insert
-to authenticated
-with check (true);
-
--- Optional: Insert a default row if table is empty
-insert into public.contact_content (email, phone, location)
-select 'your_email@example.com', '+1234567890', 'City, Country'
-where not exists (select 1 from public.contact_content);
-
--- 7. SETUP TIMELINE_CONTENT TABLE
+-- TIMELINE_CONTENT TABLE
 create table if not exists public.timeline_content (
   id uuid default gen_random_uuid() primary key,
-  type text not null, -- 'education', 'experience', 'achievement', 'certification'
+  type text not null, -- 'education', 'experience'
   title text not null,
   organization text,
   period text,
   description text,
-  icon text, -- 'fas fa-graduation-cap', etc.
+  icon text,
   created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 
--- Enable RLS
+-- ABOUT_CONTENT TABLE
+create table if not exists public.about_content (
+  id uuid default gen_random_uuid() primary key,
+  heading text,
+  description text,
+  activities text[],
+  quote text,
+  quote_author text,
+  skill_bars jsonb default '{"frontend": [], "backend": [], "tools": []}'::jsonb,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+-- PROJECTS TABLE
+create table if not exists public.projects (
+  id uuid default gen_random_uuid() primary key,
+  title text not null,
+  description text,
+  technologies text[],
+  img_path text,
+  gh_link text,
+  demo_link text,
+  is_blog boolean default false,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+-- CERTIFICATES TABLE
+create table if not exists public.certificates (
+  id uuid default gen_random_uuid() primary key,
+  title text not null,
+  issuer text,
+  date date,
+  img_path text,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+-- SKILLS TABLE
+create table if not exists public.skills (
+  id uuid default gen_random_uuid() primary key,
+  name text not null,
+  icon_name text,
+  category text, -- 'frontend', 'backend', 'tools'
+  display_order integer default 999,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+-- RESUME TABLE
+create table if not exists public.resume (
+  id uuid default gen_random_uuid() primary key,
+  url text not null,
+  file_name text,
+  uploaded_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+-- APP_STATS TABLE
+create table if not exists public.app_stats (
+  id text primary key, -- use 'portfolio' as identifier
+  views integer default 0
+);
+
+-- MESSAGES TABLE (Contact Form)
+create table if not exists public.messages (
+  id uuid default gen_random_uuid() primary key,
+  name text not null,
+  email text not null,
+  message text not null,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+-- ==========================================
+-- 4. PERFORMANCE INDICES
+-- ==========================================
+
+create index if not exists idx_projects_created_at on public.projects(created_at desc);
+create index if not exists idx_certificates_created_at on public.certificates(created_at desc);
+create index if not exists idx_timeline_created_at on public.timeline_content(created_at desc);
+create index if not exists idx_skills_display_order on public.skills(display_order asc);
+create index if not exists idx_messages_created_at on public.messages(created_at desc);
+
+-- ==========================================
+-- 5. UPDATED_AT TRIGGERS
+-- ==========================================
+
+create trigger tr_home_updated_at before update on public.home_content for each row execute function public.handle_updated_at();
+create trigger tr_about_updated_at before update on public.about_content for each row execute function public.handle_updated_at();
+create trigger tr_contact_updated_at before update on public.contact_content for each row execute function public.handle_updated_at();
+create trigger tr_projects_updated_at before update on public.projects for each row execute function public.handle_updated_at();
+
+-- ==========================================
+-- 6. ENABLE ROW LEVEL SECURITY (RLS)
+-- ==========================================
+
+alter table public.home_content enable row level security;
+alter table public.contact_content enable row level security;
 alter table public.timeline_content enable row level security;
+alter table public.about_content enable row level security;
+alter table public.projects enable row level security;
+alter table public.certificates enable row level security;
+alter table public.skills enable row level security;
+alter table public.resume enable row level security;
+alter table public.app_stats enable row level security;
+alter table public.messages enable row level security;
 
--- 8. SETUP TIMELINE_CONTENT POLICIES
+-- ==========================================
+-- 7. RLS POLICIES
+-- ==========================================
 
--- Allow public read access
-create policy "Allow Public Read Timeline"
-on public.timeline_content
-for select
-to anon, authenticated
-using (true);
+-- Helper macro-like approach for Public Read policies
+DO $$
+BEGIN
+    -- Public Read Policies
+    EXECUTE 'create policy "Allow Public Read Home" on public.home_content for select to anon, authenticated using (true)';
+    EXECUTE 'create policy "Allow Public Read Contact" on public.contact_content for select to anon, authenticated using (true)';
+    EXECUTE 'create policy "Allow Public Read Timeline" on public.timeline_content for select to anon, authenticated using (true)';
+    EXECUTE 'create policy "Allow Public Read About" on public.about_content for select to anon, authenticated using (true)';
+    EXECUTE 'create policy "Allow Public Read Projects" on public.projects for select to anon, authenticated using (true)';
+    EXECUTE 'create policy "Allow Public Read Certificates" on public.certificates for select to anon, authenticated using (true)';
+    EXECUTE 'create policy "Allow Public Read Skills" on public.skills for select to anon, authenticated using (true)';
+    EXECUTE 'create policy "Allow Public Read Resume" on public.resume for select to anon, authenticated using (true)';
+    EXECUTE 'create policy "Allow Public Read Stats" on public.app_stats for select to anon, authenticated using (true)';
+    
+    -- Authenticated Update Policies (Owner/Admin)
+    EXECUTE 'create policy "Allow Authenticated Update Home" on public.home_content for update to authenticated using (true) with check (true)';
+    EXECUTE 'create policy "Allow Authenticated Update Contact" on public.contact_content for update to authenticated using (true) with check (true)';
+    EXECUTE 'create policy "Allow Authenticated Update Timeline" on public.timeline_content for update to authenticated using (true) with check (true)';
+    EXECUTE 'create policy "Allow Authenticated Update About" on public.about_content for update to authenticated using (true) with check (true)';
+    EXECUTE 'create policy "Allow Authenticated Update Projects" on public.projects for update to authenticated using (true) with check (true)';
+    EXECUTE 'create policy "Allow Authenticated Update Certificates" on public.certificates for update to authenticated using (true) with check (true)';
+    EXECUTE 'create policy "Allow Authenticated Update Skills" on public.skills for update to authenticated using (true) with check (true)';
+    EXECUTE 'create policy "Allow Authenticated Update Resume" on public.resume for update to authenticated using (true) with check (true)';
+    EXECUTE 'create policy "Allow Authenticated Update Stats" on public.app_stats for update to authenticated using (true) with check (true)';
 
--- Allow authenticated insert
-create policy "Allow Authenticated Insert Timeline"
-on public.timeline_content
-for insert
-to authenticated
-with check (true);
+    -- Authenticated Manage Policies (Insert/Delete)
+    EXECUTE 'create policy "Allow Authenticated Insert Home" on public.home_content for insert to authenticated with check (true)';
+    EXECUTE 'create policy "Allow Authenticated Insert Contact" on public.contact_content for insert to authenticated with check (true)';
+    EXECUTE 'create policy "Allow Authenticated Insert Timeline" on public.timeline_content for insert to authenticated with check (true)';
+    EXECUTE 'create policy "Allow Authenticated Insert About" on public.about_content for insert to authenticated with check (true)';
+    EXECUTE 'create policy "Allow Authenticated Insert Projects" on public.projects for insert to authenticated with check (true)';
+    EXECUTE 'create policy "Allow Authenticated Insert Certificates" on public.certificates for insert to authenticated with check (true)';
+    EXECUTE 'create policy "Allow Authenticated Insert Skills" on public.skills for insert to authenticated with check (true)';
+    EXECUTE 'create policy "Allow Authenticated Insert Resume" on public.resume for insert to authenticated with check (true)';
+    EXECUTE 'create policy "Allow Authenticated Delete Timeline" on public.timeline_content for delete to authenticated using (true)';
+    EXECUTE 'create policy "Allow Authenticated Delete Projects" on public.projects for delete to authenticated using (true)';
+    EXECUTE 'create policy "Allow Authenticated Delete Certificates" on public.certificates for delete to authenticated using (true)';
+    EXECUTE 'create policy "Allow Authenticated Delete Skills" on public.skills for delete to authenticated using (true)';
 
--- Allow authenticated update
-create policy "Allow Authenticated Update Timeline"
-on public.timeline_content
-for update
-to authenticated
-using (true)
-with check (true);
+    -- Public Submit Policy for Messages
+    EXECUTE 'create policy "Allow Public Submit Message" on public.messages for insert to anon, authenticated with check (true)';
+    -- Authenticated Read Messages
+    EXECUTE 'create policy "Allow Authenticated Read Messages" on public.messages for select to authenticated using (true)';
+    -- Authenticated Delete Messages
+    EXECUTE 'create policy "Allow Authenticated Delete Messages" on public.messages for delete to authenticated using (true)';
 
--- Allow authenticated delete
-create policy "Allow Authenticated Delete Timeline"
-on public.timeline_content
-for delete
-to authenticated
-using (true);
+EXCEPTION WHEN duplicate_object THEN
+    -- Ignore errors if policies already exist
+    NULL;
+END $$;
 
--- Optional: Seed default timeline data if empty
-insert into public.timeline_content (type, title, organization, period, description, icon)
-select 'education', 'Bachelor''s in Computer Science', 'University Name', '2020 - 2024', 'Focused on software development, algorithms, and web technologies.', 'fas fa-graduation-cap'
-where not exists (select 1 from public.timeline_content);
+-- ==========================================
+-- 8. INITIAL SEED DATA
+-- ==========================================
+
+-- Default stats
+insert into public.app_stats (id, views)
+values ('portfolio', 0)
+on conflict (id) do nothing;
+
+-- Default Home Content
+insert into public.home_content (heading, name, intro_title, intro_body)
+values ('Hi There!', 'Rajashekhar V N', 'Welcome To My Workspace', 'I am a Full Stack Developer passionate about building robust and scalable web applications.')
+on conflict do nothing;
+
+-- Default Contact Content
+insert into public.contact_content (email, phone, location)
+values ('rajashekhar.naduvinahalli@gmail.com', '+91 8050961805', 'Karnataka, India')
+on conflict do nothing;
+
+-- Default About Content
+insert into public.about_content (heading, description, quote, quote_author)
+values ('KNOW WHO I''M', 'I am a passionate Full Stack Developer with a knack for creating interactive and high-performance web applications.', 'Strive to build things that make a difference!', 'Rajashekhar')
+on conflict do nothing;

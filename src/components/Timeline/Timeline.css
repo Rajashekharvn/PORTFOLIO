@@ -1,4 +1,4 @@
-﻿.timeline-section {
+.timeline-section {
     padding: 80px 0;
     position: relative;
 }
@@ -300,5 +300,10 @@
 
     .timeline-title {
         font-size: 1em;
+    }
+
+    .timeline-container {
+        padding-left: 10px;
+        padding-right: 10px;
     }
 }

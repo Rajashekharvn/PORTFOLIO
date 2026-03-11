@@ -196,29 +196,32 @@
 /* Extra small devices - stack vertically */
 @media (max-width: 400px) {
     .stat-card-col {
-        flex: 0 0 100%;
-        max-width: 100%;
+        flex: 0 0 50%;
+        max-width: 50%;
+        padding: 4px;
     }
 
     .stats-row {
-        flex-direction: column;
-        gap: 15px;
+        flex-wrap: wrap;
+        gap: 0;
     }
 
     .stat-card {
         min-height: 120px;
-        padding: 20px 15px;
+        padding: 15px 10px;
     }
 
     .stat-icon {
-        font-size: 2em;
+        font-size: 1.6em;
+        margin-bottom: 5px;
     }
 
     .stat-number {
-        font-size: 1.8em;
+        font-size: 1.4em;
     }
 
     .stat-label {
-        font-size: 0.8em;
+        font-size: 0.7em;
+        letter-spacing: 0.3px;
     }
 }

@@ -66,9 +66,10 @@
 
 @media (max-width: 767px) {
     .navbar {
-        padding: 1rem 2rem !important;
-        font-size: 1.4rem !important;
-        background-color: #181a27 !important;
+        padding: 0.5rem 1rem !important;
+        font-size: 1.1rem !important;
+        background-color: #181a27f0 !important;
+        backdrop-filter: blur(10px) !important;
     }
 
     .navbar-nav .nav-item a::after {
@@ -76,7 +77,7 @@
     }
 
     .navbar-collapse {
-        background-color: #181a27;
+        background-color: transparent;
         padding: 10px;
         border-radius: 5px;
         text-align: center;
@@ -89,7 +90,13 @@
 
 .logo {
     height: 1.4em !important;
-    width: 2.5em !important;
+    width: auto !important;
+}
+
+@media (max-width: 767px) {
+    .logo {
+        height: 1.2em !important;
+    }
 }
 
 .navbar-nav .nav-link {
